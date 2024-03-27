@@ -22,13 +22,13 @@ const HeroSection = () => {
             <br></br>
             <TypeAnimation
               sequence={[
-                "Judy",
+                "Juan",
                 1000,
-                "Web Developer",
+                "Mechatronic Engineer",
                 1000,
                 "Mobile Developer",
                 1000,
-                "UI/UX Designer",
+                "Web Developer",
                 1000,
               ]}
               wrapper="span"
@@ -37,8 +37,8 @@ const HeroSection = () => {
             />
           </h1>
           <p className="text-[#ADB7BE] text-base sm:text-lg mb-6 lg:text-xl">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam,
-            voluptuous.
+          Entry Level in Mechatronics Engineering, passionate about robotics and web development, 
+          ready to bring freshness and innovation to your company.
           </p>
           <div>
             <Link

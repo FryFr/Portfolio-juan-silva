@@ -9,12 +9,13 @@ const TAB_DATA = [
     id: "skills",
     content: (
       <ul className="list-disc pl-2">
-        <li>Node.js</li>
-        <li>Express</li>
-        <li>PostgreSQL</li>
-        <li>Sequelize</li>
+        <li>SolidWorks</li>
+        <li>Next.js</li>
+        <li>C, C++, C#</li>
+        <li>Flutter</li>
         <li>JavaScript</li>
-        <li>React</li>
+        <li>Python</li>
+        <li>Altium Designer</li>
       </ul>
     ),
   },
@@ -23,18 +24,18 @@ const TAB_DATA = [
     id: "education",
     content: (
       <ul className="list-disc pl-2">
-        <li>Fullstack Academy of Code</li>
-        <li>University of California, Santa Cruz</li>
+        <li>EAN University, Bogota, Colombia</li>
+        <li>Mobile Developer Platzi</li>
       </ul>
     ),
   },
   {
-    title: "Certifications",
-    id: "certifications",
+    title: "Experience",
+    id: "experience",
     content: (
       <ul className="list-disc pl-2">
-        <li>AWS Cloud Practitioner</li>
-        <li>Google Professional Cloud Developer</li>
+        <li>Web developer</li>
+        <li>Mobile developer</li>
       </ul>
     ),
   },
@@ -57,12 +58,18 @@ const AboutSection = () => {
         <div className="mt-4 md:mt-0 text-left flex flex-col h-full">
           <h2 className="text-4xl font-bold text-white mb-4">About Me</h2>
           <p className="text-base lg:text-lg">
-            I am a full stack web developer with a passion for creating
-            interactive and responsive web applications. I have experience
-            working with JavaScript, React, Redux, Node.js, Express, PostgreSQL,
-            Sequelize, HTML, CSS, and Git. I am a quick learner and I am always
-            looking to expand my knowledge and skill set. I am a team player and
-            I am excited to work with others to create amazing applications.
+            Hi, I'm Juan Sebastian Silva Medina, a Mechatronics Engineering student 
+            with experience in robotics prototyping and manufacturing and web and mobile 
+            development. I have analytical and creative skills, meticulous attention to 
+            detail, and excellent teamwork skills. I work with SolidWorks, Inventor and 
+            perform statistical tolerance analysis to ensure accuracy in assemblies. 
+            I program in several languages, such as C++, Matlab, Python, among others, 
+            for microcontrollers and development boards. In addition, I have experience 
+            in PCB design with Altium Designer and I am fluent in several languages. 
+            My achievements include leading a team in a mobile robotics competition and 
+            developing a six degrees of freedom robotic arm, using advanced optimization 
+            and control techniques. I am committed to open source software and seek to 
+            promote innovation in the field of robotics in developing countries.
           </p>
           <div className="flex flex-row justify-start mt-8">
             <TabButton
@@ -80,8 +87,8 @@ const AboutSection = () => {
               Education{" "}
             </TabButton>
             <TabButton
-              selectTab={() => handleTabChange("certifications")}
-              active={tab === "certifications"}
+              selectTab={() => handleTabChange("experience")}
+              active={tab === "experience"}
             >
               {" "}
               Certifications{" "}
