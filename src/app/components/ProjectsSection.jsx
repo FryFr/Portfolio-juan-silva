@@ -12,7 +12,7 @@ const projectsData = [
     image: "/images/projects/Carro_RC_portfolio_portada.png",
     tag: ["All", "Web"],
     gitUrl: "/",
-    previewUrl: "/",
+    previewUrl: "/images/projects/Carro_RC_portfolio_portada.png",
   },
   {
     id: 2,
