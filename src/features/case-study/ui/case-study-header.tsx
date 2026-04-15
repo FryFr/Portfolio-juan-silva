@@ -1,37 +1,40 @@
-import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
 import type { Project } from '@/content-collections';
-import type { Locale } from '@/shared/i18n/routing';
 
 type Props = {
   project: Project;
-  locale: Locale;
 };
 
-export async function ProjectCard({ project, locale }: Props) {
-  const t = await getTranslations('home.projects');
+export async function CaseStudyHeader({ project }: Props) {
+  const t = await getTranslations('projects.detail');
 
   return (
-    <article className="group relative flex flex-col gap-6 border-t border-[var(--bg-tertiary)] pt-8">
-      <header className="flex items-baseline justify-between gap-4">
-        <h3 className="font-serif text-2xl text-[var(--fg-primary)] md:text-3xl">
-          <Link
-            href={`/${locale}/projects/${project.slug}`}
-            className="underline-offset-4 hover:underline"
-          >
-            {project.title}
-          </Link>
-        </h3>
-        <span className="font-mono text-xs uppercase tracking-[0.15em] text-[var(--fg-muted)]">
-          {project.year}
-        </span>
-      </header>
+    <header className="flex flex-col gap-8">
+      <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--fg-muted)]">
+        <span>{project.year}</span>
+        <span className="mx-2">·</span>
+        <span>{project.role}</span>
+      </p>
 
-      <p className="max-w-2xl font-serif text-lg italic text-[var(--fg-tertiary)]">
+      <h1 className="font-serif text-4xl font-normal leading-[1.05] tracking-[-0.02em] text-[var(--fg-primary)] md:text-5xl">
+        {project.title}
+      </h1>
+
+      <p className="max-w-2xl font-serif text-lg italic text-[var(--fg-tertiary)] md:text-xl">
         {project.summary}
       </p>
 
-      <dl className="grid grid-cols-1 gap-4 md:grid-cols-2">
+      <dl className="grid grid-cols-1 gap-4 md:grid-cols-3">
+        {project.client && (
+          <div>
+            <dt className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--fg-muted)]">
+              {t('client')}
+            </dt>
+            <dd className="mt-1 font-serif text-base text-[var(--fg-secondary)]">
+              {project.client}
+            </dd>
+          </div>
+        )}
         <div>
           <dt className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--fg-muted)]">
             {t('role')}
@@ -40,15 +43,22 @@ export async function ProjectCard({ project, locale }: Props) {
         </div>
         <div>
           <dt className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--fg-muted)]">
-            {t('stack')}
+            {t('year')}
           </dt>
-          <dd className="mt-1 flex flex-wrap gap-x-3 gap-y-1 font-mono text-xs text-[var(--fg-secondary)]">
-            {project.stack.map((tech) => (
-              <span key={tech}>{tech}</span>
-            ))}
-          </dd>
+          <dd className="mt-1 font-serif text-base text-[var(--fg-secondary)]">{project.year}</dd>
         </div>
       </dl>
+
+      <div>
+        <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--fg-muted)]">
+          {t('stack')}
+        </p>
+        <ul className="mt-2 flex flex-wrap gap-x-3 gap-y-1 font-mono text-xs text-[var(--fg-secondary)]">
+          {project.stack.map((tech) => (
+            <li key={tech}>{tech}</li>
+          ))}
+        </ul>
+      </div>
 
       {(project.links?.live || project.links?.repo || project.links?.caseStudy) && (
         <ul className="flex flex-wrap gap-x-6 gap-y-2 font-mono text-xs uppercase tracking-[0.15em]">
@@ -90,6 +100,6 @@ export async function ProjectCard({ project, locale }: Props) {
           )}
         </ul>
       )}
-    </article>
+    </header>
   );
 }

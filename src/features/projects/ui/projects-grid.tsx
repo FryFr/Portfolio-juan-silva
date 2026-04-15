@@ -27,7 +27,7 @@ export async function ProjectsGrid({ locale }: Props) {
         ) : (
           <div className="mt-16 space-y-20">
             {projects.map((project) => (
-              <ProjectCard key={project.slug} project={project} />
+              <ProjectCard key={project.slug} project={project} locale={locale} />
             ))}
           </div>
         )}
