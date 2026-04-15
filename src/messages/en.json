@@ -23,7 +23,92 @@
     "hero": {
       "prompt": "whoami — portfolio · 2026",
       "title": "Juan Silva.",
-      "subtitle": "Building software, teaching people, designing systems that last."
+      "subtitle": "Building software, teaching people, designing systems that last.",
+      "roles": {
+        "architect": "Senior Architect",
+        "gde": "Google Developer Expert",
+        "mvp": "Microsoft MVP",
+        "teacher": "Teacher & Mentor"
+      },
+      "rolesIntro": "Currently"
+    },
+    "about": {
+      "eyebrow": "About",
+      "title": "Architecture as a way of teaching.",
+      "bio": [
+        "I've spent more than fifteen years building software — from fintech microservices to mobile apps with millions of downloads. Through all of it, what mattered most was never the stack. It was how the code explained itself to whoever read it next.",
+        "Today I work as a Senior Architect, I'm a Google Developer Expert and Microsoft MVP, and I teach entire teams to think before writing a line. This portfolio is, in part, my way of keeping that conversation going."
+      ],
+      "skillsTitle": "What I do",
+      "skills": {
+        "architecture": {
+          "label": "Architecture",
+          "items": [
+            "Clean Architecture",
+            "Hexagonal",
+            "Screaming Architecture",
+            "DDD",
+            "Event-driven"
+          ]
+        },
+        "testing": {
+          "label": "Testing",
+          "items": ["TDD", "Integration testing", "Contract testing", "Playwright", "Vitest"]
+        },
+        "tooling": {
+          "label": "Tooling",
+          "items": ["TypeScript", "Next.js", "Go", "PostgreSQL", "AWS", "Terraform"]
+        },
+        "teaching": {
+          "label": "Teaching",
+          "items": [
+            "1:1 mentoring",
+            "Constructive code reviews",
+            "Workshops",
+            "Talks",
+            "Technical writing"
+          ]
+        }
+      },
+      "timelineTitle": "Track record",
+      "timeline": {
+        "current": {
+          "period": "2022 — now",
+          "role": "Senior Software Architect",
+          "place": "Independent consulting"
+        },
+        "mvp": {
+          "period": "2021 — now",
+          "role": "Microsoft MVP",
+          "place": "Microsoft"
+        },
+        "gde": {
+          "period": "2020 — now",
+          "role": "Google Developer Expert",
+          "place": "Google"
+        },
+        "lead": {
+          "period": "2018 — 2022",
+          "role": "Tech Lead",
+          "place": "Fintech and mobile projects"
+        },
+        "senior": {
+          "period": "2013 — 2018",
+          "role": "Senior Developer",
+          "place": "Agencies and product teams"
+        }
+      }
+    },
+    "projects": {
+      "eyebrow": "Featured work",
+      "title": "Projects that shaped how I think.",
+      "empty": "No featured projects yet.",
+      "year": "Year",
+      "role": "Role",
+      "stack": "Stack",
+      "caseStudy": "View case study",
+      "live": "Live site",
+      "repo": "Code"
     }
   },
   "placeholder": {
