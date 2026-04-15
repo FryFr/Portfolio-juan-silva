@@ -111,6 +111,50 @@
       "repo": "Código"
     }
   },
+  "projects": {
+    "index": {
+      "title": "Proyectos",
+      "subtitle": "Trabajos seleccionados y casos de estudio.",
+      "empty": "Todavía no hay proyectos publicados."
+    },
+    "detail": {
+      "backToList": "← Todos los proyectos",
+      "prev": "Anterior",
+      "next": "Siguiente",
+      "role": "Rol",
+      "year": "Año",
+      "stack": "Stack",
+      "client": "Cliente",
+      "live": "Sitio live",
+      "repo": "Código",
+      "caseStudy": "Caso de estudio externo"
+    }
+  },
+  "blog": {
+    "index": {
+      "title": "Escritos",
+      "subtitle": "Notas sobre arquitectura, testing y enseñanza.",
+      "empty": "Todavía no hay publicaciones.",
+      "readingTime": "{minutes} min de lectura"
+    },
+    "detail": {
+      "backToList": "← Todas las notas",
+      "publishedOn": "Publicado el",
+      "updatedOn": "Actualizado",
+      "readingTime": "{minutes} min",
+      "relatedTitle": "Seguí leyendo"
+    }
+  },
+  "talks": {
+    "index": {
+      "title": "Charlas",
+      "subtitle": "Conferencias y workshops recientes.",
+      "empty": "Todavía no hay charlas cargadas.",
+      "slides": "Slides",
+      "video": "Video",
+      "deliveredIn": "Idioma de la charla"
+    }
+  },
   "placeholder": {
     "itWorks": "Funciona. Esta es la base del portfolio v2."
   }

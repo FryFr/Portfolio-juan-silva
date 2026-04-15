@@ -111,6 +111,50 @@
       "repo": "Code"
     }
   },
+  "projects": {
+    "index": {
+      "title": "Projects",
+      "subtitle": "Selected work and case studies.",
+      "empty": "No projects published yet."
+    },
+    "detail": {
+      "backToList": "← All projects",
+      "prev": "Previous",
+      "next": "Next",
+      "role": "Role",
+      "year": "Year",
+      "stack": "Stack",
+      "client": "Client",
+      "live": "Live site",
+      "repo": "Code",
+      "caseStudy": "External case study"
+    }
+  },
+  "blog": {
+    "index": {
+      "title": "Writing",
+      "subtitle": "Notes on architecture, testing and teaching.",
+      "empty": "No posts yet.",
+      "readingTime": "{minutes} min read"
+    },
+    "detail": {
+      "backToList": "← All posts",
+      "publishedOn": "Published on",
+      "updatedOn": "Updated",
+      "readingTime": "{minutes} min",
+      "relatedTitle": "Keep reading"
+    }
+  },
+  "talks": {
+    "index": {
+      "title": "Talks",
+      "subtitle": "Recent conference talks and workshops.",
+      "empty": "No talks yet.",
+      "slides": "Slides",
+      "video": "Video",
+      "deliveredIn": "Talk language"
+    }
+  },
   "placeholder": {
     "itWorks": "It works. This is the base of portfolio v2."
   }
