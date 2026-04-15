@@ -28,7 +28,7 @@ export async function Navbar({ locale }: Props) {
             {siteConfig.nav.map((item) => (
               <li key={item.key}>
                 <Link
-                  href={`/${locale}${item.path}`}
+                  href={item.path}
                   className="font-mono text-[11px] uppercase tracking-[0.15em] text-[var(--fg-tertiary)] hover:text-[var(--fg-primary)]"
                 >
                   {t(`nav.${item.key}`)}
