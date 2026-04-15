@@ -1,3 +1,5 @@
+import { CONTACT } from './contact';
+
 export const siteConfig = {
   name: 'Juan Silva',
   title: 'Juan Silva — Senior Architect',
@@ -7,13 +9,13 @@ export const siteConfig = {
   author: {
     name: 'Juan Silva',
     handle: 'FryFr',
-    email: 'hello@juan-silva.dev',
     jobTitle: 'Senior Software Architect',
   },
   social: {
     github: 'https://github.com/FryFr',
     linkedin: 'https://www.linkedin.com/in/jsilva-medina/',
   },
+  contact: CONTACT,
   nav: [
     { key: 'work', path: '/projects' },
     { key: 'writing', path: '/blog' },

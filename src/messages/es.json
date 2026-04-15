@@ -16,7 +16,8 @@
     "footer": {
       "builtWith": "Construido con Next.js + Tailwind + demasiado café",
       "copyright": "© {year} Juan Silva. Todos los derechos reservados.",
-      "rssLabel": "RSS"
+      "rssLabel": "RSS",
+      "lastUpdated": "Última actualización {date}"
     }
   },
   "home": {
@@ -153,6 +154,18 @@
       "slides": "Slides",
       "video": "Video",
       "deliveredIn": "Idioma de la charla"
+    }
+  },
+  "contact": {
+    "eyebrow": "Contacto",
+    "heading": "¿Hablamos?",
+    "copy": "Arquitectura, mentorías, charlas, proyectos ambiciosos — o simplemente una conversación honesta sobre software. Escribime por el canal que prefieras.",
+    "whatsappLabel": "Escribime por WhatsApp",
+    "whatsappMessage": "Hola Juan, te escribo desde tu portfolio. Me gustaría charlar sobre...",
+    "linkedinLabel": "Conectá en LinkedIn",
+    "floating": {
+      "open": "Abrir conversación por WhatsApp",
+      "dismiss": "Ocultar botón de WhatsApp"
     }
   },
   "placeholder": {

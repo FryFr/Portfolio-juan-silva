@@ -3,6 +3,7 @@ import { Fraunces, Inter, JetBrains_Mono } from 'next/font/google';
 import { notFound } from 'next/navigation';
 import { hasLocale, NextIntlClientProvider } from 'next-intl';
 import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
+import { FloatingWhatsApp } from '@/features/contact/ui/floating-whatsapp';
 import { siteConfig } from '@/shared/config/site';
 import { routing } from '@/shared/i18n/routing';
 import { Footer } from '@/shared/ui/footer';
@@ -101,7 +102,6 @@ export default async function LocaleLayout({ children, params }: Props) {
     '@type': 'Person',
     name: siteConfig.author.name,
     url: siteConfig.url,
-    email: siteConfig.author.email,
     jobTitle: siteConfig.author.jobTitle,
     sameAs: [siteConfig.social.github, siteConfig.social.linkedin],
   };
@@ -132,6 +132,7 @@ export default async function LocaleLayout({ children, params }: Props) {
             <Navbar locale={locale} />
             <div className="flex-1">{children}</div>
             <Footer />
+            <FloatingWhatsApp />
           </NextIntlClientProvider>
           <JsonLd data={personSchema} />
           <JsonLd data={profilePageSchema} />
