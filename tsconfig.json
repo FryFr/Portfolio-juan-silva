@@ -22,7 +22,9 @@
       "@/*": ["./src/*"],
       "@/features/*": ["./src/features/*"],
       "@/shared/*": ["./src/shared/*"],
-      "@/content/*": ["./content/*"]
+      "@/content/*": ["./content/*"],
+      "@/content-collections": ["./.content-collections/generated"],
+      "@/content-collections/*": ["./.content-collections/generated/*"]
     },
     "noUncheckedIndexedAccess": true,
     "noImplicitOverride": true,

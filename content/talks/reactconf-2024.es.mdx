@@ -1,0 +1,27 @@
+---
+title: "Server Components a escala: patrones que realmente funcionan"
+summary: "Un análisis profundo de los patrones arquitectónicos que emergen al llevar Server Components a producción en apps grandes: límites de datos, modelos de composición y los errores que cometimos primero."
+event: React Conf
+city: Las Vegas
+year: 2024
+language: en
+slides: https://speakerdeck.com/juansilva/reactconf-2024-server-components-at-scale
+video: https://www.youtube.com/watch?v=dQw4w9WgXcQ
+---
+
+## Resumen
+
+Los React Server Components cambian el modelo mental sobre cómo pensamos en el fetching de datos, el bundling y la composición de componentes. Después de lanzar RSC en dos aplicaciones de gran escala, recopilé los patrones que sobrevivieron el contacto con la realidad — y los antipatrones que tuvimos que desaprender en el camino.
+
+La charla cubre tres áreas concretas: cómo trazar los límites entre componentes de servidor y cliente sin pelear contra el framework, cómo componer árboles de servidor asíncronos sin caer en cascadas de waterfalls, y cómo el caché interactúa con RSC de formas que la documentación todavía no explica del todo.
+
+## Conclusiones principales
+
+- **La ubicación de los límites es una decisión de arquitectura**, no una optimización de performance. Equivocarse al principio sale caro.
+- Los componentes de servidor asíncronos se componen limpiamente con `Suspense` solo si diseñás tu capa de acceso a datos pensando en eso desde el inicio.
+- La directiva `"use client"` es un marcador de hoja, no un punto de corte — la mayoría de los árboles deberían empujarla lo más abajo posible.
+- La invalidación de caché en RSC sigue requiriendo pensamiento explícito; la deduplicación de `fetch` no reemplaza una estrategia de caché coherente.
+
+## Por qué importa
+
+El ecosistema adoptó RSC rápido, pero la mayoría de la guía para producción todavía está moldeada en ejemplos de juguete. Esta charla es para equipos que ya pasaron el "hello world" y necesitan respuestas honestas sobre qué escala y qué no.

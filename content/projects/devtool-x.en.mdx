@@ -1,0 +1,47 @@
+---
+title: "DevTool X — open source tooling for development teams"
+summary: "CLI and web UI to visualize, compare, and version environment configurations across distributed teams. Built with TypeScript, Bun, and tRPC."
+role: "Creator & Maintainer"
+year: 2024
+stack:
+  - TypeScript
+  - Bun
+  - React
+  - tRPC
+links:
+  live: "https://devtool-x.example"
+  repo: "https://github.com/FryFr/devtool-x"
+featured: true
+order: 2
+---
+
+## The problem
+
+In distributed teams, the classic "works on my machine" has a concrete root cause: environment configurations drift without anyone noticing. Environment variables, tool versions, feature flags — every developer has their own local state and there is no simple way to compare, detect differences, or reproduce a colleague's environment.
+
+Large projects accumulate stale `.env.example` files, wikis with outdated instructions, and onboardings that take days. The problem is not intent — it is the lack of tooling.
+
+## The solution
+
+DevTool X ships a CLI (`dtx`) that captures the state of the local environment — variables, runtime versions, tool configurations — and syncs it with a central server. From the web UI you can see in real time what each team member has, compare two environments side by side, and pinpoint exactly what differs.
+
+Onboarding a new project goes from "follow this 30-step doc" to `dtx sync` and a screen that shows exactly what you still need to configure.
+
+The architecture is deliberately simple: Bun as the runtime for both the CLI and the server (fast startup and native TypeScript support without a build step), tRPC for type-safe communication between CLI and API, and React for the UI.
+
+## Stack and decisions
+
+**Bun** was the central bet of the project. The CLI needed to start in under 100 ms — Node.js with ts-node could not achieve that without pre-compilation. Bun executes TypeScript natively and the startup time is imperceptible.
+
+**tRPC** eliminated the need to maintain a separate API contract. The CLI and the server share types directly — if the server changes an endpoint, the CLI fails at compile time, not at runtime.
+
+**React** for the UI without an additional framework. The UI is a simple SPA served by the same Bun process — no Next.js, no overhead. The complexity did not justify it.
+
+There is no persistent database by default: the server keeps state in memory and can be configured with a persistence backend (SQLite, PostgreSQL) when the team needs it.
+
+## Impact
+
+- 340+ GitHub stars in the first three months after launch
+- Adopted by 12 teams across medium-sized open source projects
+- Contributions from 8 external collaborators in the first six months
+- User-reported onboarding time reduction: from ~4 hours to under 30 minutes in complex setups

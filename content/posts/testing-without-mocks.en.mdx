@@ -1,0 +1,158 @@
+---
+title: "Testing without mocks: why I prefer integration tests"
+summary: "Mocks give a false sense of security. When the test passes but the real integration fails, the mock was the problem. Here's how I think about tests in TypeScript and why I avoid heavy mocking."
+publishedAt: "2026-03-20"
+tags: ["testing", "architecture", "typescript"]
+draft: false
+readingTimeMinutes: 9
+---
+
+There's a conversation that repeats itself in almost every team I work with: "we have 90% test coverage and things still break in production."
+
+Coverage doesn't lie. But it doesn't tell the whole truth either.
+
+## The problem with mocks
+
+Mocks are useful. I'm not going to say we should eliminate them. But when they become the default strategy for isolating dependencies, we start testing an imaginary version of the system instead of the real one.
+
+Consider this classic scenario: you have a service that looks up users in a database. To test it in isolation, you mock the repository. The test passes. All good. Then in production, the query has a pagination issue that the mock would never have caught — because the mock did exactly what you programmed it to do.
+
+**When you mock a dependency, you're testing that your code works correctly with a dependency that behaves perfectly according to your assumptions. That's not a test, it's a tautology.**
+
+## Integration tests: the pragmatic alternative
+
+An integration test, in my working definition, is any test that exercises more than one real unit of the system. It doesn't need to be complex. It doesn't need a full staging environment. It needs to be honest.
+
+For working with TypeScript in integration mode without heavy mocks, I usually rely on three strategies:
+
+- **Real in-memory databases** (SQLite for tests that normally use Postgres, for example with `better-sqlite3` or directly with `pg` pointing to an ephemeral container in CI).
+- **Alternative port implementations** — not mocks but real stubs that implement the interface and behave predictably.
+- **Test containers** when the infrastructure is part of the contract.
+
+The point is that the code executing in the test closely resembles the code executing in production.
+
+## A concrete example in TypeScript
+
+Let's say we have a use case that registers a new user and sends a welcome email. The heavy-mock version is most common, but here's the alternative:
+
+```typescript
+// Port (the domain interface)
+interface UserRepository {
+  save(user: User): Promise<void>;
+  findByEmail(email: string): Promise<User | null>;
+}
+
+interface EmailService {
+  sendWelcome(to: string, name: string): Promise<void>;
+}
+
+// Use case
+class RegisterUser {
+  constructor(
+    private readonly users: UserRepository,
+    private readonly email: EmailService,
+  ) {}
+
+  async execute(input: { name: string; email: string }): Promise<User> {
+    const existing = await this.users.findByEmail(input.email);
+    if (existing) {
+      throw new Error(`Email ${input.email} is already registered`);
+    }
+
+    const user = User.create({ name: input.name, email: input.email });
+    await this.users.save(user);
+    await this.email.sendWelcome(user.email, user.name);
+    return user;
+  }
+}
+
+// Real stub for tests — not a mock, an alternative implementation
+class InMemoryUserRepository implements UserRepository {
+  private store = new Map<string, User>();
+
+  async save(user: User): Promise<void> {
+    this.store.set(user.id, user);
+  }
+
+  async findByEmail(email: string): Promise<User | null> {
+    for (const user of this.store.values()) {
+      if (user.email === email) return user;
+    }
+    return null;
+  }
+}
+
+class CapturingEmailService implements EmailService {
+  readonly sent: Array<{ to: string; name: string }> = [];
+
+  async sendWelcome(to: string, name: string): Promise<void> {
+    this.sent.push({ to, name });
+  }
+}
+
+// Integration test
+describe('RegisterUser', () => {
+  it('saves the user and sends a welcome email', async () => {
+    const users = new InMemoryUserRepository();
+    const emailService = new CapturingEmailService();
+    const registerUser = new RegisterUser(users, emailService);
+
+    const result = await registerUser.execute({
+      name: 'Juan Silva',
+      email: 'juan@example.com',
+    });
+
+    // Verify the real state of the repository
+    const saved = await users.findByEmail('juan@example.com');
+    expect(saved).not.toBeNull();
+    expect(saved!.id).toBe(result.id);
+
+    // Verify the email was "sent" with the correct data
+    expect(emailService.sent).toHaveLength(1);
+    expect(emailService.sent[0]).toEqual({
+      to: 'juan@example.com',
+      name: 'Juan Silva',
+    });
+  });
+
+  it('throws when the email is already taken', async () => {
+    const users = new InMemoryUserRepository();
+    const emailService = new CapturingEmailService();
+    const registerUser = new RegisterUser(users, emailService);
+
+    await registerUser.execute({ name: 'First', email: 'dup@example.com' });
+
+    await expect(
+      registerUser.execute({ name: 'Second', email: 'dup@example.com' }),
+    ).rejects.toThrow('already registered');
+  });
+});
+```
+
+The key difference lies in `InMemoryUserRepository` and `CapturingEmailService`. These are not mocks created by a framework that intercepts calls. They are real implementations of the port, written for the test context, that behave deterministically without relying on reflection magic or exact method signatures for interception.
+
+## Why this matters architecturally
+
+When you use mocks in the style of `jest.fn()` or `vi.fn()` to replace methods rather than interfaces, the test is coupled to implementation details. If you rename an internal method, the test breaks even though the external behavior is identical. That's noise, not signal.
+
+Alternative implementations, on the other hand, are coupled to the port interface — which is exactly the contract that should matter to us. If the interface changes, tests need to adapt — and that's correct, because the contract changed.
+
+Additionally, having `InMemoryUserRepository` as a real class in the project has a secondary benefit: you can use it for local development to run the application without infrastructure. A development adapter that is also a test adapter. Two birds, one stone.
+
+## When I do use mocks
+
+I'm not dogmatic. I use mocks when:
+
+- The external dependency is difficult or costly to control in tests (an external payment provider, an SMS service).
+- I want to verify that a function was called a specific number of times with specific parameters, and that's part of the system's observable behavior.
+- I'm testing a truly isolated unit and the integration behavior is already covered at another level.
+
+The key is not to use mocks as the first response to "this has dependencies." The first response should be: **can I make an honest alternative implementation of this dependency?**
+
+## Closing
+
+Tests should give you confidence that the system works. That means they have to exercise the system in a way that resembles how it will work in production.
+
+Heavy mocks are a quick exit that buys short-term speed and sells long-term confidence. Alternative implementations take more upfront work, but they build a test suite that tells you something real about the software.
+
+And in the end, that's what we want: tests that, when they pass, actually mean something.

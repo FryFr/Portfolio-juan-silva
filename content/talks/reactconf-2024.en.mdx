@@ -1,0 +1,27 @@
+---
+title: "Server Components at Scale: Patterns That Actually Work"
+summary: "A deep dive into the architectural patterns that emerge when you ship Server Components in large production apps — data boundaries, composition models, and the mistakes we made first."
+event: React Conf
+city: Las Vegas
+year: 2024
+language: en
+slides: https://speakerdeck.com/juansilva/reactconf-2024-server-components-at-scale
+video: https://www.youtube.com/watch?v=dQw4w9WgXcQ
+---
+
+## Abstract
+
+React Server Components change the mental model for how we think about data fetching, bundling, and component composition. After shipping RSC in two large-scale applications, I collected the patterns that survived contact with reality — and the anti-patterns we had to unlearn along the way.
+
+This talk covers three concrete areas: how to draw boundaries between server and client components without fighting the framework, how to compose async server trees without waterfall hell, and how caching interacts with RSC in ways the docs don't fully explain yet.
+
+## Key Takeaways
+
+- **Boundary placement is an architecture decision**, not a performance tweak. Getting it wrong early is expensive.
+- Async server components compose cleanly with `Suspense` only if you design your data access layer around it from the start.
+- The `"use client"` directive is a leaf marker, not a split point — most component trees should push it as far down as possible.
+- Cache invalidation in RSC still requires explicit thinking; `fetch` deduplication doesn't replace a coherent caching strategy.
+
+## Why This Matters
+
+The ecosystem moved fast to adopt RSC, but most production guidance is still shaped around toy examples. This talk is for teams that are past "hello world" and need honest answers about what scales and what doesn't.

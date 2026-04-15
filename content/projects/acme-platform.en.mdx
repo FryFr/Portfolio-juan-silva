@@ -1,0 +1,46 @@
+---
+title: "Fintech platform rewrite for Acme Financial"
+summary: "Full overhaul of Acme Financial's core platform: from a decade-old monolith to a distributed AWS architecture with Next.js and PostgreSQL."
+role: "Lead Architect"
+year: 2025
+stack:
+  - Next.js
+  - TypeScript
+  - PostgreSQL
+  - AWS
+  - Terraform
+client: "Acme Financial"
+links:
+  caseStudy: "https://acme.example/case-studies/platform-rewrite"
+featured: true
+order: 1
+---
+
+## The problem
+
+Acme Financial ran on a ten-year-old PHP monolith processing critical transactions with response times above 4 seconds at peak load. Every deployment required a two-hour maintenance window and the product team could not iterate without coordinating with infrastructure. The opportunity cost was enormous: features that should take days took months.
+
+The technical debt was not just in the code — it was organizational. Teams could not move independently because everything was coupled to the same database and the same release cycle.
+
+## The solution
+
+I designed a distributed architecture with well-defined bounded contexts: payments, compliance, notifications, and account management as separate domains. Each service owned its own PostgreSQL schema, with asynchronous communication via SQS for non-critical flows and synchronous calls only where immediate consistency was a business requirement.
+
+The frontend was rebuilt in Next.js 15 with the App Router, leveraging Server Components to reduce client-side JavaScript and improve perceived performance. The entire infrastructure was written in Terraform — no console clicks, everything versioned and reproducible.
+
+The rollout was gradual using feature flags: the legacy monolith and the new platform coexisted for six months until the full customer migration was complete.
+
+## Stack and decisions
+
+**Next.js + TypeScript** was the natural choice for the frontend: the team already knew it, and the App Router gave us SSR capabilities without sacrificing DX.
+
+**PostgreSQL** over NoSQL alternatives because financial transactions require ACID without compromise. We used separate schemas per domain within a single cluster to start, with the option to split into dedicated instances when volume justifies it.
+
+**AWS + Terraform** for reproducible infrastructure. The full stack — RDS, ECS, SQS, CloudFront — defined as code. A single `terraform apply` spins up a complete environment in minutes.
+
+## Impact
+
+- Average response time: from 4.2 s down to 380 ms (91% reduction)
+- Deployments: from weekly maintenance windows to multiple daily releases with zero downtime
+- Product team velocity: 3x more features shipped per sprint
+- Infrastructure cost: 35% reduction through efficient ECS resource usage vs. the oversized EC2 instance the monolith ran on

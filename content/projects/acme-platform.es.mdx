@@ -1,0 +1,46 @@
+---
+title: "Reescritura de plataforma fintech para Acme Financial"
+summary: "Rediseño completo de la plataforma core de Acme Financial: de un monolito legacy a una arquitectura distribuida en AWS con Next.js y PostgreSQL."
+role: "Lead Architect"
+year: 2025
+stack:
+  - Next.js
+  - TypeScript
+  - PostgreSQL
+  - AWS
+  - Terraform
+client: "Acme Financial"
+links:
+  caseStudy: "https://acme.example/case-studies/platform-rewrite"
+featured: true
+order: 1
+---
+
+## El problema
+
+Acme Financial operaba sobre un monolito PHP de más de diez años que procesaba transacciones críticas con tiempos de respuesta superiores a los 4 segundos en pico. Cada deploy requería una ventana de mantenimiento de dos horas y el equipo de producto no podía iterar sin coordinar con infraestructura. El costo de oportunidad era enorme: features que deberían tardar días tomaban meses.
+
+La deuda técnica no era solo de código — era organizacional. Los equipos no podían avanzar de manera independiente porque todo estaba acoplado a la misma base de datos y el mismo ciclo de release.
+
+## La solución
+
+Diseñé una arquitectura distribuida con bounded contexts bien definidos: pagos, compliance, notificaciones y gestión de cuentas como dominios separados. Cada servicio con su propio esquema en PostgreSQL, comunicación asíncrona via SQS para los flujos no críticos y llamadas síncronas solo donde la consistencia inmediata era requerimiento de negocio.
+
+El frontend fue rehecho en Next.js 15 con App Router, aprovechando Server Components para reducir el JavaScript en cliente y mejorar la performance percibida. La infraestructura se codificó completamente en Terraform — sin clicks en consola, todo versionado y reproducible.
+
+El rollout fue gradual con feature flags: el monolito legacy y la nueva plataforma convivieron durante seis meses hasta completar la migración de todos los clientes.
+
+## Stack y decisiones
+
+**Next.js + TypeScript** fue la elección obvia para el frontend: el equipo ya lo conocía y el App Router nos daba las herramientas para hacer SSR sin sacrificar la DX.
+
+**PostgreSQL** sobre alternativas NoSQL porque las transacciones financieras necesitan ACID sin negociación. Usamos schemas separados por dominio dentro del mismo cluster para empezar, con la opción de separar en instancias dedicadas cuando el volumen lo justifique.
+
+**AWS + Terraform** para infraestructura reproducible. Todo el stack — RDS, ECS, SQS, CloudFront — definido como código. Un `terraform apply` levanta un ambiente completo en minutos.
+
+## Impacto
+
+- Tiempo de respuesta promedio: de 4.2 s a 380 ms (reducción del 91%)
+- Deploys: de ventanas semanales a múltiples releases diarios sin downtime
+- Velocity del equipo de producto: 3x en features entregadas por sprint
+- Costo de infraestructura: reducción del 35% por el uso eficiente de recursos en ECS vs. la instancia EC2 sobredimensionada del monolito
