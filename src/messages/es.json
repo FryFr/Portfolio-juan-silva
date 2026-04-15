@@ -1,0 +1,22 @@
+{
+  "common": {
+    "siteName": "Juan Silva",
+    "siteTagline": "Senior Architect",
+    "nav": {
+      "work": "Trabajos",
+      "writing": "Escritos",
+      "talks": "Charlas",
+      "about": "Sobre mí"
+    }
+  },
+  "home": {
+    "hero": {
+      "prompt": "whoami — portfolio · 2026",
+      "title": "Juan Silva.",
+      "subtitle": "Construyendo software, enseñando gente, diseñando sistemas que perduran."
+    }
+  },
+  "placeholder": {
+    "itWorks": "Funciona. Esta es la base del portfolio v2."
+  }
+}

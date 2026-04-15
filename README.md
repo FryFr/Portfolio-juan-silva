@@ -1,30 +1,31 @@
-# Portfolio Website
+# Portfolio Juan Silva — v2
 
-This is a portfolio website built with Next.js and Tailwind CSS. It showcases your skills, projects, and achievements in an elegant and responsive design.
+Personal portfolio of Juan Silva — Senior Architect, Google Developer Expert, Microsoft MVP.
 
-## Installation
+Built with Next.js 16, React 19, TypeScript (strict), Tailwind CSS 4, and next-intl.
 
-1. Clone the repository: `git clone https://github.com/judygab/nextjs-portfolio.git`
-2. Navigate to the project directory: `cd portfolio-website`
-3. Install the dependencies: `npm install`
+## Development
 
-## Usage
+```bash
+pnpm install
+pnpm dev
+```
 
-1. Start the development server: `npm run dev`
-2. Open your browser and visit `http://localhost:3000` to view the website.
+Open http://localhost:3000 — will redirect to `/es` by default. Also available at `/en`.
 
-## Dependencies
+## Scripts
 
-The following dependencies are required for this project:
+- `pnpm dev` — start dev server
+- `pnpm typecheck` — run TypeScript type check
+- `pnpm check` — run Biome lint + format check
+- `pnpm check:fix` — auto-fix Biome issues
+- `pnpm test` — run Vitest unit tests
+- `pnpm e2e` — run Playwright E2E tests
 
-- Next.js: A React framework for server-side rendering and static site generation.
-- Tailwind CSS: A highly customizable CSS framework.
-- React: A JavaScript library for building user interfaces.
-- React Icons: A collection of popular icons for React projects.
-- TypeScript: A typed superset of JavaScript that compiles to plain JavaScript.
-- Resend: Resend is the email API for developers.
+## Architecture
+
+Feature-based with screaming architecture. See [docs/superpowers/specs/2026-04-14-portfolio-v2-design.md](docs/superpowers/specs/2026-04-14-portfolio-v2-design.md) for the full design spec.
 
 ## License
 
-This project is licensed under the [MIT License](https://opensource.org/licenses/MIT). Feel free to use, modify, and distribute the code as per the terms of the license.
-
+Personal portfolio. All content © Juan Silva.
