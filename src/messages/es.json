@@ -6,7 +6,17 @@
       "work": "Trabajos",
       "writing": "Escritos",
       "talks": "Charlas",
-      "about": "Sobre mí"
+      "about": "Sobre mí",
+      "toggleMenu": "Abrir menú"
+    },
+    "theme": {
+      "toLight": "Cambiar a tema claro",
+      "toDark": "Cambiar a tema oscuro"
+    },
+    "footer": {
+      "builtWith": "Construido con Next.js + Tailwind + demasiado café",
+      "copyright": "© {year} Juan Silva. Todos los derechos reservados.",
+      "rssLabel": "RSS"
     }
   },
   "home": {

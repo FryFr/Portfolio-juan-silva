@@ -1,57 +1,64 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
-  --color-bg-primary: #f5f1ea;
-  --color-bg-secondary: #ece3d2;
-  --color-bg-tertiary: #e8dfcf;
-  --color-bg-invert: #1a1208;
-
-  --color-fg-primary: #1a1208;
-  --color-fg-secondary: #3d2e1a;
-  --color-fg-tertiary: #6b5943;
-  --color-fg-muted: #9a8567;
-  --color-fg-subtle: #b8a589;
-
-  --color-accent: #c4a574;
-  --color-accent-success: #7a9960;
-  --color-accent-warn: #e07856;
-
   --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
   --font-serif: var(--font-serif), Georgia, serif;
   --font-mono: var(--font-mono), ui-monospace, monospace;
 }
 
-:root {
-  --bg-primary: #f5f1ea;
-  --bg-secondary: #ece3d2;
-  --bg-tertiary: #e8dfcf;
-  --bg-invert: #1a1208;
-  --fg-primary: #1a1208;
-  --fg-secondary: #3d2e1a;
-  --fg-tertiary: #6b5943;
-  --fg-muted: #9a8567;
-  --fg-subtle: #b8a589;
-  --accent: #c4a574;
-  --accent-success: #7a9960;
-  --accent-warn: #e07856;
-}
+@layer base {
+  :root {
+    --bg-primary: #f5f1ea;
+    --bg-secondary: #ece3d2;
+    --bg-tertiary: #e8dfcf;
+    --bg-invert: #1a1208;
+    --fg-primary: #1a1208;
+    --fg-secondary: #3d2e1a;
+    --fg-tertiary: #6b5943;
+    --fg-muted: #9a8567;
+    --fg-subtle: #b8a589;
+    --accent: #c4a574;
+    --accent-success: #7a9960;
+    --accent-warn: #e07856;
+  }
 
-html {
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-}
+  .dark {
+    --bg-primary: #1a1208;
+    --bg-secondary: #241a0e;
+    --bg-tertiary: #2e2214;
+    --bg-invert: #f5f1ea;
+    --fg-primary: #f5f1ea;
+    --fg-secondary: #e8dfcf;
+    --fg-tertiary: #b8a589;
+    --fg-muted: #9a8567;
+    --fg-subtle: #6b5943;
+    --accent: #d4b584;
+    --accent-success: #8ba970;
+    --accent-warn: #f08866;
+  }
 
-body {
-  font-feature-settings: "ss01", "ss02", "cv11";
-}
+  html {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    color-scheme: light dark;
+  }
 
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
+  body {
+    background-color: var(--bg-primary);
+    color: var(--fg-primary);
+    font-feature-settings: "ss01", "ss02", "cv11";
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
   }
 }

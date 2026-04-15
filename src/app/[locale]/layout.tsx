@@ -2,9 +2,13 @@ import type { Metadata } from 'next';
 import { Fraunces, Inter, JetBrains_Mono } from 'next/font/google';
 import { notFound } from 'next/navigation';
 import { hasLocale, NextIntlClientProvider } from 'next-intl';
-import { getMessages, setRequestLocale } from 'next-intl/server';
+import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
 import { siteConfig } from '@/shared/config/site';
 import { routing } from '@/shared/i18n/routing';
+import { Footer } from '@/shared/ui/footer';
+import { JsonLd } from '@/shared/ui/json-ld';
+import { Navbar } from '@/shared/ui/navbar';
+import { ThemeProvider } from '@/shared/ui/theme-provider';
 import '../globals.css';
 
 const fraunces = Fraunces({
@@ -26,14 +30,51 @@ const jetbrainsMono = JetBrains_Mono({
   display: 'swap',
 });
 
-export const metadata: Metadata = {
-  metadataBase: new URL(siteConfig.url),
-  title: {
-    default: siteConfig.name,
-    template: `%s — ${siteConfig.name}`,
-  },
-  description: siteConfig.description,
+type MetadataProps = {
+  params: Promise<{ locale: string }>;
 };
+
+export async function generateMetadata({ params }: MetadataProps): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'common' });
+
+  return {
+    metadataBase: new URL(siteConfig.url),
+    title: {
+      default: siteConfig.name,
+      template: `%s — ${siteConfig.name}`,
+    },
+    description: siteConfig.description,
+    alternates: {
+      canonical: `/${locale}`,
+      languages: {
+        es: '/es',
+        en: '/en',
+      },
+    },
+    openGraph: {
+      type: 'profile',
+      locale,
+      url: `${siteConfig.url}/${locale}`,
+      siteName: siteConfig.name,
+      title: siteConfig.name,
+      description: siteConfig.description,
+      firstName: 'Juan',
+      lastName: 'Silva',
+      username: siteConfig.author.handle,
+    },
+    robots: {
+      index: true,
+      follow: true,
+    },
+    icons: {
+      icon: '/favicon.ico',
+    },
+    authors: [{ name: siteConfig.author.name, url: siteConfig.url }],
+    creator: siteConfig.author.name,
+    other: { 'x-i18n-ns': String(t('siteTagline')) },
+  };
+}
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -55,13 +96,46 @@ export default async function LocaleLayout({ children, params }: Props) {
 
   const messages = await getMessages();
 
+  const personSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: siteConfig.author.name,
+    url: siteConfig.url,
+    email: siteConfig.author.email,
+    jobTitle: siteConfig.author.jobTitle,
+    sameAs: [siteConfig.social.github, siteConfig.social.linkedin],
+  };
+
+  const profilePageSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'ProfilePage',
+    name: siteConfig.name,
+    url: `${siteConfig.url}/${locale}`,
+    inLanguage: locale,
+    about: personSchema,
+  };
+
   return (
     <html
       lang={locale}
+      suppressHydrationWarning
       className={`${fraunces.variable} ${inter.variable} ${jetbrainsMono.variable}`}
     >
-      <body className="min-h-screen bg-[--bg-primary] text-[--fg-primary] font-sans antialiased">
-        <NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>
+      <body className="flex min-h-screen flex-col font-sans antialiased">
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <NextIntlClientProvider messages={messages}>
+            <Navbar locale={locale} />
+            <div className="flex-1">{children}</div>
+            <Footer />
+          </NextIntlClientProvider>
+          <JsonLd data={personSchema} />
+          <JsonLd data={profilePageSchema} />
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -6,16 +6,23 @@ export const siteConfig = {
   url: 'https://juan-silva.dev',
   author: {
     name: 'Juan Silva',
-    handle: 'juansilva',
+    handle: 'FryFr',
     email: 'hello@juan-silva.dev',
+    jobTitle: 'Senior Software Architect',
   },
   social: {
-    github: 'https://github.com/juansilva',
-    linkedin: 'https://linkedin.com/in/juansilva',
-    twitter: 'https://twitter.com/juansilva',
+    github: 'https://github.com/FryFr',
+    linkedin: 'https://www.linkedin.com/in/jsilva-medina/',
   },
+  nav: [
+    { key: 'work', href: '/' },
+    { key: 'writing', href: '/' },
+    { key: 'talks', href: '/' },
+    { key: 'about', href: '/' },
+  ],
   locales: ['es', 'en'] as const,
   defaultLocale: 'es' as const,
 } as const;
 
 export type SiteConfig = typeof siteConfig;
+export type NavKey = (typeof siteConfig.nav)[number]['key'];
