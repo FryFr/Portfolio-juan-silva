@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { hasLocale, NextIntlClientProvider } from 'next-intl';
 import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
 import { FloatingWhatsApp } from '@/features/contact/ui/floating-whatsapp';
+import { CursorProvider } from '@/features/cursor/context/cursor-provider';
 import { siteConfig } from '@/shared/config/site';
 import { routing } from '@/shared/i18n/routing';
 import { Footer } from '@/shared/ui/footer';
@@ -129,10 +130,12 @@ export default async function LocaleLayout({ children, params }: Props) {
           disableTransitionOnChange
         >
           <NextIntlClientProvider messages={messages}>
-            <Navbar locale={locale} />
-            <div className="flex-1">{children}</div>
-            <Footer />
-            <FloatingWhatsApp />
+            <CursorProvider>
+              <Navbar locale={locale} />
+              <div className="flex-1">{children}</div>
+              <Footer />
+              <FloatingWhatsApp />
+            </CursorProvider>
           </NextIntlClientProvider>
           <JsonLd data={personSchema} />
           <JsonLd data={profilePageSchema} />
