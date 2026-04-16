@@ -1,5 +1,7 @@
 import { getTranslations } from 'next-intl/server';
 import type { Project } from '@/content-collections';
+import { DistortHeading } from '@/features/cursor/effects/distort-heading';
+import { ProximityReveal } from '@/features/cursor/effects/proximity-reveal';
 
 type Props = {
   project: Project;
@@ -16,13 +18,16 @@ export async function CaseStudyHeader({ project }: Props) {
         <span>{project.role}</span>
       </p>
 
-      <h1 className="font-serif text-4xl font-normal leading-[1.05] tracking-[-0.02em] text-[var(--fg-primary)] md:text-5xl">
+      <DistortHeading
+        as="h1"
+        className="font-serif text-4xl font-normal leading-[1.05] tracking-[-0.02em] text-[var(--fg-primary)] md:text-5xl"
+      >
         {project.title}
-      </h1>
+      </DistortHeading>
 
-      <p className="max-w-2xl font-serif text-lg italic text-[var(--fg-tertiary)] md:text-xl">
+      <ProximityReveal className="max-w-2xl font-serif text-lg italic text-[var(--fg-tertiary)] md:text-xl">
         {project.summary}
-      </p>
+      </ProximityReveal>
 
       <dl className="grid grid-cols-1 gap-4 md:grid-cols-3">
         {project.client && (

@@ -1,5 +1,7 @@
 import { getTranslations } from 'next-intl/server';
 import type { Post } from '@/content-collections';
+import { DistortHeading } from '@/features/cursor/effects/distort-heading';
+import { ProximityReveal } from '@/features/cursor/effects/proximity-reveal';
 
 type Props = {
   post: Post;
@@ -11,13 +13,16 @@ export async function PostHeader({ post }: Props) {
 
   return (
     <header className="flex flex-col gap-8">
-      <h1 className="font-serif text-4xl font-normal leading-[1.05] tracking-[-0.02em] text-[var(--fg-primary)] md:text-5xl">
+      <DistortHeading
+        as="h1"
+        className="font-serif text-4xl font-normal leading-[1.05] tracking-[-0.02em] text-[var(--fg-primary)] md:text-5xl"
+      >
         {post.title}
-      </h1>
+      </DistortHeading>
 
-      <p className="max-w-2xl font-serif text-lg italic text-[var(--fg-tertiary)] md:text-xl">
+      <ProximityReveal className="max-w-2xl font-serif text-lg italic text-[var(--fg-tertiary)] md:text-xl">
         {post.summary}
-      </p>
+      </ProximityReveal>
 
       <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--fg-muted)]">
         <span>

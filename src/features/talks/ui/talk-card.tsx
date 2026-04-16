@@ -1,5 +1,6 @@
 import { getTranslations } from 'next-intl/server';
 import type { Talk } from '@/content-collections';
+import { DistortHeading } from '@/features/cursor/effects/distort-heading';
 
 type Props = {
   talk: Talk;
@@ -18,7 +19,9 @@ export async function TalkCard({ talk }: Props) {
       <p className="font-mono text-xs uppercase tracking-[0.15em] text-[var(--fg-muted)]">
         {eyebrowParts.join(' · ')}
       </p>
-      <h2 className="font-serif text-2xl text-[var(--fg-primary)]">{talk.title}</h2>
+      <DistortHeading as="h2" className="font-serif text-2xl text-[var(--fg-primary)]">
+        {talk.title}
+      </DistortHeading>
       <p className="max-w-2xl font-serif text-base italic text-[var(--fg-tertiary)]">
         {talk.summary}
       </p>
