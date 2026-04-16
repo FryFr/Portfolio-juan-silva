@@ -57,10 +57,12 @@ export function ProximityReveal({ children, className, as: tag = 'p' }: Props) {
       const cursor = cursorRef.current;
       const el = elRef.current;
       const rect = el.getBoundingClientRect();
-      const cx = rect.left + rect.width / 2;
-      const cy = rect.top + rect.height / 2;
-      const dx = cursor.x - cx;
-      const dy = cursor.y - cy;
+
+      // Distance to closest edge of the element, not center
+      const closestX = Math.max(rect.left, Math.min(cursor.x, rect.right));
+      const closestY = Math.max(rect.top, Math.min(cursor.y, rect.bottom));
+      const dx = cursor.x - closestX;
+      const dy = cursor.y - closestY;
       const dist = Math.sqrt(dx * dx + dy * dy);
 
       if (dist < PROXIMITY_RADIUS) {
@@ -85,7 +87,11 @@ export function ProximityReveal({ children, className, as: tag = 'p' }: Props) {
   const Tag = tag;
 
   return (
-    <Tag ref={elRef as React.RefObject<HTMLParagraphElement>} className={className}>
+    <Tag
+      ref={elRef as React.RefObject<HTMLParagraphElement>}
+      className={className}
+      style={active ? { transition: 'color 0.3s ease, text-shadow 0.3s ease' } : undefined}
+    >
       {children}
     </Tag>
   );

@@ -1,7 +1,7 @@
 {
   "common": {
     "siteName": "Juan Silva",
-    "siteTagline": "Senior Architect",
+    "siteTagline": "Mechatronics Engineer & AI Specialist",
     "nav": {
       "work": "Work",
       "writing": "Writing",
@@ -22,83 +22,125 @@
   },
   "home": {
     "hero": {
-      "prompt": "whoami — portfolio · 2026",
+      "prompt": "whoami — portfolio",
       "title": "Juan Silva.",
-      "subtitle": "Building software, teaching people, designing systems that last.",
+      "subtitle": "Mechatronics engineer, AI specialist, and business systems automation.",
       "roles": {
-        "architect": "Senior Architect",
-        "gde": "Google Developer Expert",
-        "mvp": "Microsoft MVP",
-        "teacher": "Teacher & Mentor"
+        "ai": "AI & Business Systems Specialist",
+        "mechatronics": "Mechatronics Engineer",
+        "itsm": "IT Consultant",
+        "robotics": "Robotics & Embedded Systems"
       },
       "rolesIntro": "Currently"
     },
     "about": {
       "eyebrow": "About",
-      "title": "Architecture as a way of teaching.",
+      "title": "Where engineering meets artificial intelligence.",
       "bio": [
-        "I've spent more than fifteen years building software — from fintech microservices to mobile apps with millions of downloads. Through all of it, what mattered most was never the stack. It was how the code explained itself to whoever read it next.",
-        "Today I work as a Senior Architect, I'm a Google Developer Expert and Microsoft MVP, and I teach entire teams to think before writing a line. This portfolio is, in part, my way of keeping that conversation going."
+        "Mechatronics Engineer with over 5 years of experience bridging engineering, software, artificial intelligence, and business systems. I currently work as a Business Systems & AI Specialist, designing and implementing intelligent, scalable solutions that optimize operational processes and decision-making.",
+        "My mechatronics background allowed me to work across robotics, mechanical design, and digital manufacturing. In parallel, I developed strong leadership experience managing operations and multidisciplinary teams of up to 1,200 people, driving a 30% increase in sales."
       ],
       "skillsTitle": "What I do",
       "skills": {
-        "architecture": {
-          "label": "Architecture",
+        "ai": {
+          "label": "AI & Automation",
           "items": [
-            "Clean Architecture",
-            "Hexagonal",
-            "Screaming Architecture",
-            "DDD",
-            "Event-driven"
+            { "label": "LLMs & RAG", "url": "https://platform.openai.com/docs" },
+            { "label": "N8N", "url": "https://docs.n8n.io" },
+            { "label": "Automation workflows", "url": "https://docs.n8n.io/workflows" },
+            { "label": "REST APIs", "url": "https://swagger.io/specification" },
+            { "label": "Web scraping", "url": "https://scrapy.org" },
+            { "label": "Vector databases", "url": "https://www.pinecone.io/learn/vector-database" }
           ]
         },
-        "testing": {
-          "label": "Testing",
-          "items": ["TDD", "Integration testing", "Contract testing", "Playwright", "Vitest"]
-        },
-        "tooling": {
-          "label": "Tooling",
-          "items": ["TypeScript", "Next.js", "Go", "PostgreSQL", "AWS", "Terraform"]
-        },
-        "teaching": {
-          "label": "Teaching",
+        "backend": {
+          "label": "Backend & Data",
           "items": [
-            "1:1 mentoring",
-            "Constructive code reviews",
-            "Workshops",
-            "Talks",
-            "Technical writing"
+            { "label": "Java", "url": "https://dev.java" },
+            { "label": "Python", "url": "https://python.org" },
+            { "label": "Spring Boot", "url": "https://spring.io/projects/spring-boot" },
+            { "label": "FastAPI", "url": "https://fastapi.tiangolo.com" },
+            { "label": "SQL", "url": "https://www.postgresql.org/docs/current/sql.html" },
+            { "label": "PostgreSQL", "url": "https://www.postgresql.org" }
+          ]
+        },
+        "robotics": {
+          "label": "Robotics & Embedded",
+          "items": [
+            { "label": "Arduino", "url": "https://www.arduino.cc" },
+            { "label": "ESP32", "url": "https://docs.espressif.com/projects/esp-idf/en/stable" },
+            { "label": "ROS", "url": "https://www.ros.org" },
+            { "label": "SolidWorks", "url": "https://www.solidworks.com" },
+            { "label": "3D Printing", "url": "https://www.prusa3d.com/page/prusaslicer_424" },
+            { "label": "Laser cutting", "url": "https://lightburnsoftware.com" }
+          ]
+        },
+        "frontend": {
+          "label": "Frontend & Mobile",
+          "items": [
+            { "label": "React", "url": "https://react.dev" },
+            { "label": "TypeScript", "url": "https://www.typescriptlang.org" },
+            { "label": "Next.js", "url": "https://nextjs.org" },
+            { "label": "Flutter", "url": "https://flutter.dev" },
+            { "label": "Tailwind CSS", "url": "https://tailwindcss.com" }
           ]
         }
       },
       "timelineTitle": "Track record",
       "timeline": {
         "current": {
-          "period": "2022 — now",
-          "role": "Senior Software Architect",
-          "place": "Independent consulting"
+          "period": "2026 — now",
+          "role": "Business Systems & AI Specialist",
+          "place": "Dynapro Pumps"
         },
-        "mvp": {
-          "period": "2021 — now",
-          "role": "Microsoft MVP",
-          "place": "Microsoft"
+        "manageengine": {
+          "period": "2024 — 2026",
+          "role": "Technical Consultant",
+          "place": "ManageEngine (Zoho Corp)"
         },
-        "gde": {
-          "period": "2020 — now",
-          "role": "Google Developer Expert",
-          "place": "Google"
+        "teleperformance_manager": {
+          "period": "2020 — 2022",
+          "role": "Client Account Manager",
+          "place": "Teleperformance"
         },
-        "lead": {
-          "period": "2018 — 2022",
-          "role": "Tech Lead",
-          "place": "Fintech and mobile projects"
+        "teleperformance_supervisor": {
+          "period": "2020",
+          "role": "Team Supervisor",
+          "place": "Teleperformance"
         },
-        "senior": {
-          "period": "2013 — 2018",
-          "role": "Senior Developer",
-          "place": "Agencies and product teams"
+        "university": {
+          "period": "Graduate",
+          "role": "Mechatronics Engineer",
+          "place": "EAN University"
         }
-      }
+      },
+      "softSkillsTitle": "Soft Skills",
+      "softSkills": [
+        {
+          "label": "Leadership",
+          "description": "Team supervision and client account management"
+        },
+        {
+          "label": "Bilingual communication",
+          "description": "Native Spanish / Fluent English — technical documentation and presentations in both languages"
+        },
+        {
+          "label": "Technical consulting",
+          "description": "Translating business needs into implementable technical solutions"
+        },
+        {
+          "label": "Technical presentations",
+          "description": "Speaker at events like ManageEngine Partner Training — Hotel Sheraton Bogotá"
+        },
+        {
+          "label": "Problem solving",
+          "description": "Debugging, root cause analysis, and solution design under pressure"
+        },
+        {
+          "label": "Project management",
+          "description": "Cross-functional team coordination and end-to-end project delivery"
+        }
+      ]
     },
     "projects": {
       "eyebrow": "Featured work",
@@ -109,7 +151,7 @@
       "stack": "Stack",
       "caseStudy": "View case study",
       "live": "Live site",
-      "repo": "Code"
+      "repo": "View on GitHub"
     }
   },
   "projects": {
@@ -127,7 +169,7 @@
       "stack": "Stack",
       "client": "Client",
       "live": "Live site",
-      "repo": "Code",
+      "repo": "View on GitHub",
       "caseStudy": "External case study"
     }
   },
@@ -159,7 +201,7 @@
   "contact": {
     "eyebrow": "Contact",
     "heading": "Let's talk",
-    "copy": "Architecture, mentoring, talks, ambitious projects — or simply an honest conversation about software. Reach me through whichever channel you prefer.",
+    "copy": "AI, automation, robotics, business systems — or simply a conversation about technology and how to apply it. Reach me through whichever channel you prefer.",
     "whatsappLabel": "Message me on WhatsApp",
     "whatsappMessage": "Hi Juan, I'm reaching out from your portfolio. I'd love to chat about...",
     "linkedinLabel": "Connect on LinkedIn",

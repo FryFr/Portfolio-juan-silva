@@ -1,0 +1,53 @@
+---
+title: "Container filling system — Industrial automation"
+summary: "Semi-automatic dosing system with HC-SR04 ultrasonic sensor, servomotor, and LCD. Measures product level in real-time and closes valve automatically."
+role: "Mechatronics Engineer"
+year: 2023
+stack:
+  - Arduino
+  - C++
+  - HC-SR04
+  - Servo TD-8120MG
+links:
+  repo: "https://github.com/FryFr/sistema-llenado-envases-ultrasonido-lcd-servo.ino"
+featured: false
+order: 9
+---
+
+## The project
+
+![Arduino UNO pinout diagram with the complete system wiring reference](/images/projects/sistema-llenado-circuit.jpeg)
+
+A semi-automatic dosing system built on Arduino UNO that simulates the core of an industrial filling line. The operator places the container, presses a button, and the system takes over: opens the valve, monitors the level, and cuts off automatically when the configured target is reached.
+
+![Physical assembled circuit with Arduino, LCD, servo motor, and ultrasonic sensor](/images/projects/sistema-llenado-physical.jpg)
+
+## Operation flow
+
+The cycle starts with a start button. When the operator presses it, the TD-8120MG servo motor rotates to the "valve open" position — a configured angle that simulates opening a solenoid valve or gate.
+
+From that point, the HC-SR04 continuously measures the distance between the sensor and the liquid surface. As the container fills, the distance decreases. The system converts that distance into a liquid column height, and using the container's cross-section, calculates the volume and estimated weight in real-time.
+
+When the measurement reaches the target fill threshold, the servo returns to the closed position. No overflow, no manual intervention.
+
+## Real-time LCD display
+
+The 16×2 I2C LCD shows two values simultaneously throughout the cycle:
+
+- **Liquid height** in millimeters
+- **Estimated weight** in grams, calculated using the product's assumed density
+
+This gives the operator process visibility without any additional instrumentation. When filling completes, the screen confirms the state and resets for the next cycle.
+
+## What makes this project interesting
+
+The most challenging part isn't reading the sensor or moving the servo — it's coordinating the three together: keeping the measurement loop fast enough to catch the exact cutoff point, without sensor jitter causing a premature close. The solution was a rolling average of the last N readings before evaluating the threshold.
+
+## Techniques applied
+
+- Servo position control using the `Servo` library
+- Continuous HC-SR04 measurement with conversion to column height
+- Volume and weight calculation from container geometry
+- Rolling average filtering to reduce sensor noise
+- Simple state machine: `IDLE → FILLING → DONE`
+- I2C LCD communication for real-time display

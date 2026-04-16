@@ -1,0 +1,97 @@
+---
+title: "Automatización IA para ServiceDesk Plus — ManageEngine"
+summary: "Sistema de automatización que integra web scraping, bases vectoriales Pinecone y GPT-4 para resolución inteligente de tickets en ServiceDesk Plus."
+role: "Technical Consultant"
+year: 2025
+stack:
+  - Java
+  - Spring Boot
+  - Pinecone
+  - OpenAI GPT-4
+  - Zoho Circuits
+  - Apache Tomcat
+client: "ManageEngine (Zoho Corp)"
+featured: true
+order: 4
+---
+
+## El problema
+
+El equipo de soporte de ManageEngine recibía miles de tickets diarios en ServiceDesk Plus. Cada ticket era un problema único que requería que el agente buscara manualmente entre documentación técnica dispersa, artículos de knowledge base desactualizados y resoluciones previas enterradas en el historial del sistema.
+
+El resultado era predecible: tiempo de resolución alto, calidad inconsistente dependiendo del agente que atendiera el ticket, y conocimiento institucional que se perdía en lugar de acumularse. Los agentes con más experiencia resolvían el doble de tickets que los nuevos — no porque fueran más inteligentes, sino porque habían memorizado patrones que el sistema no capturaba.
+
+El challenge técnico era real: no se trataba de construir un chatbot genérico, sino de integrar IA de forma quirúrgica dentro de un producto ITSM enterprise sin modificar su core ni romper los flujos existentes.
+
+## La solución
+
+Diseñé e implementé un pipeline de RAG (Retrieval-Augmented Generation) que convierte el conocimiento disperso de ManageEngine en un activo consultable en tiempo real.
+
+El flujo tiene tres fases: **ingesta**, **retrieval** y **generación**. En ingesta, un scraper extrae y normaliza documentación técnica, artículos de KB y resoluciones históricas, convierte cada fragmento en embeddings vectoriales via OpenAI y los indexa en Pinecone. En retrieval, cuando llega un ticket, su descripción se convierte en un embedding y se realiza búsqueda semántica — no por keywords, sino por similitud de significado — recuperando los N fragmentos más relevantes. En generación, esos fragmentos construyen el contexto de un prompt estructurado para GPT-4, que produce una resolución específica al problema, citando la documentación fuente.
+
+```
+  FASE INGESTA (offline / batch)
+  ┌────────────────────────────────────────────────────────┐
+  │  Documentación   →   Scraper   →   Chunking            │
+  │  KB articles         (Java)        (LangChain4j)       │
+  │  Historial                              │               │
+  └─────────────────────────────────────────┼──────────────┘
+                                            ▼
+                                   OpenAI Embeddings
+                                            │
+                                            ▼
+                                   ┌────────────────┐
+                                   │    Pinecone    │
+                                   │ (vector index) │
+                                   └────────────────┘
+
+  FASE RETRIEVAL + GENERACIÓN (tiempo real, por ticket)
+  ┌──────────────────┐
+  │ ServiceDesk Plus │
+  │  nuevo ticket    │
+  └────────┬─────────┘
+           │ webhook
+           ▼
+  ┌────────────────────┐
+  │   Zoho Circuits    │   ◄── orquestación / middleware
+  └────────┬───────────┘
+           │ REST call
+           ▼
+  ┌─────────────────────────────────────────────────┐
+  │              Spring Boot Backend                │
+  │                                                 │
+  │  ticket text → embedding → Pinecone search      │
+  │                               │                 │
+  │                    top-N chunks (contexto)      │
+  │                               │                 │
+  │                    prompt estructurado           │
+  │                               │                 │
+  │                            GPT-4                │
+  │                               │                 │
+  │                    sugerencia de resolución      │
+  └───────────────────────────────┬─────────────────┘
+                                  │
+                                  ▼
+                         ServiceDesk Plus
+                         (sugerencia visible al agente)
+```
+
+La integración con ServiceDesk Plus se realizó a través de Zoho Circuits como capa de orquestación, exponiendo el backend via REST API sin tocar el producto ITSM subyacente.
+
+## Stack y decisiones
+
+**Java + Spring Boot** fue la única opción viable: era el stack estándar del ecosistema ManageEngine/Zoho, lo que garantizaba compatibilidad con la infraestructura existente y facilitaba la adoption interna. Intentar introducir Python en ese contexto hubiera generado fricción operacional innecesaria.
+
+**Pinecone** como base vectorial serverless: sin infraestructura que provisionar ni mantener, con búsqueda de similitud coseno de alta velocidad y escalabilidad horizontal transparente. La alternativa (pgvector en PostgreSQL) requería infraestructura adicional que el equipo no quería gestionar.
+
+**LangChain4j** para la orquestación del pipeline RAG en Java — simplificó la integración entre el modelo de embeddings de OpenAI, Pinecone y GPT-4, con abstracciones limpias para chunking de documentos y construcción de prompts.
+
+**Zoho Circuits** como middleware de integración: permitió conectar el motor de IA con ServiceDesk Plus mediante triggers y webhooks, sin modificar el código del producto ITSM ni requerir acceso a su base de datos interna.
+
+## Impacto
+
+- Reducción medible del tiempo promedio de resolución de tickets por agente
+- Calidad de respuesta consistente independientemente de la experiencia del agente
+- Conocimiento institucional capturado y reutilizable: cada nueva documentación ingresada mejora automáticamente las futuras sugerencias
+- Arquitectura RAG reutilizable y extensible: el mismo pipeline puede alimentarse con nuevas fuentes sin cambios estructurales
+- Integración no invasiva: cero modificaciones al core de ServiceDesk Plus, adoptable sin riesgo para el producto existente

@@ -1,0 +1,77 @@
+---
+title: "Dynapro Tracking System — Real-time shipment tracking"
+summary: "Premium shipment tracking web app with interactive timelines, glassmorphism design, and real-time Firebase synchronization."
+role: "Full-Stack Developer"
+year: 2026
+stack:
+  - React 19
+  - TypeScript
+  - Vite
+  - Tailwind CSS
+  - Firebase
+client: "Dynapro Pumps"
+cover: "/images/projects/dynapro-tracking-homepage.jpeg"
+links:
+  live: "https://tracking-system-3b6fc.web.app"
+  repo: "https://github.com/FryFr/Tracking-Shipment-System"
+featured: true
+order: 1
+---
+
+## The problem
+
+Dynapro Pumps sells industrial pumps to clients who depend on those parts to keep their operations running. The product quality was never in question — the problem was what happened after the sale: customers had no idea where their shipment was, and the only way to find out was to call or email the support team.
+
+That created friction in both directions. Dynapro's team was spending time answering status inquiries that could resolve themselves, and customers were left in the dark with no clear picture of when their order would arrive. A company with Dynapro's reputation couldn't afford that kind of gap.
+
+![Dynapro Tracking homepage with search bar](/images/projects/dynapro-tracking-homepage.jpeg)
+
+The homepage says everything it needs to: a clean search field, clear branding, zero noise. The customer types in their tracking number and has full context in under a second.
+
+## The solution
+
+I designed and built the entire web application from scratch, with two priorities: make it fast and make it clear. No unnecessary dashboards, no user registration, no friction. The customer arrives, enters their tracking number, and sees exactly where their shipment stands.
+
+The core of the system is an interactive timeline that documents every milestone in the shipment journey: order received, dispatched, in transit, at destination, delivered. Each status has its own icon, color, and description. It's not just a list of events — it's a visual narrative of the shipment.
+
+![Shipment detail view with progress timeline and carrier info](/images/projects/dynapro-tracking-detail.jpeg)
+
+The detail view shows the tracking number, the carrier (DHL in this case), and the complete timeline with every status transition. The interface uses glassmorphism over a dark background — an aesthetic choice that isn't purely decorative: translucent blurred backgrounds reduce cognitive load and let the relevant information stand out without visual competition.
+
+## Stack and decisions
+
+**React 19 + TypeScript** — I used concurrent rendering so the UI never freezes waiting on Firestore data. Every timeline event has its own TypeScript type; if something comes back undefined from the backend, the compiler catches it before it ever reaches the user.
+
+**Firebase Firestore** as the real-time sync backend. The decision was pragmatic: no custom WebSockets, no state server, no extra infrastructure. When an operator updates a shipment status in the internal system, the customer sees it reflected within seconds. Firebase's global CDN guarantees sub-second load times even from remote regions.
+
+```
+  Internal operator                        End customer
+  ┌──────────────┐                         ┌─────────────────┐
+  │ Dynapro system│                         │  React App      │
+  │ (updates     │──── writes status ────►  │  (onSnapshot)   │
+  │  shipment)   │                         │                 │
+  └──────────────┘                         └────────┬────────┘
+                                                    │ reads in real time
+                          ┌─────────────────────────▼────────┐
+                          │        Firebase Firestore         │
+                          │   shipments/{trackingId}/events   │
+                          └──────────────────────────────────┘
+                                         │
+                              ◄──── automatic push
+                              (no polling, no custom WebSocket)
+```
+
+**Vite** as the bundler — builds in under 3 seconds, instant HMR in development. For a project like this, iteration speed matters as much as the final result.
+
+**Tailwind CSS** with custom utilities for the glassmorphism system. The entire design system — colors, typography, spacing, states — lives in the Tailwind config, not scattered across loose CSS files.
+
+## Impact
+
+![Delivered shipment view showing the complete tracking timeline](/images/projects/dynapro-tracking-delivered.jpeg)
+
+The final state everyone wants to see: delivered, with the complete timeline showing every step of the journey. It's the visual close of the experience — the customer knows exactly what happened and when.
+
+- The support team stopped receiving status inquiries by phone and email
+- Customers have 24/7 visibility without needing to reach out to anyone
+- Load times consistently under one second from anywhere in the world
+- Works across desktop and mobile without any degradation in experience

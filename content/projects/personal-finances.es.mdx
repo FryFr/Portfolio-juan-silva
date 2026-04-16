@@ -1,0 +1,64 @@
+---
+title: "Antigravity Dashboard — Finanzas personales"
+summary: "Dashboard de finanzas personales con tracking de transacciones, simulaciones, suscripciones y reconciliación. React, TypeScript, Supabase y Gemini AI."
+role: "Full-Stack Developer"
+year: 2025
+stack:
+  - React
+  - TypeScript
+  - Supabase
+  - Gemini AI
+  - Vercel
+featured: false
+order: 12
+---
+
+## El problema
+
+Las apps de finanzas personales existentes hacen una de dos cosas: o son demasiado simples (solo registran ingresos y gastos) o son tan complejas que terminás usando solo el 10% de sus funciones. Ninguna te dice lo que realmente necesitás saber: ¿a dónde se va tu plata sin que te des cuenta?, ¿cuánto de lo que ganás es realmente libre para invertir o gastar?, ¿qué pasaría con tus finanzas si cambiara una variable específica?
+
+El problema de fondo es que la mayoría de estas herramientas son pasivas — te muestran lo que ya pasó, pero no te ayudan a entender el patrón ni a proyectar el futuro.
+
+## La solución
+
+Antigravity es un dashboard de finanzas personales diseñado alrededor de tres preguntas concretas: ¿cuánto tengo libre (cash flow real)?, ¿por dónde se escapa la plata silenciosamente?, y ¿qué pasa si...?
+
+**Free Cash Flow**: no solo ingresos menos gastos, sino ingreso disponible real después de compromisos fijos, suscripciones y gastos recurrentes. El número que realmente importa para tomar decisiones.
+
+**Leak Radar**: el módulo más valioso del sistema. Detecta patrones de gasto invisible — esas suscripciones que olvidaste que tenés, los micro-gastos recurrentes que se acumulan, las categorías que crecen mes a mes por debajo del radar. Gemini AI analiza el historial de transacciones y genera sugerencias contextuales explicando el patrón detectado.
+
+**Simulaciones financieras**: modelado de escenarios "¿qué pasaría si?" — qué impacto tiene aumentar el ahorro mensual en X, cancelar una suscripción, o cambiar el umbral de un gasto fijo. Proyecciones visuales en tiempo real.
+
+**Reconciliación**: compara transacciones registradas contra extractos bancarios, marcando discrepancias automáticamente. El audit trail registra cada cambio con usuario, timestamp y valor anterior para trazabilidad completa.
+
+La sincronización automática vía webhook permite que las transacciones entren al sistema sin fricción manual. El soporte multiidioma garantiza que la app funcione en el contexto del usuario, no al revés.
+
+## Stack y decisiones
+
+**React + TypeScript** para el frontend: la naturaleza altamente interactiva del dashboard — gráficos en tiempo real, filtros encadenados, simulaciones con feedback inmediato — hacía que un framework reactivo fuera la elección natural. TypeScript previene las clases de errores más dolorosas cuando manejás cálculos financieros.
+
+**Supabase** como backend-as-a-service: PostgreSQL con Row Level Security para aislamiento de datos por usuario, realtime subscriptions para sincronización del dashboard sin polling, y autenticación integrada. La alternativa (Firebase/Firestore) hubiera requerido estructuras de datos menos naturales para consultas financieras que involucran aggregaciones complejas.
+
+**Gemini AI** para las sugerencias contextuales: el modelo analiza el historial de transacciones del usuario y genera insights legibles — no solo detecta anomalías, sino que explica en lenguaje natural qué patrón encontró y por qué es relevante.
+
+**Vercel** para el deployment: integración nativa con el workflow de Git, edge functions para los webhooks de sincronización, y preview deployments para cada PR.
+
+## Funcionalidades
+
+- Tracking de transacciones con categorización manual y automática
+- Free Cash Flow real (ingreso disponible después de compromisos fijos)
+- Leak Radar: detección de fugas de dinero y suscripciones olvidadas
+- Gestión de suscripciones con alertas de renovación
+- Simulaciones financieras con proyecciones visuales
+- Reconciliación contra extractos bancarios
+- Audit trail completo con trazabilidad de cambios
+- Webhook para sincronización automática de transacciones
+- Soporte multiidioma
+- Sugerencias contextuales con Gemini AI
+
+## Impacto
+
+- Visibilidad real del cash flow disponible, no solo del balance
+- Detección proactiva de gastos que pasan desapercibidos mes a mes
+- Decisiones financieras basadas en datos y proyecciones, no en sensaciones
+- Trazabilidad completa: cada transacción y cada cambio tiene historia

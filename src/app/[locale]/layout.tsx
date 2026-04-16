@@ -104,7 +104,13 @@ export default async function LocaleLayout({ children, params }: Props) {
     name: siteConfig.author.name,
     url: siteConfig.url,
     jobTitle: siteConfig.author.jobTitle,
-    sameAs: [siteConfig.social.github, siteConfig.social.linkedin],
+    sameAs: [
+      siteConfig.social.github,
+      siteConfig.social.linkedin,
+      siteConfig.social.youtube,
+      siteConfig.social.tiktok,
+      siteConfig.social.instagram,
+    ],
   };
 
   const profilePageSchema = {

@@ -1,0 +1,49 @@
+---
+title: "Diomedes Chan — Electrónica creativa con Arduino"
+summary: "Proyecto creativo que combina display OLED, melodía con zumbador y servomotores animados al ritmo de la música — todo sincronizado con Arduino."
+role: "Creator & Developer"
+year: 2023
+stack:
+  - Arduino
+  - C++
+  - OLED I2C
+  - Servomotores
+links:
+  repo: "https://github.com/FryFr/DiomedesChan"
+featured: false
+order: 11
+---
+
+## El proyecto
+
+No todo proyecto de electrónica tiene que ser útil. Diomedes Chan existe porque sí — y eso lo hace más interesante que la mayoría.
+
+Al encenderse, el Arduino presenta una imagen bitmap personalizada en un display OLED I2C de 128×64 píxeles. Cinco segundos de pantalla estática, como una firma. Después, arranca la función principal: una melodía convertida desde MIDI reproduce nota a nota con un zumbador pasivo, mientras dos servomotores oscilan al ritmo y dos LEDs parpadean en sincronía — todo coordinado en tiempo real desde un solo loop de Arduino.
+
+## La pantalla OLED
+
+El display SSD1306 de 128×64 píxeles se conecta por I2C con solo dos cables de datos. La imagen se prepara en un editor de bitmap, se convierte a un array de bytes con una herramienta como `image2cpp`, y se carga en el sketch como un arreglo `PROGMEM` para no comerse la RAM del microcontrolador.
+
+La biblioteca `Adafruit_SSD1306` toma ese array y lo dibuja con `drawBitmap()`. El resultado es una imagen monocromática nítida, pixel-perfect, en una pantalla de menos de 3 cm de diagonal. Hay algo particularmente satisfactorio en ver que funcionó.
+
+## La melodía
+
+El zumbador pasivo no reproduce audio digital — genera tonos a frecuencias específicas. Eso es exactamente lo que necesita `tone()`: una frecuencia y una duración. El desafío está en convertir un archivo MIDI en arrays de frecuencias y duraciones en C++.
+
+El proceso: exportar el MIDI como texto, identificar los eventos de nota-on con su pitch y duración, mapear los valores MIDI de pitch a frecuencias en Hz (la fórmula es `440 * 2^((n-69)/12)`), y armar dos arrays — uno de frecuencias, uno de duraciones. El sketch los itera en orden con `tone()` y `delay()`.
+
+## La sincronización
+
+Con cada nota que suena, los dos servos oscilan entre dos ángulos opuestos y los dos LEDs cambian de estado. No hay multitasking real en Arduino — todo corre en un único hilo secuencial. La sincronización se logra porque `tone()` con duración bloquea la ejecución el tiempo exacto de la nota, y en ese mismo bloque se actualiza el servo y el LED. Timing por bloqueo, pero efectivo.
+
+## Tres conceptos en un circuito
+
+| Concepto | Implementación |
+|---|---|
+| Display de imagen en OLED | `drawBitmap()` con array `PROGMEM` |
+| Generación de tonos | `tone(pin, frecuencia, duracion)` |
+| Control de servos en tiempo real | `Servo.write()` sincronizado con cada nota |
+
+## Por qué vale la pena
+
+Proyectos como este son los que consolidan conceptos. Cada parte es conocida por separado — OLED, zumbador, servo, LED — pero coordinarlos dentro de las limitaciones de un Arduino UNO (2KB de RAM, ejecución single-thread, sin sistema operativo) obliga a pensar en recursos escasos, memoria de programa, y timing determinista. Lecciones que aplican mucho más allá de Arduino.

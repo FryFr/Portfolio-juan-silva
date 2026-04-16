@@ -1,0 +1,73 @@
+---
+title: "6-DoF Industrial Robotic Arm — Design, Simulation & Control"
+summary: "Full engineering project: CAD design, Denavit-Hartenberg kinematic analysis, ROS/Gazebo simulation, and physical control with Arduino."
+role: "Mechatronics Engineer"
+year: 2024
+stack:
+  - SolidWorks
+  - ROS Noetic
+  - Gazebo
+  - Arduino
+  - C++
+  - Python
+cover: "/images/projects/robotic-arm-physical.jpg"
+links:
+  repo: "https://github.com/FryFr/Industria_Robotics_Arm_Project"
+featured: true
+order: 3
+---
+
+## The problem
+
+At Universidad EAN, under the supervision of Prof. Nikolay Prieto, the challenge was to design, simulate, and build from scratch a 6-degree-of-freedom industrial robotic manipulator capable of performing pick-and-place operations with repeatable precision.
+
+The project had to cover the full robotics engineering pipeline without shortcuts: parametric CAD modeling, formal kinematic analysis, simulation validation, and finally real physical control with embedded electronics. Moving servos wasn't enough — it required rigorous kinematic analysis using homogeneous transformation mathematics, simulation validation before fabricating anything, and a demonstration that the virtual and physical models behaved identically.
+
+![6-DoF Robotic Arm — SolidWorks render](/images/projects/robotic-arm-physical.jpg)
+
+The finished arm: full structure 3D-printed in PLA with a total mass of ~336g, gear-actuated parallel gripper, and 6 rotational joints covering the workspace of a compact industrial manipulator.
+
+## The solution
+
+The project moves through four well-defined stages, each built on top of the previous one.
+
+```
+  ┌─────────────┐     ┌──────────────────┐     ┌─────────────────┐     ┌──────────────────┐
+  │  SolidWorks │     │   DH Analysis    │     │  ROS / Gazebo   │     │  Arduino + HW    │
+  │             │     │                  │     │                 │     │                  │
+  │ 3D CAD      │──►  │ DH parameters    │──►  │ URDF export     │──►  │ PCA9685 (PWM)    │
+  │ modeling    │     │ T_0^6 (forward)  │     │ (sw_urdf_exp.)  │     │ 5× servomotors   │
+  │ Assembly    │     │ Analytical IK    │     │ Physics-based   │     │ Serial → joints  │
+  │ Eng. drawings│    │ (pos. + orient.) │     │ simulation      │     │ pick-and-place   │
+  └─────────────┘     └──────────────────┘     └─────────────────┘     └──────────────────┘
+       CAD                 Kinematics               Validation              Hardware
+                                                  (before fab.)
+```
+
+**Mechanical design in SolidWorks**: Every structural component was individually modeled in SolidWorks, including formal engineering drawings and PDF-exported technical documentation. The final assembly integrates 6 rotational joints, PLA-printed links, and a gear-actuated parallel gripper — a mechanism that converts linear servo motion into symmetric finger open/close. Total assembly mass landed at ~336g, allowing low-torque servomotors without compromising structural rigidity.
+
+**Denavit-Hartenberg kinematic analysis**: Forward kinematics were derived using the standard DH convention — 6 joint coordinate systems were parameterized and the homogeneous transformation matrices `T_0^6` were obtained. Given a joint angle vector `q = [θ₁, θ₂, θ₃, θ₄, θ₅, θ₆]`, the exact end-effector pose in Cartesian space can be computed. Inverse kinematics were formulated analytically for the first 3 joints (position) and geometrically for the last 3 (orientation), enabling resolution of the joint configuration from any given target pose.
+
+**ROS/Gazebo simulation with URDF model**: The SolidWorks model was exported to URDF using the `sw_urdf_exporter` plugin, preserving mesh geometry, inertial tensors, joint axes, and motion limits. This allows Gazebo to simulate the real arm dynamics — not just kinematics.
+
+![URDF model of the arm in RViz/Gazebo](/images/projects/robotic-arm-urdf.jpg)
+
+Kinematic model visualization in RViz: each joint rendered with its rotation axis, links with their collision geometries, and the TF transform tree active in real time. This representation was critical for validating that the DH parameters were correct before executing any trajectory.
+
+**Embedded control**: The control hardware uses Arduino UNO + PCA9685 driver communicating over I2C. The PCA9685 generates PWM signals for the 5 servomotors at 12-bit resolution, and the Arduino receives serial commands that map directly to joint positions. The automation interface allows defining sequential joint-space trajectories and executing them repeatably.
+
+## Stack and decisions
+
+**SolidWorks** was the CAD choice for two concrete reasons: first, the `sw_urdf_exporter` plugin generates a valid URDF with inertial tensors calculated automatically from assembly material assignments — eliminating a massive source of manual errors. Second, it enables integrated FEA analysis to validate that links can handle the loads without additional software.
+
+**ROS Noetic + Gazebo** as the simulation stack because it's the industry standard and most documented for manipulators. The decision to validate in simulation before fabricating wasn't optional — it's engineering methodology. Running Gazebo with the URDF model and real physics detected collisions, incorrect joint limits, and unexpected behaviors before printing a single part.
+
+**Arduino UNO + PCA9685** for physical control. The PCA9685 solves the problem of generating multiple simultaneous PWM signals without loading the microcontroller — it communicates over I2C and handles up to 16 independent channels. For an academic prototype it's the most accessible combination and directly mappable to the joint control model.
+
+## Impact
+
+- End-to-end robotics engineering pipeline: CAD → DH parameters → URDF → simulation → physical hardware
+- URDF model validated against DH analysis, with demonstrated correspondence between simulation and real behavior
+- Functional pick-and-place system with predefined joint-space trajectories executable repeatably
+- Complete technical documentation: formal engineering drawings, step-by-step DH derivation, and inverse kinematic analysis
+- Academic project developed at Universidad EAN under the supervision of Prof. Nikolay Prieto

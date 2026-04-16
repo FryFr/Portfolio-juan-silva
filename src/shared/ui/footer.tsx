@@ -47,6 +47,16 @@ export async function Footer() {
             </li>
             <li>
               <a
+                href={siteConfig.social.youtube}
+                target="_blank"
+                rel="noreferrer noopener"
+                className="hover:text-[var(--fg-primary)]"
+              >
+                youtube
+              </a>
+            </li>
+            <li>
+              <a
                 href={whatsappUrl}
                 target="_blank"
                 rel="noreferrer noopener"

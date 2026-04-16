@@ -51,6 +51,10 @@
     font-feature-settings: "ss01", "ss02", "cv11";
   }
 
+  body[style*="cursor: none"] * {
+    cursor: none !important;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,

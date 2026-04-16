@@ -1,0 +1,58 @@
+---
+title: "Smart Orchard — App de monitoreo agrícola"
+summary: "Aplicación móvil multiplataforma para gestión de cultivos: monitoreo atmosférico, geolocalización de productos, citas de mantenimiento y pagos con Firebase."
+role: "Mobile Developer"
+year: 2024
+stack:
+  - Flutter
+  - Dart
+  - Firebase
+  - FlutterFlow
+cover: "/images/projects/smart-orchard-icon.png"
+links:
+  repo: "https://github.com/FryFr/Smart_Orchard"
+featured: false
+order: 5
+---
+
+## El problema
+
+Los propietarios de huertos y cultivos manejan información crítica dispersa en múltiples lugares: temperatura y humedad del ambiente en una planilla, historial de productos en papel, citas de mantenimiento en el calendario del celular, pagos en otra app. Cuando algo sale mal — una helada inesperada, una plaga, un producto que no recibió mantenimiento — es casi imposible rastrear qué pasó y cuándo.
+
+El resultado: decisiones agrícolas basadas en memoria e intuición en lugar de datos reales, pérdidas evitables y dificultad para escalar el negocio más allá de lo que una persona puede recordar.
+
+## La solución
+
+Smart Orchard centraliza todo en una sola aplicación móvil multiplataforma (Android, iOS y Web). El principio de diseño fue claro desde el inicio: cada entidad agrícola relevante — producto, planta, área de cultivo — tiene su propio registro digital con datos estructurados, historial completo y acceso instantáneo desde cualquier dispositivo.
+
+El monitoreo atmosférico captura condiciones ambientales en tiempo real y las almacena históricamente, permitiendo correlacionar eventos climáticos con el estado de los cultivos. Las citas de mantenimiento notifican proactivamente antes de que algo quede sin atención. Los pagos quedan vinculados a productos específicos, creando trazabilidad financiera real.
+
+Todo esto con sincronización en tiempo real via Firestore — si una lectura de temperatura llega desde un sensor externo o se ingresa manualmente, todos los dispositivos la ven instantáneamente.
+
+## Stack y decisiones
+
+**Flutter + Dart** para el frontend multiplataforma: una sola codebase que corre en Android, iOS y Web sin compromiso de UX. FlutterFlow aceleró el prototipado inicial mientras se validaba el modelo de datos y los flujos de usuario.
+
+**Firebase como backend completo**: Firestore para datos en tiempo real con queries reactivas, Firebase Auth para autenticación multi-proveedor (Email, Google, Apple, GitHub) con mínimo código, Cloud Messaging para push notifications con soporte de imagen en iOS.
+
+**Arquitectura orientada a geolocalización**: cada producto o cultivo puede tener coordenadas GPS asociadas, habilitando vistas de mapa y agrupación por zona geográfica — fundamental para huertos distribuidos en múltiples parcelas.
+
+**Diseño adaptativo dark/light**: no es solo estética. Los usuarios al aire libre bajo el sol necesitan contraste alto; la app se comporta correctamente en ambos contextos con tema persistente entre sesiones.
+
+## Funcionalidades clave
+
+- Autenticación multi-proveedor (Email, Google, Apple, GitHub) con Firebase Auth
+- Registro de productos/plantas con nombre, imagen, color, temperatura, coordenadas GPS y propietario
+- Gráficos atmosféricos en tiempo real e históricos
+- Agenda de mantenimiento con estados, descripciones y notificaciones push
+- Gestión de pagos vinculados a productos y usuarios específicos
+- Onboarding animado para primera configuración
+- Tema dark/light persistente entre sesiones
+- Push notifications con soporte de imagen enriquecida en iOS
+
+## Impacto
+
+- Reemplaza el caos de planillas, papel y apps separadas con una sola fuente de verdad
+- Permite decisiones basadas en datos históricos reales, no en memoria
+- Escalable: la arquitectura Firebase soporta múltiples usuarios y miles de registros sin cambios estructurales
+- Disponible en las tres plataformas principales desde una sola codebase

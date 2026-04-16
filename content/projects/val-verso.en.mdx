@@ -1,0 +1,41 @@
+---
+title: "Val-Verso — Interactive birthday invitation"
+summary: "Multiverse-themed web invitation: 3D animated envelope, polaroid gallery, real-time countdown, and embedded map — no frameworks, just vanilla HTML, CSS and JS."
+role: "Creator & Developer"
+year: 2025
+stack:
+  - HTML5
+  - CSS3
+  - JavaScript
+  - Firebase Hosting
+cover: "/images/projects/val-verso-demo.gif"
+links:
+  repo: "https://github.com/FryFr/Val-D-day"
+featured: false
+order: 6
+---
+
+## The project
+
+Val-Verso is a fully interactive birthday invitation built with vanilla HTML, CSS, and JavaScript — no frameworks, no backend, no installable dependencies. The challenge wasn't technical in the classic sense; it was experiential: how do you make opening a URL feel like opening an actual gift?
+
+![Gameplay demo showing the experience in action](/images/projects/val-verso-demo.gif)
+
+Inspired by the multiverse concept, guests receive a link that presents them with a 3D animated envelope sealed with wax. On tap, it opens with a smooth animation and reveals everything inside.
+
+## What's inside the envelope
+
+The experience has layers. Once the opening animation completes, the user finds:
+
+- **Polaroid gallery** — photos with a developing effect, random rotation, and shadows that mimic physical photo paper.
+- **Two simultaneous countdowns** — one for the event date, one for the exact start time. Updated in real time without any external library.
+- **Embedded map** — Google Maps integrated directly so logistics are immediate.
+- **WhatsApp RSVP** — a button that opens a pre-loaded conversation with a single tap.
+
+![More gameplay showing the interactions](/images/projects/val-verso-gameplay.gif)
+
+## Why vanilla
+
+The decision to skip frameworks wasn't a constraint — it was intentional. This project needed to live on a lightweight static host (Firebase Hosting), load fast on mobile, and require zero build steps. Vanilla HTML, CSS, and JS deliver exactly that: zero overhead, total control over every animation, and a bundle that is literally the files you write.
+
+The envelope animation uses pure CSS 3D transforms. The countdowns are `setInterval` with cleanly encapsulated time logic. The polaroid gallery uses CSS custom properties plus JS for random rotation on load. Everything explicit, everything yours.

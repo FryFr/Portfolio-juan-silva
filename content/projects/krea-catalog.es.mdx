@@ -1,0 +1,47 @@
+---
+title: "Krea Catalog — Catálogo digital de productos"
+summary: "Catálogo web de productos para cliente Krea con frontend Angular y backend integrado. Gestión de inventario y visualización de catálogo."
+role: "Full-Stack Developer"
+year: 2024
+stack:
+  - Angular
+  - TypeScript
+cover: "/images/projects/krea-logo.png"
+client: "Krea"
+featured: false
+order: 8
+---
+
+## El problema
+
+Krea gestionaba su catálogo de productos de forma manual y fragmentada — actualizaciones de precios, disponibilidad y descripciones dependían de procesos offline o comunicaciones directas con el equipo. No existía una plataforma centralizada donde clientes o el equipo interno pudieran consultar el catálogo actualizado, filtrar productos y acceder a información detallada sin intermediarios.
+
+El problema operacional era doble: la fricción para actualizar el catálogo hacía que la información se desactualizara rápidamente, y la falta de una interfaz de consulta pública significaba que cada consulta de cliente requería respuesta manual del equipo.
+
+## La solución
+
+Desarrollé una plataforma web de catálogo de productos para Krea, construida con Angular en el frontend e integrada con un backend para gestión centralizada de datos. El sistema permite tanto la consulta de productos por parte de clientes como la administración del inventario por parte del equipo interno.
+
+La interfaz prioriza la experiencia de navegación: filtros por categoría, búsqueda por nombre, visualización de detalles de producto y estado de disponibilidad en tiempo real. Para el equipo de Krea, el panel de administración permite actualizar el catálogo sin conocimiento técnico.
+
+## Stack y decisiones
+
+**Angular + TypeScript** como framework frontend por su arquitectura de componentes robusta, tipado estricto y herramientas de testing integradas. Para un catálogo con múltiples vistas, filtros y estados, la estructura modular de Angular resultó natural — cada sección del catálogo como un módulo lazy-loaded.
+
+**TypeScript** end-to-end para garantizar consistencia de tipos entre el contrato de la API y los modelos del frontend, reduciendo errores en runtime al momento de mostrar datos del catálogo.
+
+La arquitectura separó claramente la capa de visualización de la lógica de datos, facilitando el mantenimiento futuro del catálogo sin afectar la interfaz.
+
+## Funcionalidades
+
+- Catálogo de productos con imágenes, descripción, precio y disponibilidad
+- Filtros por categoría y búsqueda por nombre
+- Vista de detalle de producto
+- Panel de administración para actualización de inventario
+- Diseño responsivo para acceso desde móvil y desktop
+
+## Impacto
+
+- Elimina la necesidad de consultas manuales al equipo para información de productos
+- Catálogo siempre actualizado y accesible sin intervención técnica
+- Base escalable para agregar funcionalidades como carrito, cotizaciones o integración con sistemas de inventario

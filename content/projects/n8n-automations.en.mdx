@@ -1,0 +1,69 @@
+---
+title: "N8N Business Automations — Intelligent process orchestration"
+summary: "Enterprise automation platform with N8N as orchestrator. Connects Odoo, Xero, HubSpot, CONTPAQi, and more for centralized information and process management."
+role: "Business Systems & AI Specialist"
+year: 2026
+stack:
+  - N8N
+  - Odoo
+  - Xero
+  - HubSpot
+  - CONTPAQi
+  - JavaScript
+client: "Dynapro Pumps"
+cover: "/images/projects/n8n-automation-flow.jpeg"
+featured: true
+order: 0
+---
+
+## The problem
+
+Dynapro operates with multiple business tools: Odoo for ERP, Xero for accounting, HubSpot for CRM, CONTPAQi for fiscal invoicing, and more. Each system lived in isolation — information was duplicated manually, processes depended on human intervention, and synchronization errors caused time losses and inconsistent data.
+
+There was no integration layer connecting these tools intelligently. Sales, operations, and finance teams worked with outdated or incomplete information.
+
+## The solution
+
+I designed and implemented an enterprise automation architecture using N8N as the central orchestrator. Each flow connects two or more tools in Dynapro's ecosystem to eliminate manual processes and guarantee real-time data consistency.
+
+```
+                    ┌─────────────────────────────────┐
+                    │         N8N Orchestrator         │
+                    │  (webhooks · schedulers · JS)    │
+                    └────┬────────┬────────┬────────┬──┘
+                         │        │        │        │
+              ┌──────────┘  ┌─────┘  ┌────┘  ┌─────┘
+              ▼             ▼        ▼        ▼
+        ┌──────────┐  ┌──────────┐  ┌────────┐  ┌──────────┐
+        │   Odoo   │  │   Xero   │  │HubSpot │  │CONTPAQi  │
+        │  (ERP)   │  │(Accounting)│ │ (CRM)  │  │(Invoicing)│
+        └──────────┘  └──────────┘  └────────┘  └──────────┘
+              │             │            │
+              └─────────────┴────────────┘
+                     bidirectional sync
+```
+
+**Data synchronization**: Bidirectional flows between Odoo, Xero, and HubSpot that keep contacts, products, and transactions synchronized automatically.
+
+**Lead management**: When a lead enters through HubSpot, it's automatically created in Odoo, assigned to the corresponding salesperson, and the team is notified.
+
+**Purchase order automation**: From creation in Odoo to invoicing in CONTPAQi, the complete flow executes without manual intervention.
+
+**Commissions and reports**: Automatic commission calculation based on closed sales, with report generation and team notifications.
+
+**Operational playbooks**: Flows that execute predefined action sequences for ticket management, shipment tracking, and customer communication.
+
+## Stack and decisions
+
+**N8N** as orchestrator for its flexibility, self-hosting capability, and ability to integrate REST APIs, webhooks, and custom logic with JavaScript — without depending on Zapier or Make and their pricing limitations.
+
+**Event-driven architecture**: Flows are triggered by webhooks, email triggers (Gmail), or schedulers, ensuring real-time execution without unnecessary polling.
+
+**Custom JavaScript nodes**: For complex data transformations between systems with different schemas — field normalization, cross-ID mapping, and integrity validation.
+
+## Impact
+
+- Elimination of manual synchronization processes across 5+ tools
+- Reduction of human errors in data entry and invoicing
+- Centralized visibility of lead, order, and shipment status
+- Scalability: each new flow builds on the existing infrastructure without reconfiguration

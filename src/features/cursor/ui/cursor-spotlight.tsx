@@ -6,8 +6,8 @@ import { useCursor } from '@/features/cursor/context/use-cursor';
 
 export function CursorSpotlight() {
   const cursorRef = useCursor();
-  const x = useSpring(0, { stiffness: 50, damping: 20 });
-  const y = useSpring(0, { stiffness: 50, damping: 20 });
+  const x = useSpring(0, { stiffness: 120, damping: 18 });
+  const y = useSpring(0, { stiffness: 120, damping: 18 });
   const spotRef = useRef<HTMLDivElement>(null);
   const rafRef = useRef<number>(0);
 

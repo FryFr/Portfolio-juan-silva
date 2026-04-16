@@ -1,0 +1,53 @@
+---
+title: "Sistema de llenado de envases — Automatización industrial"
+summary: "Sistema semi-automático de dosificación con sensor ultrasónico HC-SR04, servomotor y LCD. Mide nivel de producto en tiempo real y cierra válvula automáticamente."
+role: "Mechatronics Engineer"
+year: 2023
+stack:
+  - Arduino
+  - C++
+  - HC-SR04
+  - Servo TD-8120MG
+links:
+  repo: "https://github.com/FryFr/sistema-llenado-envases-ultrasonido-lcd-servo.ino"
+featured: false
+order: 9
+---
+
+## El proyecto
+
+![Diagrama de pines del Arduino UNO con el cableado completo del sistema](/images/projects/sistema-llenado-circuit.jpeg)
+
+Un sistema semi-automático de dosificación construido sobre Arduino UNO que simula el corazón de una línea de llenado industrial. El operario coloca el envase, presiona un botón, y el sistema hace el resto: abre la válvula, monitorea el nivel, y corta automáticamente cuando se alcanza la cantidad configurada.
+
+![Circuito físico armado con Arduino, LCD, servo y sensor ultrasónico](/images/projects/sistema-llenado-physical.jpg)
+
+## Flujo de operación
+
+El ciclo arranca con un botón de inicio. Cuando el operario lo pulsa, el servomotor TD-8120MG gira hasta la posición de "válvula abierta" — en la práctica, un ángulo configurado que simula la apertura de una electroválvula o compuerta.
+
+Desde ese momento, el HC-SR04 empieza a medir continuamente la distancia entre el sensor y la superficie del líquido. A medida que el envase se llena, la distancia disminuye. El sistema convierte esa distancia en altura de columna de líquido, y con la sección transversal del envase, calcula el volumen y el peso estimado en tiempo real.
+
+Cuando la medición alcanza el umbral de llenado objetivo, el servo regresa a la posición de cierre. No hay overflow, no hay intervención manual.
+
+## Pantalla LCD en tiempo real
+
+La pantalla LCD I2C de 16×2 muestra dos datos simultáneos durante el ciclo:
+
+- **Altura** del líquido en milímetros
+- **Peso estimado** en gramos, calculado asumiendo la densidad del producto
+
+Esto le da al operario visibilidad del proceso sin necesidad de instrumentos adicionales. Al completarse el llenado, la pantalla confirma el estado y queda lista para el próximo ciclo.
+
+## Lo que hace interesante a este proyecto
+
+La parte más desafiante no es leer el sensor ni mover el servo — es la coordinación entre los tres: mantener el loop de medición lo suficientemente rápido para no perder el punto exacto de corte, sin que el jitter del sensor cause un cierre prematuro. La solución fue un promediado móvil de las últimas N lecturas antes de evaluar el umbral.
+
+## Técnicas aplicadas
+
+- Control de posición de servomotor con la biblioteca `Servo`
+- Medición continua con HC-SR04 y conversión a altura de columna
+- Cálculo de volumen y peso desde geometría del envase
+- Promediado móvil de lecturas para filtrar ruido del sensor
+- Máquina de estados simple: `IDLE → FILLING → DONE`
+- Comunicación I2C con LCD para display en tiempo real

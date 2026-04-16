@@ -1,0 +1,41 @@
+---
+title: "Val-Verso — Invitación de cumpleaños interactiva"
+summary: "Invitación web con tema multiverso: sobre 3D animado, galería polaroid, countdown en tiempo real y mapa embebido — sin frameworks, solo HTML, CSS y JS vanilla."
+role: "Creator & Developer"
+year: 2025
+stack:
+  - HTML5
+  - CSS3
+  - JavaScript
+  - Firebase Hosting
+cover: "/images/projects/val-verso-demo.gif"
+links:
+  repo: "https://github.com/FryFr/Val-D-day"
+featured: false
+order: 6
+---
+
+## El proyecto
+
+Val-Verso es una invitación de cumpleaños completamente interactiva construida con HTML, CSS y JavaScript vanilla — sin frameworks, sin backend, sin dependencias instalables. El desafío no era técnico en el sentido clásico; era experiencial: ¿cómo hacés que abrir una URL se sienta como abrir un regalo de verdad?
+
+![Demo del juego en acción](/images/projects/val-verso-demo.gif)
+
+Inspirada en el concepto del multiverso, los invitados reciben un link que les presenta un sobre 3D animado sellado con cera. Al tocarlo, se abre con una animación fluida y revela toda la experiencia de adentro.
+
+## Lo que hay dentro del sobre
+
+La experiencia tiene capas. Una vez que la animación de apertura termina, el usuario encuentra:
+
+- **Galería polaroid** — fotos con efecto de revelado, rotación aleatoria y sombras que imitan papel fotográfico físico.
+- **Dos countdowns simultáneos** — uno para la fecha del evento, otro para la hora exacta de inicio. Actualizados en tiempo real sin ninguna librería externa.
+- **Mapa embebido** — Google Maps integrado directamente para que la logística sea inmediata.
+- **RSVP por WhatsApp** — un botón que abre una conversación pre-cargada con un solo toque.
+
+![Más gameplay mostrando las interacciones](/images/projects/val-verso-gameplay.gif)
+
+## Por qué vanilla
+
+La decisión de no usar frameworks no fue limitación, fue intencional. Este proyecto tenía que vivir en un hosting estático liviano (Firebase Hosting), cargarse rápido en móvil, y no requerir ningún paso de build. Vanilla HTML, CSS y JS logran exactamente eso: cero overhead, control total sobre cada animación, y un bundle que es literalmente los archivos que escribís.
+
+La animación del sobre usa CSS 3D transforms puras. Los countdowns son `setInterval` con lógica de tiempo bien encapsulada. La galería polaroid es CSS custom properties + JS para la rotación aleatoria en carga. Todo explícito, todo tuyo.

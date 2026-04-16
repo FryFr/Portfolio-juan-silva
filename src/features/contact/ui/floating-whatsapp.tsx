@@ -1,38 +1,20 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { useEffect, useState } from 'react';
 import { buildWhatsAppUrl } from '@/shared/config/contact';
-
-const STORAGE_KEY = 'floating-wa-dismissed';
 
 export function FloatingWhatsApp() {
   const t = useTranslations('contact');
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-    const dismissed = window.sessionStorage.getItem(STORAGE_KEY);
-    if (dismissed !== '1') setVisible(true);
-  }, []);
-
-  if (!visible) return null;
-
   const href = buildWhatsAppUrl(t('whatsappMessage'));
 
-  const handleDismiss = () => {
-    window.sessionStorage.setItem(STORAGE_KEY, '1');
-    setVisible(false);
-  };
-
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex items-center gap-2">
+    <div className="fixed bottom-6 right-6 z-50">
       <a
         href={href}
         target="_blank"
         rel="noopener noreferrer"
         aria-label={t('floating.open')}
-        className="flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg transition-transform hover:scale-105 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]"
+        className="flex h-14 w-14 items-center justify-center rounded-full bg-[var(--fg-primary)] text-[var(--bg-primary)] shadow-lg transition-transform hover:scale-105 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -45,14 +27,6 @@ export function FloatingWhatsApp() {
         </svg>
         <span className="sr-only">{t('floating.open')}</span>
       </a>
-      <button
-        type="button"
-        onClick={handleDismiss}
-        aria-label={t('floating.dismiss')}
-        className="flex h-6 w-6 items-center justify-center rounded-full border border-[var(--bg-tertiary)] bg-[var(--bg-primary)] text-[var(--fg-muted)] text-xs transition-colors hover:text-[var(--fg-primary)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]"
-      >
-        ×
-      </button>
     </div>
   );
 }

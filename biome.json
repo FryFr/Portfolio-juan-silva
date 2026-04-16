@@ -13,7 +13,8 @@
       "!**/public",
       "!**/.superpowers",
       "!**/content/**/*.mdx",
-      "!**/*.css"
+      "!**/*.css",
+      "!**/Proectos"
     ]
   },
   "formatter": {

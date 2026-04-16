@@ -1,0 +1,43 @@
+---
+title: "Distance meter — HC-SR04 with progress bar"
+summary: "Real-time distance meter with ultrasonic sensor and I2C LCD. Includes dynamic pixel-level progress bar using custom bitmap characters."
+role: "Mechatronics Engineer"
+year: 2023
+stack:
+  - Arduino
+  - C++
+  - HC-SR04
+  - LCD I2C
+links:
+  repo: "https://github.com/FryFr/Sensor_de_distancia"
+featured: false
+order: 10
+---
+
+## The project
+
+![HC-SR04 module — ultrasonic sensor with two silver transducers on a blue PCB](/images/projects/sensor-distancia-circuit.jpg)
+
+A real-time distance meter built on Arduino UNO and the HC-SR04 ultrasonic sensor. The concept is the same one bats use: fire a 40 kHz sound pulse, measure how long it takes to bounce back, and calculate distance from the round-trip time. Simple in theory, genuinely interesting to implement well.
+
+## How it works
+
+The HC-SR04 has two transducers: one emits the ultrasonic pulse, the other listens for the echo. The time between emission and reception — divided by the speed of sound and halved for the round trip — gives distance in centimeters. In code, this maps to a `pulseIn()` call on the ECHO pin with a 10 µs trigger pulse on TRIG.
+
+The 16×2 I2C LCD receives data over I2C, which keeps the wiring to just two data lines (SDA and SCL) plus power. Without I2C, driving an LCD would consume 6–8 digital pins.
+
+## Two versions
+
+**Basic version** — Distance shows as a number on screen: `Distance: 42 cm`. Clean and to the point.
+
+**Advanced version** — This is where the project gets interesting. The progress bar isn't ASCII art made of dashes — it's a real pixel-level bar implemented using the LCD's custom bitmap character slots.
+
+A 16×2 LCD allows up to 8 user-defined characters, each 5×8 pixels. The idea was to use those 8 slots to represent the partial fill states of a single block: from 0 up to 5 pixel columns lit. By combining full blocks, one partial block, and empty spaces, the bar updates smoothly as distance changes — no jarring jumps between positions.
+
+## Techniques applied
+
+- Time-of-flight calculation using `pulseIn()` with real-world distance conversion
+- I2C communication via the `LiquidCrystal_I2C` library
+- Custom glyph definition with `createChar()` and byte arrays
+- Range-to-screen mapping using `map()`
+- Selective screen refresh to eliminate visible flicker

@@ -1,0 +1,47 @@
+---
+title: "Krea Catalog — Digital product catalog"
+summary: "Product web catalog for Krea client with Angular frontend and integrated backend. Inventory management and catalog visualization."
+role: "Full-Stack Developer"
+year: 2024
+stack:
+  - Angular
+  - TypeScript
+cover: "/images/projects/krea-logo.png"
+client: "Krea"
+featured: false
+order: 8
+---
+
+## The problem
+
+Krea managed their product catalog in a fragmented, manual way — price updates, availability changes, and product descriptions depended on offline processes or direct team communication. There was no centralized platform where customers or the internal team could consult an up-to-date catalog, filter products, and access detailed information without going through a person.
+
+The operational problem was twofold: the friction involved in updating the catalog meant information quickly went stale, and the lack of a self-serve interface meant every customer inquiry required a manual response from the team.
+
+## The solution
+
+I built a product catalog web platform for Krea, with an Angular frontend integrated with a backend for centralized data management. The system enables both customer-facing product browsing and internal inventory administration by the Krea team.
+
+The interface prioritizes navigation experience: category filters, name search, product detail views, and real-time availability status. For the Krea team, the admin panel allows catalog updates without any technical knowledge required.
+
+## Stack and decisions
+
+**Angular + TypeScript** as the frontend framework for its robust component architecture, strict typing, and built-in tooling. For a catalog with multiple views, filters, and states, Angular's modular structure was a natural fit — each catalog section as a lazy-loaded module.
+
+**TypeScript** end-to-end to ensure type consistency between the API contract and frontend models, reducing runtime errors when rendering catalog data.
+
+The architecture cleanly separated the presentation layer from the data logic, making future catalog maintenance straightforward without impacting the interface.
+
+## Features
+
+- Product catalog with images, description, price, and availability status
+- Category filters and name search
+- Product detail view
+- Admin panel for inventory updates
+- Responsive design for mobile and desktop access
+
+## Impact
+
+- Eliminates manual team queries for product information
+- Always up-to-date catalog accessible without technical intervention
+- Scalable foundation for adding features like cart, quote requests, or inventory system integration

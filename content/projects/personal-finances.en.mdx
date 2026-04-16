@@ -1,0 +1,64 @@
+---
+title: "Antigravity Dashboard — Personal finances"
+summary: "Personal finance dashboard with transaction tracking, simulations, subscriptions, and reconciliation. React, TypeScript, Supabase, and Gemini AI."
+role: "Full-Stack Developer"
+year: 2025
+stack:
+  - React
+  - TypeScript
+  - Supabase
+  - Gemini AI
+  - Vercel
+featured: false
+order: 12
+---
+
+## The problem
+
+Existing personal finance apps do one of two things: they're either too simple (just logging income and expenses) or so complex that you end up using only 10% of their features. Neither tells you what you actually need to know: where does your money quietly disappear?, how much of what you earn is genuinely free to invest or spend?, what would happen to your finances if one specific variable changed?
+
+The underlying problem is that most of these tools are passive — they show you what already happened, but don't help you understand the pattern or project the future.
+
+## The solution
+
+Antigravity is a personal finance dashboard built around three concrete questions: how much do I have free (real cash flow)?, where is money silently leaking?, and what if...?
+
+**Free Cash Flow**: not just income minus expenses, but real available income after fixed commitments, subscriptions, and recurring costs. The number that actually matters for making decisions.
+
+**Leak Radar**: the most valuable module in the system. It detects invisible spending patterns — those subscriptions you forgot you had, recurring micro-expenses that accumulate, categories growing month over month below the radar. Gemini AI analyzes the transaction history and generates contextual suggestions explaining the detected pattern.
+
+**Financial simulations**: "what if?" scenario modeling — what's the impact of increasing monthly savings by X, canceling a subscription, or changing a fixed expense threshold. Real-time visual projections.
+
+**Reconciliation**: compares logged transactions against bank statements, automatically flagging discrepancies. The audit trail records every change with user, timestamp, and previous value for complete traceability.
+
+Automatic synchronization via webhook lets transactions enter the system without manual friction. Multi-language support ensures the app works in the user's context, not the other way around.
+
+## Stack and decisions
+
+**React + TypeScript** for the frontend: the highly interactive nature of the dashboard — real-time charts, chained filters, simulations with immediate feedback — made a reactive framework the natural choice. TypeScript prevents the most painful classes of bugs when handling financial calculations.
+
+**Supabase** as backend-as-a-service: PostgreSQL with Row Level Security for per-user data isolation, realtime subscriptions for dashboard sync without polling, and integrated authentication. The alternative (Firebase/Firestore) would have required less natural data structures for financial queries involving complex aggregations.
+
+**Gemini AI** for contextual suggestions: the model analyzes the user's transaction history and generates readable insights — it doesn't just detect anomalies, it explains in natural language what pattern it found and why it's relevant.
+
+**Vercel** for deployment: native Git workflow integration, edge functions for sync webhooks, and preview deployments for every PR.
+
+## Features
+
+- Transaction tracking with manual and automatic categorization
+- Real Free Cash Flow (available income after fixed commitments)
+- Leak Radar: money leak detection and forgotten subscription discovery
+- Subscription management with renewal alerts
+- Financial simulations with visual projections
+- Reconciliation against bank statements
+- Complete audit trail with change traceability
+- Webhook for automatic transaction synchronization
+- Multi-language support
+- Contextual suggestions powered by Gemini AI
+
+## Impact
+
+- Real visibility into available cash flow, not just account balance
+- Proactive detection of spending that goes unnoticed month after month
+- Financial decisions based on data and projections, not gut feelings
+- Complete traceability: every transaction and every change has a history
