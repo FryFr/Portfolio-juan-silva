@@ -2,8 +2,11 @@ import { describe, expect, it } from 'vitest';
 import { getAdjacentProjects } from '@/shared/content';
 
 // Real collection projects (en locale, sorted by order ascending):
-//   index 0 — "acme-platform"  (order: 1, year: 2025)
-//   index 1 — "devtool-x"      (order: 2, year: 2024)
+//   order 0 — "n8n-automations"
+//   order 1 — "dynapro-tracking"
+//   order 2 — "michibot"
+//   ...
+//   order 12 — "personal-finances"
 
 describe('getAdjacentProjects', () => {
   it('returns { prev: undefined, next: undefined } for a non-existent slug', () => {
@@ -13,24 +16,24 @@ describe('getAdjacentProjects', () => {
   });
 
   it('returns undefined prev and a valid next for the first project in order', () => {
-    // "acme-platform" is at index 0 → no predecessor
-    const result = getAdjacentProjects('en', 'acme-platform');
+    const result = getAdjacentProjects('en', 'n8n-automations');
     expect(result.prev).toBeUndefined();
     expect(result.next).toBeDefined();
-    expect(result.next?.slug).toBe('devtool-x');
+    expect(result.next?.slug).toBe('dynapro-tracking');
   });
 
   it('returns a valid prev and undefined next for the last project in order', () => {
-    // "devtool-x" is at the end → no successor
-    const result = getAdjacentProjects('en', 'devtool-x');
+    const result = getAdjacentProjects('en', 'personal-finances');
     expect(result.prev).toBeDefined();
-    expect(result.prev?.slug).toBe('acme-platform');
+    expect(result.prev?.slug).toBe('diomedes-chan');
     expect(result.next).toBeUndefined();
   });
 
-  it('returns undefined prev and next for a non-existent slug in es locale', () => {
-    const result = getAdjacentProjects('es', 'nonexistent');
-    expect(result.prev).toBeUndefined();
-    expect(result.next).toBeUndefined();
+  it('returns both prev and next for a middle project', () => {
+    const result = getAdjacentProjects('en', 'michibot');
+    expect(result.prev).toBeDefined();
+    expect(result.prev?.slug).toBe('dynapro-tracking');
+    expect(result.next).toBeDefined();
+    expect(result.next?.slug).toBe('robotic-arm');
   });
 });

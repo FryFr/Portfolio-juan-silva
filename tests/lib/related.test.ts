@@ -2,10 +2,10 @@ import { describe, expect, it } from 'vitest';
 import { getRelatedPosts } from '@/features/blog/lib/related';
 
 // Real collection data (en locale):
-//   "architecture-as-teaching"  → tags: ["architecture", "teaching", "career"]
-//   "testing-without-mocks"     → tags: ["testing", "architecture", "typescript"]
+//   "de-mecatronica-a-ia"         → tags: ["career", "mechatronics", "ai", "robotics"]
+//   "ia-en-itsm-lecciones-reales" → tags: ["ai", "itsm", "rag", "java"]
 //
-// Shared tag between the two: "architecture" (overlap = 1).
+// Shared tag between the two: "ai" (overlap = 1).
 
 describe('getRelatedPosts', () => {
   it('returns an empty array for a non-existent slug', () => {
@@ -14,29 +14,26 @@ describe('getRelatedPosts', () => {
   });
 
   it('excludes the current post from the results', () => {
-    const result = getRelatedPosts('en', 'testing-without-mocks');
+    const result = getRelatedPosts('en', 'de-mecatronica-a-ia');
     const slugs = result.map((p) => p.slug);
-    expect(slugs).not.toContain('testing-without-mocks');
+    expect(slugs).not.toContain('de-mecatronica-a-ia');
   });
 
   it('returns posts that share at least one tag with the current post', () => {
-    // "testing-without-mocks" shares "architecture" with "architecture-as-teaching"
-    const result = getRelatedPosts('en', 'testing-without-mocks');
+    // "de-mecatronica-a-ia" shares "ai" with "ia-en-itsm-lecciones-reales"
+    const result = getRelatedPosts('en', 'de-mecatronica-a-ia');
     expect(result.length).toBeGreaterThan(0);
     const slugs = result.map((p) => p.slug);
-    expect(slugs).toContain('architecture-as-teaching');
+    expect(slugs).toContain('ia-en-itsm-lecciones-reales');
   });
 
   it('respects the limit parameter', () => {
-    // With limit 1, at most 1 post is returned
-    const result = getRelatedPosts('en', 'testing-without-mocks', 1);
+    const result = getRelatedPosts('en', 'de-mecatronica-a-ia', 1);
     expect(result.length).toBeLessThanOrEqual(1);
   });
 
   it('returns an empty array when the locale has no posts', () => {
-    // No posts exist for a fake locale
-    const result = getRelatedPosts('en' as never, 'testing-without-mocks');
-    // sanity: this is the happy path with a real locale — just ensure no crash
+    const result = getRelatedPosts('en' as never, 'de-mecatronica-a-ia');
     expect(Array.isArray(result)).toBe(true);
   });
 });
