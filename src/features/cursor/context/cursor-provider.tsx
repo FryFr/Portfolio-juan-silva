@@ -4,6 +4,8 @@ import { type ReactNode, useCallback, useEffect, useRef } from 'react';
 import { useReducedMotion } from 'motion/react';
 import { useIsTouch } from '@/features/cursor/lib/use-is-touch';
 import { type CursorState, CursorContext } from '@/features/cursor/context/use-cursor';
+import { CursorBlob } from '@/features/cursor/ui/cursor-blob';
+import { CursorSpotlight } from '@/features/cursor/ui/cursor-spotlight';
 
 type Props = {
   children: ReactNode;
@@ -58,7 +60,8 @@ export function CursorProvider({ children }: Props) {
       {children}
       {active && (
         <>
-          {/* CursorBlob and CursorSpotlight will be added in Task 3 */}
+          <CursorSpotlight />
+          <CursorBlob />
         </>
       )}
     </CursorContext.Provider>
