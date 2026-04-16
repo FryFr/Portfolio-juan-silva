@@ -1,0 +1,69 @@
+---
+title: "N8N Business Automations — Orquestación inteligente de procesos"
+summary: "Plataforma de automatización empresarial con N8N como orquestador. Conecta Odoo, Xero, HubSpot, CONTPAQi y más para gestión centralizada de información y procesos."
+role: "Business Systems & AI Specialist"
+year: 2026
+stack:
+  - N8N
+  - Odoo
+  - Xero
+  - HubSpot
+  - CONTPAQi
+  - JavaScript
+client: "Dynapro Pumps"
+cover: "/images/projects/n8n-automation-flow.jpeg"
+featured: true
+order: 0
+---
+
+## El problema
+
+Dynapro opera con múltiples herramientas de negocio: Odoo para ERP, Xero para contabilidad, HubSpot para CRM, CONTPAQi para facturación fiscal y más. Cada sistema vivía aislado — la información se duplicaba manualmente, los procesos dependían de intervención humana, y los errores de sincronización generaban pérdidas de tiempo y datos inconsistentes.
+
+No había una capa de integración que conectara estas herramientas de forma inteligente. Los equipos de ventas, operaciones y finanzas trabajaban con información desactualizada o incompleta.
+
+## La solución
+
+Diseñé e implementé una arquitectura de automatización empresarial usando N8N como orquestador central. Cada flujo conecta dos o más herramientas del ecosistema de Dynapro para eliminar procesos manuales y garantizar consistencia de datos en tiempo real.
+
+```
+                    ┌─────────────────────────────────┐
+                    │           N8N Orchestrator       │
+                    │   (webhooks · schedulers · JS)   │
+                    └────┬────────┬────────┬────────┬──┘
+                         │        │        │        │
+              ┌──────────┘  ┌─────┘  ┌────┘  ┌─────┘
+              ▼             ▼        ▼        ▼
+        ┌──────────┐  ┌──────────┐  ┌──────┐  ┌──────────┐
+        │   Odoo   │  │   Xero   │  │  Hub │  │CONTPAQi  │
+        │  (ERP)   │  │(Contabil)│  │ Spot │  │(Factura) │
+        └──────────┘  └──────────┘  └──────┘  └──────────┘
+              │             │        │  (CRM)
+              └─────────────┴────────┘
+                  sincronización bidireccional
+```
+
+**Sincronización de datos**: Flujos bidireccionales entre Odoo, Xero y HubSpot que mantienen contactos, productos y transacciones sincronizados automáticamente.
+
+**Gestión de leads**: Cuando un lead entra por HubSpot, se crea automáticamente en Odoo, se asigna al vendedor correspondiente y se notifica al equipo.
+
+**Automatización de órdenes de compra**: Desde la creación en Odoo hasta la facturación en CONTPAQi, el flujo completo se ejecuta sin intervención manual.
+
+**Comisiones y reportes**: Cálculo automático de comisiones basado en ventas cerradas, con generación de reportes y notificaciones al equipo.
+
+**Playbooks operativos**: Flujos que ejecutan secuencias de acciones predefinidas para gestión de tickets, seguimiento de envíos y comunicación con clientes.
+
+## Stack y decisiones
+
+**N8N** como orquestador por su flexibilidad, self-hosting y capacidad de integrar APIs REST, webhooks y lógica custom con JavaScript — sin depender de Zapier o Make y sus limitaciones de pricing.
+
+**Arquitectura event-driven**: Los flujos se disparan por webhooks, triggers de email (Gmail) o schedulers, garantizando ejecución en tiempo real sin polling innecesario.
+
+**JavaScript custom nodes**: Para transformaciones de datos complejas entre sistemas con esquemas diferentes — normalización de campos, mapeo de IDs cruzados y validación de integridad.
+
+## Impacto
+
+- Eliminación de procesos manuales de sincronización entre 5+ herramientas
+- Reducción de errores humanos en entrada de datos y facturación
+- Visibilidad centralizada del estado de leads, órdenes y envíos
+- Escalabilidad: cada nuevo flujo se construye sobre la infraestructura existente sin reconfiguración

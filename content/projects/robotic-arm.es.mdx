@@ -1,0 +1,73 @@
+---
+title: "Brazo robótico industrial 6-DoF — Diseño, simulación y control"
+summary: "Proyecto completo de ingeniería: diseño CAD, análisis cinemático Denavit-Hartenberg, simulación ROS/Gazebo y control físico con Arduino."
+role: "Mechatronics Engineer"
+year: 2024
+stack:
+  - SolidWorks
+  - ROS Noetic
+  - Gazebo
+  - Arduino
+  - C++
+  - Python
+cover: "/images/projects/robotic-arm-physical.jpg"
+links:
+  repo: "https://github.com/FryFr/Industria_Robotics_Arm_Project"
+featured: true
+order: 3
+---
+
+## El problema
+
+En el contexto académico de la Universidad EAN, bajo la supervisión del Prof. Nikolay Prieto, el desafío era diseñar, simular y construir desde cero un manipulador robótico industrial de 6 grados de libertad capaz de realizar operaciones de pick-and-place con precisión repetible.
+
+El proyecto tenía que cubrir todo el pipeline de ingeniería robótica sin atajos: modelado CAD paramétrico, análisis cinemático formal, validación en simulación y, finalmente, control físico real con electrónica embebida. No alcanzaba con mover servos — se necesitaba un análisis cinemático riguroso usando matemática de transformaciones homogéneas, validar el comportamiento en simulación antes de fabricar nada, y demostrar que el modelo virtual y el físico se comportaban igual.
+
+![Brazo robótico 6-DoF — render SolidWorks](/images/projects/robotic-arm-physical.jpg)
+
+El brazo terminado: estructura completa impresa en PLA con masa total de ~336g, gripper paralelo actuado por engranajes, y 6 juntas rotacionales que cubren el espacio de trabajo de un manipulador industrial compacto.
+
+## La solución
+
+El proyecto atraviesa cuatro etapas bien diferenciadas, cada una construida sobre la anterior.
+
+```
+  ┌─────────────┐     ┌──────────────────┐     ┌─────────────────┐     ┌──────────────────┐
+  │  SolidWorks │     │  Análisis DH     │     │  ROS / Gazebo   │     │  Arduino + HW    │
+  │             │     │                  │     │                 │     │                  │
+  │ Modelado    │──►  │ Parámetros DH    │──►  │ URDF export     │──►  │ PCA9685 (PWM)    │
+  │ CAD 3D      │     │ T_0^6 (forward)  │     │ (sw_urdf_exp.)  │     │ 5× servomotores  │
+  │ Ensamblaje  │     │ IK analítica     │     │ Simulación      │     │ Serial → joints  │
+  │ Planos ing. │     │ (pos. + orient.) │     │ física real     │     │ pick-and-place   │
+  └─────────────┘     └──────────────────┘     └─────────────────┘     └──────────────────┘
+       CAD                  Cinemática               Validación              Hardware
+                                                    (antes de fab.)
+```
+
+**Diseño mecánico en SolidWorks**: Cada pieza estructural fue modelada individualmente con SolidWorks, incluyendo planos de ingeniería formales y documentación técnica exportada a PDF. El ensamblaje final integra 6 juntas rotacionales, eslabones impresos en PLA y un gripper paralelo actuado por engranajes — un mecanismo que convierte el movimiento lineal de un servo en apertura/cierre simétrica de los dedos. La masa total del conjunto quedó en ~336g, lo que permitió usar servomotores de bajo torque sin comprometer la rigidez estructural.
+
+**Análisis cinemático Denavit-Hartenberg**: La cinemática directa se derivó aplicando la convención DH estándar — se parametrizaron los 6 sistemas de coordenadas articulares y se obtuvieron las matrices de transformación homogénea `T_0^6`. Con eso, dado un vector de ángulos articulares `q = [θ₁, θ₂, θ₃, θ₄, θ₅, θ₆]`, se puede calcular la pose exacta del efector final en el espacio cartesiano. La cinemática inversa se formuló analíticamente para las 3 primeras juntas (posición) y geométricamente para las 3 últimas (orientación), lo que permite resolver la configuración articular a partir de una pose objetivo dada.
+
+**Simulación ROS/Gazebo con modelo URDF**: El modelo SolidWorks fue exportado a URDF usando el plugin `sw_urdf_exporter`, preservando geometría de mallas, tensores inerciales, ejes de juntas y límites de movimiento articular. Eso permite que Gazebo simule la dinámica real del brazo — no solo la cinemática.
+
+![Modelo URDF del brazo en RViz/Gazebo](/images/projects/robotic-arm-urdf.jpg)
+
+Visualización del modelo cinemático en RViz: cada junta aparece representada con su eje de rotación, los eslabones con sus geometrías de colisión, y el árbol de transformadas TF activo en tiempo real. Esta representación fue clave para validar que los parámetros DH eran correctos antes de ejecutar cualquier trayectoria.
+
+**Control embebido**: El hardware de control usa Arduino UNO + driver PCA9685 comunicados por I2C. El PCA9685 genera señales PWM para los 5 servomotores con resolución de 12 bits, y el Arduino recibe comandos seriales que mapean directamente a posiciones articulares. La interfaz de automatización permite definir trayectorias secuenciales en espacio articular y ejecutarlas de forma repetible.
+
+## Stack y decisiones
+
+**SolidWorks** fue la elección para CAD por dos razones concretas: primero, el plugin `sw_urdf_exporter` genera un URDF válido con tensores inerciales calculados automáticamente a partir de los materiales asignados en el ensamblaje — eso elimina una fuente enorme de errores manuales. Segundo, permite hacer análisis FEA integrado para validar que los eslabones aguantan las cargas sin necesidad de software adicional.
+
+**ROS Noetic + Gazebo** como stack de simulación porque es el estándar de la industria y el más documentado para manipuladores. La decisión de validar en simulación antes de fabricar no fue opcional — es metodología de ingeniería. Gazebo corriendo el modelo URDF con física real permitió detectar colisiones, límites articulares incorrectos y comportamientos inesperados antes de imprimir una sola pieza.
+
+**Arduino UNO + PCA9685** para el control físico. El PCA9685 resuelve el problema de generar múltiples señales PWM simultáneas sin cargar el microcontrolador — se comunica por I2C y maneja hasta 16 canales independientes. Para un prototipo académico es la combinación más accesible y directamente mapeable al modelo de control articular.
+
+## Impacto
+
+- Pipeline de ingeniería robótica end-to-end: CAD → parámetros DH → URDF → simulación → hardware físico
+- Modelo URDF validado contra el análisis DH, con correspondencia demostrada entre simulación y comportamiento real
+- Sistema de pick-and-place funcional con trayectorias predefinidas en espacio articular ejecutables de forma repetible
+- Documentación técnica completa: planos de ingeniería formales, derivación DH paso a paso, y análisis cinemático inverso
+- Proyecto académico desarrollado en la Universidad EAN bajo supervisión del Prof. Nikolay Prieto

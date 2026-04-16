@@ -1,0 +1,58 @@
+---
+title: "Smart Orchard — Crop monitoring app"
+summary: "Cross-platform mobile app for crop management: atmospheric monitoring, product geolocation, maintenance scheduling, and payments with Firebase."
+role: "Mobile Developer"
+year: 2024
+stack:
+  - Flutter
+  - Dart
+  - Firebase
+  - FlutterFlow
+cover: "/images/projects/smart-orchard-icon.png"
+links:
+  repo: "https://github.com/FryFr/Smart_Orchard"
+featured: false
+order: 5
+---
+
+## The problem
+
+Orchard and crop owners manage critical information scattered across multiple places: temperature and humidity in a spreadsheet, product history on paper, maintenance appointments in the phone calendar, payments in another app. When something goes wrong — an unexpected frost, a pest outbreak, a plant that missed its maintenance window — it's nearly impossible to trace what happened and when.
+
+The result: agricultural decisions based on memory and intuition rather than real data, avoidable losses, and a business that can't scale beyond what a single person can remember.
+
+## The solution
+
+Smart Orchard centralizes everything in one cross-platform mobile app (Android, iOS, and Web). The design principle was clear from the start: every relevant agricultural entity — product, plant, growing area — gets its own digital record with structured data, complete history, and instant access from any device.
+
+Atmospheric monitoring captures environmental conditions in real time and stores them historically, allowing farmers to correlate weather events with crop status. Maintenance appointments send proactive notifications before anything gets missed. Payments are linked to specific products, creating real financial traceability.
+
+Everything syncs in real time via Firestore — whether a temperature reading comes from an external sensor or is entered manually, every connected device sees it instantly.
+
+## Stack and decisions
+
+**Flutter + Dart** for the cross-platform frontend: a single codebase running on Android, iOS, and Web without UX compromise. FlutterFlow accelerated early prototyping while validating the data model and user flows.
+
+**Firebase as a complete backend**: Firestore for reactive real-time queries, Firebase Auth for multi-provider authentication (Email, Google, Apple, GitHub) with minimal code, and Cloud Messaging for push notifications with rich image support on iOS.
+
+**Geolocation-oriented architecture**: every product or crop can have associated GPS coordinates, enabling map views and geographic clustering — essential for operations spread across multiple plots of land.
+
+**Adaptive dark/light design**: not just aesthetics. Users working outdoors under direct sunlight need high contrast; the app handles both contexts correctly with a theme that persists across sessions.
+
+## Key features
+
+- Multi-provider authentication (Email, Google, Apple, GitHub) via Firebase Auth
+- Product/plant registration with name, image, color, temperature, GPS coordinates, and owner reference
+- Real-time and historical atmospheric charts
+- Maintenance calendar with statuses, descriptions, and push notifications
+- Payment management linked to specific products and users
+- Animated onboarding for initial setup
+- Persistent dark/light theme across sessions
+- Push notifications with rich image support on iOS
+
+## Impact
+
+- Replaces the chaos of spreadsheets, paper, and separate apps with a single source of truth
+- Enables data-driven decisions based on real historical records, not memory
+- Scalable: the Firebase architecture handles multiple users and thousands of records without structural changes
+- Available across all three major platforms from a single codebase

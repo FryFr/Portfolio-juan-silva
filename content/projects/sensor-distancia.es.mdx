@@ -1,0 +1,43 @@
+---
+title: "Medidor de distancia — HC-SR04 con barra de progreso"
+summary: "Medidor de distancia en tiempo real con sensor ultrasónico y LCD I2C. Incluye barra de progreso dinámica por píxeles usando caracteres bitmap personalizados."
+role: "Mechatronics Engineer"
+year: 2023
+stack:
+  - Arduino
+  - C++
+  - HC-SR04
+  - LCD I2C
+links:
+  repo: "https://github.com/FryFr/Sensor_de_distancia"
+featured: false
+order: 10
+---
+
+## El proyecto
+
+![Módulo HC-SR04 — sensor ultrasónico con los dos transductores plateados sobre PCB azul](/images/projects/sensor-distancia-circuit.jpg)
+
+Un medidor de distancia en tiempo real construido sobre Arduino UNO y el popular sensor ultrasónico HC-SR04. El principio es el mismo que usan los murciélagos: emitís un pulso de sonido a 40 kHz, medís cuánto tiempo tarda en rebotar, y con eso calculás la distancia. Simple en concepto, interesante en implementación.
+
+## Cómo funciona
+
+El HC-SR04 tiene dos transductores: uno emite el pulso ultrasónico y el otro escucha el eco. El tiempo entre emisión y recepción, dividido por la velocidad del sonido y ajustado para ida y vuelta, da la distancia en centímetros. En el código, esto se traduce a un `pulseIn()` sobre el pin ECHO con un trigger de 10 µs en el pin TRIG.
+
+La pantalla LCD I2C de 16×2 recibe los datos via protocolo I2C — lo cual reduce el cableado a solo dos líneas de datos (SDA y SCL) además de alimentación. Sin I2C, conectar un LCD significaría usar 6 u 8 pines digitales.
+
+## Dos versiones
+
+**Versión básica** — La distancia se muestra como número en pantalla: `Distancia: 42 cm`. Directo al punto, sin vueltas.
+
+**Versión avanzada** — Acá está lo más interesante del proyecto. La barra de progreso no es ASCII art con guiones: es una barra real, a nivel de píxel, implementada con los caracteres bitmap personalizados del LCD.
+
+Un display LCD 16×2 permite definir hasta 8 caracteres custom de 5×8 píxeles cada uno. La idea fue usar esos 8 caracteres para representar los estados parciales de un bloque: desde 0 hasta 5 columnas de píxeles encendidas. Así, combinando caracteres llenos, uno parcial, y espacios vacíos, se logra una barra que se actualiza suavemente conforme cambia la distancia — sin saltos bruscos entre posiciones.
+
+## Técnicas aplicadas
+
+- Cálculo de time-of-flight con `pulseIn()` y conversión a distancia real
+- Comunicación I2C con la biblioteca `LiquidCrystal_I2C`
+- Definición de glifos personalizados con `createChar()` y arrays de bytes
+- Mapeo de rango de distancia a segmentos de pantalla con `map()`
+- Refresco selectivo de pantalla para evitar parpadeo visible

@@ -1,0 +1,49 @@
+---
+title: "Diomedes Chan — Creative electronics with Arduino"
+summary: "Creative project combining OLED display, buzzer melody, and servomotors animated to the rhythm of the music — all synchronized with Arduino."
+role: "Creator & Developer"
+year: 2023
+stack:
+  - Arduino
+  - C++
+  - OLED I2C
+  - Servomotors
+links:
+  repo: "https://github.com/FryFr/DiomedesChan"
+featured: false
+order: 11
+---
+
+## The project
+
+Not every electronics project needs to be useful. Diomedes Chan exists purely because it can — and that makes it more interesting than most.
+
+On startup, the Arduino presents a custom bitmap image on a 128×64 pixel I2C OLED display. Five seconds of static screen, like a signature. Then the main act begins: a MIDI-converted melody plays note by note through a passive buzzer, while two servo motors oscillate to the beat and two LEDs blink in sync — all coordinated in real-time from a single Arduino loop.
+
+## The OLED display
+
+The SSD1306 128×64 display connects over I2C with just two data wires. The image is prepared in a bitmap editor, converted to a byte array using a tool like `image2cpp`, and stored in the sketch as a `PROGMEM` array to avoid eating into the microcontroller's RAM.
+
+The `Adafruit_SSD1306` library takes that array and renders it with `drawBitmap()`. The result is a crisp, pixel-perfect monochrome image on a display less than 3 cm diagonal. There's something particularly satisfying about seeing it work.
+
+## The melody
+
+A passive buzzer doesn't reproduce audio — it generates tones at specific frequencies. That's exactly what `tone()` needs: a frequency and a duration. The challenge is converting a MIDI file into C++ arrays of frequencies and durations.
+
+The process: export the MIDI as text, identify the note-on events with their pitch and duration, map MIDI pitch values to frequencies in Hz (the formula is `440 * 2^((n-69)/12)`), and build two arrays — one for frequencies, one for durations. The sketch iterates through them in order with `tone()` and `delay()`.
+
+## The synchronization
+
+With every note that plays, the two servos swing between opposing angles and the two LEDs toggle state. There's no real multitasking on Arduino — everything runs on a single sequential thread. Synchronization works because `tone()` with a duration blocks execution for exactly that note's length, and within that same block the servo and LED get updated. Timing by blocking, but it works.
+
+## Three concepts in one circuit
+
+| Concept | Implementation |
+|---|---|
+| OLED image display | `drawBitmap()` with `PROGMEM` array |
+| Tone generation | `tone(pin, frequency, duration)` |
+| Real-time servo control | `Servo.write()` synced with each note |
+
+## Why this is worth building
+
+Projects like this are what consolidate fundamentals. Each component is familiar in isolation — OLED, buzzer, servo, LED — but coordinating them within the constraints of an Arduino UNO (2KB RAM, single-threaded execution, no OS) forces you to think about scarce resources, program memory, and deterministic timing. Lessons that apply far beyond Arduino.

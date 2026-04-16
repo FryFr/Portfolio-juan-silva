@@ -1,0 +1,81 @@
+---
+title: "Michibot — Asistente de voz conversacional en español LATAM"
+summary: "Robot de escritorio con IA conversacional sub-900ms, streaming end-to-end, wake word on-device y backend en Python con FastAPI."
+role: "Creator & Developer"
+year: 2025
+stack:
+  - Python
+  - FastAPI
+  - ESP32-S3
+  - OpenAI
+  - Deepgram
+  - ElevenLabs
+links:
+  repo: "https://github.com/FryFr/LLMSpanish"
+featured: true
+order: 2
+---
+
+## El problema
+
+La mayoría de asistentes de voz DIY son lentos. Entre que terminás de hablar y escuchás la primera palabra del robot pasan 2 a 4 segundos. Por encima de 1.5 segundos se siente robótico. Por encima de 3, el usuario abandona y la ilusión de conversación se rompe.
+
+El segundo problema es igual de grave: los proyectos existentes no están optimizados para español latinoamericano. Los modelos de STT tienen problemas con acentos regionales, las contracciones del voseo y el vocabulario local. Los TTS suenan artificiales — acento neutro de doblaje, sin cadencia natural. El resultado es una experiencia que se siente extranjera en tu propio idioma.
+
+## La solución
+
+Michibot tiene un solo objetivo no negociable: que la primera palabra del robot sea audible en menos de 900ms en turnos complejos, y menos de 200ms en respuestas conocidas. A esa velocidad la conversación deja de sentirse como hablarle a una máquina y empieza a sentirse como una charla real.
+
+La arquitectura usa streaming end-to-end desde el primer día — ninguna etapa espera a que la anterior termine por completo. El pipeline es: wake word on-device en el ESP32-S3, transcripción parcial con Deepgram, enrutamiento inteligente de 3 tiers, y síntesis de voz con ElevenLabs mientras el LLM todavía está generando.
+
+```
+  Micrófono
+      │
+      ▼
+┌───────────┐   wake word   ┌──────────────────────────────────────────┐
+│  ESP32-S3 │──── detectado ►         FastAPI Backend (async)           │
+│ (on-device│               │                                          │
+│  detect.) │               │  ┌──────────┐   tokens    ┌───────────┐  │
+└───────────┘               │  │ Deepgram │──(streaming)►│  Router   │  │
+                            │  │  (STT)   │             │  3 tiers  │  │
+                            │  └──────────┘             └─────┬─────┘  │
+                            │                                 │        │
+                            │         ┌───────────────────────┤        │
+                            │         ▼           ▼           ▼        │
+                            │   ┌──────────┐ ┌────────┐ ┌─────────┐   │
+                            │   │ Tier 1   │ │ Tier 2 │ │ Tier 3  │   │
+                            │   │Predefinido│ │Template│ │  LLM    │   │
+                            │   │ <200ms   │ │ ~400ms │ │ <900ms  │   │
+                            │   └────┬─────┘ └───┬────┘ └────┬────┘   │
+                            │        └────────────┴───────────┘        │
+                            │                     │ texto               │
+                            │                     ▼                     │
+                            │              ┌────────────┐               │
+                            │              │ ElevenLabs │               │
+                            │              │   (TTS)    │               │
+                            │              └─────┬──────┘               │
+                            └────────────────────┼─────────────────────┘
+                                                 │ audio stream
+                                                 ▼
+                                           🔊 Speaker
+```
+
+El hardware combina el cuerpo de ElectronBot (servos para expresividad + display para contexto visual) con las capacidades de audio del ESP32-S3, todo coordinado por un backend Python/FastAPI que actúa como cerebro conversacional.
+
+## Stack y decisiones
+
+**FastAPI + async Python** como backend: el manejo de WebSockets y audio streaming requería un servidor genuinamente asíncrono. Cada etapa del pipeline (STT → Router → LLM → TTS) opera en paralelo overlapeado — el TTS empieza a generar con los primeros tokens del LLM, no cuando termina la oración completa.
+
+**ESP32-S3** para wake word on-device: el procesamiento de audio inicial ocurre en el microcontrolador sin enviar nada al servidor. Esto elimina la latencia de red en el paso de detección y protege la privacidad del usuario — solo se transmite audio cuando la palabra activadora se detecta localmente.
+
+**Router de 3 tiers**: Tier 1 cubre el 70% de los turnos con respuestas predefinidas en menos de 200ms. Tier 2 usa templates parametrizados para respuestas semi-dinámicas en ~400ms. Solo el Tier 3 llama al LLM completo, usado en menos del 30% de los turnos. Esto reduce el costo de API en ~70% y mantiene la latencia percibida baja.
+
+**Deepgram** para STT por su soporte de streaming parcial y su rendimiento superior en español LATAM comparado con Whisper en producción. **ElevenLabs** para TTS por la naturalidad de la voz en castellano rioplatense.
+
+## Impacto
+
+- First-audio por debajo de 900ms en turnos complejos (p50 medido)
+- 70% de turnos resueltos sin una sola llamada al LLM
+- Costo de API reducido drásticamente gracias al sistema de tiers
+- Open source, documentado en español, con arquitectura replicable para otros idiomas
+- Prueba de concepto real: hardware embebido + IA conversacional de baja latencia funcionando en el mundo físico

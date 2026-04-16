@@ -1,0 +1,216 @@
+{
+  "common": {
+    "siteName": "Juan Silva",
+    "siteTagline": "Mechatronics Engineer & AI Specialist",
+    "nav": {
+      "work": "Work",
+      "writing": "Writing",
+      "talks": "Talks",
+      "about": "About",
+      "toggleMenu": "Open menu"
+    },
+    "theme": {
+      "toLight": "Switch to light theme",
+      "toDark": "Switch to dark theme"
+    },
+    "footer": {
+      "builtWith": "Built with Next.js + Tailwind + too much coffee",
+      "copyright": "© {year} Juan Silva. All rights reserved.",
+      "rssLabel": "RSS",
+      "lastUpdated": "Last updated {date}"
+    }
+  },
+  "home": {
+    "hero": {
+      "prompt": "whoami — portfolio",
+      "title": "Juan Silva.",
+      "subtitle": "Mechatronics engineer, AI specialist, and business systems automation.",
+      "roles": {
+        "ai": "AI & Business Systems Specialist",
+        "mechatronics": "Mechatronics Engineer",
+        "itsm": "IT Consultant",
+        "robotics": "Robotics & Embedded Systems"
+      },
+      "rolesIntro": "Currently"
+    },
+    "about": {
+      "eyebrow": "About",
+      "title": "Where engineering meets artificial intelligence.",
+      "bio": [
+        "Mechatronics Engineer with over 5 years of experience bridging engineering, software, artificial intelligence, and business systems. I currently work as a Business Systems & AI Specialist, designing and implementing intelligent, scalable solutions that optimize operational processes and decision-making.",
+        "My mechatronics background allowed me to work across robotics, mechanical design, and digital manufacturing. In parallel, I developed strong leadership experience managing operations and multidisciplinary teams of up to 1,200 people, driving a 30% increase in sales."
+      ],
+      "skillsTitle": "What I do",
+      "skills": {
+        "ai": {
+          "label": "AI & Automation",
+          "items": [
+            { "label": "LLMs & RAG", "url": "https://platform.openai.com/docs" },
+            { "label": "N8N", "url": "https://docs.n8n.io" },
+            { "label": "Automation workflows", "url": "https://docs.n8n.io/workflows" },
+            { "label": "REST APIs", "url": "https://swagger.io/specification" },
+            { "label": "Web scraping", "url": "https://scrapy.org" },
+            { "label": "Vector databases", "url": "https://www.pinecone.io/learn/vector-database" }
+          ]
+        },
+        "backend": {
+          "label": "Backend & Data",
+          "items": [
+            { "label": "Java", "url": "https://dev.java" },
+            { "label": "Python", "url": "https://python.org" },
+            { "label": "Spring Boot", "url": "https://spring.io/projects/spring-boot" },
+            { "label": "FastAPI", "url": "https://fastapi.tiangolo.com" },
+            { "label": "SQL", "url": "https://www.postgresql.org/docs/current/sql.html" },
+            { "label": "PostgreSQL", "url": "https://www.postgresql.org" }
+          ]
+        },
+        "robotics": {
+          "label": "Robotics & Embedded",
+          "items": [
+            { "label": "Arduino", "url": "https://www.arduino.cc" },
+            { "label": "ESP32", "url": "https://docs.espressif.com/projects/esp-idf/en/stable" },
+            { "label": "ROS", "url": "https://www.ros.org" },
+            { "label": "SolidWorks", "url": "https://www.solidworks.com" },
+            { "label": "3D Printing", "url": "https://www.prusa3d.com/page/prusaslicer_424" },
+            { "label": "Laser cutting", "url": "https://lightburnsoftware.com" }
+          ]
+        },
+        "frontend": {
+          "label": "Frontend & Mobile",
+          "items": [
+            { "label": "React", "url": "https://react.dev" },
+            { "label": "TypeScript", "url": "https://www.typescriptlang.org" },
+            { "label": "Next.js", "url": "https://nextjs.org" },
+            { "label": "Flutter", "url": "https://flutter.dev" },
+            { "label": "Tailwind CSS", "url": "https://tailwindcss.com" }
+          ]
+        }
+      },
+      "timelineTitle": "Track record",
+      "timeline": {
+        "current": {
+          "period": "2026 — now",
+          "role": "Business Systems & AI Specialist",
+          "place": "Dynapro Pumps"
+        },
+        "manageengine": {
+          "period": "2024 — 2026",
+          "role": "Technical Consultant",
+          "place": "ManageEngine (Zoho Corp)"
+        },
+        "teleperformance_manager": {
+          "period": "2020 — 2022",
+          "role": "Client Account Manager",
+          "place": "Teleperformance"
+        },
+        "teleperformance_supervisor": {
+          "period": "2020",
+          "role": "Team Supervisor",
+          "place": "Teleperformance"
+        },
+        "university": {
+          "period": "Graduate",
+          "role": "Mechatronics Engineer",
+          "place": "EAN University"
+        }
+      },
+      "softSkillsTitle": "Soft Skills",
+      "softSkills": [
+        {
+          "label": "Leadership",
+          "description": "Team supervision and client account management"
+        },
+        {
+          "label": "Bilingual communication",
+          "description": "Native Spanish / Fluent English — technical documentation and presentations in both languages"
+        },
+        {
+          "label": "Technical consulting",
+          "description": "Translating business needs into implementable technical solutions"
+        },
+        {
+          "label": "Technical presentations",
+          "description": "Speaker at events like ManageEngine Partner Training — Hotel Sheraton Bogotá"
+        },
+        {
+          "label": "Problem solving",
+          "description": "Debugging, root cause analysis, and solution design under pressure"
+        },
+        {
+          "label": "Project management",
+          "description": "Cross-functional team coordination and end-to-end project delivery"
+        }
+      ]
+    },
+    "projects": {
+      "eyebrow": "Featured work",
+      "title": "Projects that shaped how I think.",
+      "empty": "No featured projects yet.",
+      "year": "Year",
+      "role": "Role",
+      "stack": "Stack",
+      "caseStudy": "View case study",
+      "live": "Live site",
+      "repo": "View on GitHub"
+    }
+  },
+  "projects": {
+    "index": {
+      "title": "Projects",
+      "subtitle": "Selected work and case studies.",
+      "empty": "No projects published yet."
+    },
+    "detail": {
+      "backToList": "← All projects",
+      "prev": "Previous",
+      "next": "Next",
+      "role": "Role",
+      "year": "Year",
+      "stack": "Stack",
+      "client": "Client",
+      "live": "Live site",
+      "repo": "View on GitHub",
+      "caseStudy": "External case study"
+    }
+  },
+  "blog": {
+    "index": {
+      "title": "Writing",
+      "subtitle": "Notes on architecture, testing and teaching.",
+      "empty": "No posts yet.",
+      "readingTime": "{minutes} min read"
+    },
+    "detail": {
+      "backToList": "← All posts",
+      "publishedOn": "Published on",
+      "updatedOn": "Updated",
+      "readingTime": "{minutes} min",
+      "relatedTitle": "Keep reading"
+    }
+  },
+  "talks": {
+    "index": {
+      "title": "Talks",
+      "subtitle": "Recent conference talks and workshops.",
+      "empty": "No talks yet.",
+      "slides": "Slides",
+      "video": "Video",
+      "deliveredIn": "Talk language"
+    }
+  },
+  "contact": {
+    "eyebrow": "Contact",
+    "heading": "Let's talk",
+    "copy": "AI, automation, robotics, business systems — or simply a conversation about technology and how to apply it. Reach me through whichever channel you prefer.",
+    "whatsappLabel": "Message me on WhatsApp",
+    "whatsappMessage": "Hi Juan, I'm reaching out from your portfolio. I'd love to chat about...",
+    "linkedinLabel": "Connect on LinkedIn",
+    "floating": {
+      "open": "Open WhatsApp conversation",
+      "dismiss": "Hide WhatsApp button"
+    }
+  },
+  "placeholder": {
+    "itWorks": "It works. This is the base of portfolio v2."
+  }
+}

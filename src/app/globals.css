@@ -1,27 +1,68 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-serif), Georgia, serif;
+  --font-mono: var(--font-mono), ui-monospace, monospace;
 }
 
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+    --bg-primary: #f5f1ea;
+    --bg-secondary: #ece3d2;
+    --bg-tertiary: #e8dfcf;
+    --bg-invert: #1a1208;
+    --fg-primary: #1a1208;
+    --fg-secondary: #3d2e1a;
+    --fg-tertiary: #6b5943;
+    --fg-muted: #7a6747;
+    --fg-subtle: #b8a589;
+    --accent: #7a6030;
+    --accent-success: #7a9960;
+    --accent-warn: #e07856;
   }
-}
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  .dark {
+    --bg-primary: #1a1208;
+    --bg-secondary: #241a0e;
+    --bg-tertiary: #2e2214;
+    --bg-invert: #f5f1ea;
+    --fg-primary: #f5f1ea;
+    --fg-secondary: #e8dfcf;
+    --fg-tertiary: #b8a589;
+    --fg-muted: #9a8567;
+    --fg-subtle: #6b5943;
+    --accent: #d4b584;
+    --accent-success: #8ba970;
+    --accent-warn: #f08866;
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    color-scheme: light dark;
+  }
+
+  body {
+    background-color: var(--bg-primary);
+    color: var(--fg-primary);
+    font-feature-settings: "ss01", "ss02", "cv11";
+  }
+
+  body[style*="cursor: none"] * {
+    cursor: none !important;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
 }

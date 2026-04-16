@@ -1,0 +1,45 @@
+---
+title: "Integrating AI into a real ITSM system: what I learned"
+summary: "Connecting GPT-4 to a ticketing system sounds simple. In practice, the challenges are in the data, not the model. Lessons from implementing RAG in ServiceDesk Plus."
+publishedAt: "2026-04-15"
+tags: ["ai", "itsm", "rag", "java"]
+draft: false
+readingTimeMinutes: 8
+---
+
+When I was assigned the project of integrating artificial intelligence into ServiceDesk Plus, the proposal sounded straightforward: use an LLM to suggest automatic resolutions to support tickets. The reality was considerably more complex.
+
+## The promise vs. reality
+
+The pitch was: "we connect ChatGPT to the ticket system and it resolves everything on its own." Anyone who's worked with LLMs in production knows that doesn't work. An LLM without specific context generates generic responses that are useless for resolving technical tickets about specific products.
+
+The first attempt was exactly that — sending the ticket description directly to GPT-4. The responses were grammatically perfect and completely useless. It lacked product context, technical documentation, and previous resolutions that had actually worked.
+
+## RAG as the real solution
+
+The answer was implementing RAG (Retrieval-Augmented Generation). Instead of asking the LLM to invent answers, we give it the relevant documentation before asking.
+
+The pipeline works like this:
+
+1. **Ingestion**: web scraping of product technical documentation, content processing and chunking
+2. **Vectorization**: each chunk is converted into an embedding using OpenAI and stored in Pinecone
+3. **Search**: when a ticket arrives, the description is vectorized and the most relevant chunks are retrieved
+4. **Generation**: the LLM receives the ticket + relevant chunks and generates a contextualized resolution
+
+The difference was dramatic. Responses went from generic to specific, citing real documentation and concrete steps.
+
+## What nobody tells you
+
+**The data is the problem, not the model.** I spent more time cleaning and processing documentation than configuring GPT-4. Duplicate documentation, outdated articles, inconsistent formats — all of that contaminates embeddings and degrades response quality.
+
+**Chunking matters more than you think.** Splitting a 5000-word document into 500-token chunks sounds trivial. But if you cut in the middle of a step-by-step procedure, the chunk loses context and semantic search returns useless fragments. I ended up writing custom chunking logic that respects section boundaries.
+
+**Pinecone isn't magic.** Vector search returns semantic similarity, not guaranteed relevance. A ticket about "error restarting the service" can match documentation about "how to start the service for the first time" — semantically similar, but contextually different. I had to tune thresholds and add metadata filters to improve precision.
+
+**Java isn't the sexy language for AI, but it worked.** The entire AI ecosystem gravitates toward Python. But the ManageEngine team works in Java, the product is Java, the server is Tomcat. Using LangChain4j instead of LangChain was the right decision — compatibility with the existing stack over developer convenience.
+
+## The result
+
+The system works in production. Support agents receive resolution suggestions that cite real documentation. It doesn't replace the agent — it makes them faster and more consistent. Tickets that previously took minutes of manual searching now have a relevant suggestion in seconds.
+
+If I had to do it again, I'd start with the data. Not the model, not the integration, not the architecture. The data. Because generative AI is only as good as the knowledge you give it.
