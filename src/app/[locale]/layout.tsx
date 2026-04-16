@@ -1,3 +1,5 @@
+import { Analytics } from '@vercel/analytics/next';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import type { Metadata } from 'next';
 import { Fraunces, Inter, JetBrains_Mono } from 'next/font/google';
 import { notFound } from 'next/navigation';
@@ -146,6 +148,8 @@ export default async function LocaleLayout({ children, params }: Props) {
           <JsonLd data={personSchema} />
           <JsonLd data={profilePageSchema} />
         </ThemeProvider>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
