@@ -1,3 +1,4 @@
 {
-  "installCommand": "npm i -g pnpm@10 && pnpm install --frozen-lockfile"
+  "installCommand": "npx -y pnpm@10 install --frozen-lockfile",
+  "buildCommand": "npx -y pnpm@10 run build"
 }
