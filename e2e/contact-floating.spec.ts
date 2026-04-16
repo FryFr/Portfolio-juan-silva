@@ -10,9 +10,7 @@ test('floating WA visible on es locale', async ({ page }) => {
   await expect(wa).toHaveAttribute('rel', 'noopener noreferrer');
 });
 
-test('floating WA links to WhatsApp with pre-filled message', async ({
-  page,
-}) => {
+test('floating WA links to WhatsApp with pre-filled message', async ({ page }) => {
   await page.goto('/es');
   const wa = page.getByRole('link', {
     name: 'Abrir conversación por WhatsApp',
@@ -36,5 +34,7 @@ test('floating WA is always visible (no dismiss button)', async ({ page }) => {
   });
   await expect(wa).toBeVisible();
   // No dismiss button should exist
-  await expect(page.locator('button').filter({ hasText: /ocultar|hide|cerrar|close/i })).toHaveCount(0);
+  await expect(
+    page.locator('button').filter({ hasText: /ocultar|hide|cerrar|close/i }),
+  ).toHaveCount(0);
 });

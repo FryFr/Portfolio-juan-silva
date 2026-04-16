@@ -54,3 +54,5 @@ pnpm-debug.log*
 
 # Project reference zips (not part of the portfolio)
 Proectos/
+
+.vercel
