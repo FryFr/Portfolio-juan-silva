@@ -9,9 +9,11 @@ export default defineConfig({
     setupFiles: ['./tests/setup.ts'],
     globals: true,
     css: false,
+    exclude: ['e2e/**', 'node_modules/**'],
   },
   resolve: {
     alias: {
+      '@/content-collections': path.resolve(__dirname, './.content-collections/generated'),
       '@': path.resolve(__dirname, './src'),
     },
   },
