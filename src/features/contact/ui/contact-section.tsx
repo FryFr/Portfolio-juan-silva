@@ -1,7 +1,7 @@
 import { getTranslations } from 'next-intl/server';
+import { ContactButton } from '@/features/contact/ui/contact-button';
 import { DistortHeading } from '@/features/cursor/effects/distort-heading';
 import { ProximityReveal } from '@/features/cursor/effects/proximity-reveal';
-import { ContactButton } from '@/features/contact/ui/contact-button';
 import { buildLinkedInUrl, buildWhatsAppUrl } from '@/shared/config/contact';
 import { Container } from '@/shared/ui/container';
 

@@ -40,8 +40,7 @@ export function CursorSpotlight() {
         y,
         translateX: '-50%',
         translateY: '-50%',
-        background:
-          'radial-gradient(circle, rgba(212,181,132,0.08) 0%, transparent 70%)',
+        background: 'radial-gradient(circle, rgba(212,181,132,0.08) 0%, transparent 70%)',
       }}
     />
   );

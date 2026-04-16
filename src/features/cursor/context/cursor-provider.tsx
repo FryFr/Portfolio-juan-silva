@@ -1,9 +1,9 @@
 'use client';
 
-import { type ReactNode, useCallback, useEffect, useRef } from 'react';
 import { useReducedMotion } from 'motion/react';
+import { type ReactNode, useCallback, useEffect, useRef } from 'react';
+import { CursorContext, type CursorState } from '@/features/cursor/context/use-cursor';
 import { useIsTouch } from '@/features/cursor/lib/use-is-touch';
-import { type CursorState, CursorContext } from '@/features/cursor/context/use-cursor';
 import { CursorBlob } from '@/features/cursor/ui/cursor-blob';
 import { CursorSpotlight } from '@/features/cursor/ui/cursor-spotlight';
 

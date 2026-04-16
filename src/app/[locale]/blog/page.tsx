@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import { DistortHeading } from '@/features/cursor/effects/distort-heading';
 import { PostCard } from '@/features/blog/ui/post-card';
+import { DistortHeading } from '@/features/cursor/effects/distort-heading';
 import { getPosts } from '@/shared/content';
 import { type Locale, routing } from '@/shared/i18n/routing';
 import { Container } from '@/shared/ui/container';

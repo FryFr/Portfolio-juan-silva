@@ -64,7 +64,7 @@ export function DistortHeading({ as: Tag, children, className }: Props) {
         const dist = Math.sqrt(dx * dx + dy * dy);
 
         if (dist < GRAVITY_RADIUS) {
-          const intensity = Math.pow(1 - dist / GRAVITY_RADIUS, 2);
+          const intensity = (1 - dist / GRAVITY_RADIUS) ** 2;
           const pullX = (dx / dist) * GRAVITY_STRENGTH * intensity;
           const pullY = (dy / dist) * GRAVITY_STRENGTH * intensity;
           const scale = 1 + SCALE_BOOST * intensity;
@@ -90,6 +90,7 @@ export function DistortHeading({ as: Tag, children, className }: Props) {
   const chars = children.split('').map((char, i) => {
     if (char === ' ') {
       return (
+        // biome-ignore lint/suspicious/noArrayIndexKey: chars are static, derived from immutable children string
         <span key={`${i}-space`} className="inline-block w-[0.3em]">
           &nbsp;
         </span>
@@ -97,6 +98,7 @@ export function DistortHeading({ as: Tag, children, className }: Props) {
     }
     return (
       <span
+        // biome-ignore lint/suspicious/noArrayIndexKey: chars are static, derived from immutable children string
         key={`${i}-${char}`}
         ref={(el) => {
           if (el) charsRef.current[i] = el;

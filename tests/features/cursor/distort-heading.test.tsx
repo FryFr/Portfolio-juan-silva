@@ -34,7 +34,11 @@ describe('DistortHeading', () => {
   });
 
   it('preserves className', () => {
-    render(<DistortHeading as="h1" className="custom-class">Title</DistortHeading>);
+    render(
+      <DistortHeading as="h1" className="custom-class">
+        Title
+      </DistortHeading>,
+    );
     const heading = screen.getByRole('heading', { level: 1 });
     expect(heading).toHaveClass('custom-class');
   });

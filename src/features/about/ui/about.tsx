@@ -1,9 +1,9 @@
 import { getTranslations } from 'next-intl/server';
-import { DistortHeading } from '@/features/cursor/effects/distort-heading';
-import { ProximityReveal } from '@/features/cursor/effects/proximity-reveal';
 import { ABOUT_BIO_PARAGRAPHS } from '@/features/about/data';
 import { SkillsGrid } from '@/features/about/ui/skills-grid';
 import { Timeline } from '@/features/about/ui/timeline';
+import { DistortHeading } from '@/features/cursor/effects/distort-heading';
+import { ProximityReveal } from '@/features/cursor/effects/proximity-reveal';
 import { Container } from '@/shared/ui/container';
 
 export async function About() {
