@@ -1,46 +1,29 @@
 import { screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { beforeEach, describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { FloatingWhatsApp } from '@/features/contact/ui/floating-whatsapp';
 import { renderWithIntl } from '../helpers/render-with-intl';
 
-const STORAGE_KEY = 'floating-wa-dismissed';
-
 describe('FloatingWhatsApp', () => {
-  beforeEach(() => {
-    window.sessionStorage.clear();
-  });
-
-  it('shows the WhatsApp link on initial render (no sessionStorage key)', async () => {
+  it('renders the WhatsApp link', () => {
     renderWithIntl(<FloatingWhatsApp />);
-    // useEffect flips visible to true — use findByRole (async)
-    const link = await screen.findByRole('link', {
+    const link = screen.getByRole('link', {
       name: 'Abrir conversación por WhatsApp',
     });
     expect(link).toBeInTheDocument();
+    expect(link).toHaveAttribute('target', '_blank');
+    expect(link).toHaveAttribute('rel', 'noopener noreferrer');
   });
 
-  it('hides the WhatsApp link and sets sessionStorage after dismiss click', async () => {
-    const user = userEvent.setup();
+  it('links to WhatsApp with pre-filled message', () => {
     renderWithIntl(<FloatingWhatsApp />);
-
-    // Wait for the component to become visible first
-    await screen.findByRole('link', { name: 'Abrir conversación por WhatsApp' });
-
-    const dismissBtn = screen.getByRole('button', {
-      name: 'Ocultar botón de WhatsApp',
+    const link = screen.getByRole('link', {
+      name: 'Abrir conversación por WhatsApp',
     });
-    await user.click(dismissBtn);
-
-    expect(
-      screen.queryByRole('link', { name: 'Abrir conversación por WhatsApp' }),
-    ).not.toBeInTheDocument();
-    expect(window.sessionStorage.getItem(STORAGE_KEY)).toBe('1');
+    expect(link.getAttribute('href')).toContain('wa.me/');
   });
 
-  it('renders nothing when sessionStorage key is pre-set to "1"', () => {
-    window.sessionStorage.setItem(STORAGE_KEY, '1');
-    const { container } = renderWithIntl(<FloatingWhatsApp />);
-    expect(container.firstChild).toBeNull();
+  it('is always visible (no dismiss button)', () => {
+    renderWithIntl(<FloatingWhatsApp />);
+    expect(screen.queryByRole('button')).toBeNull();
   });
 });
