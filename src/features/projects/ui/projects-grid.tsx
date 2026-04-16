@@ -1,4 +1,5 @@
 import { getTranslations } from 'next-intl/server';
+import { DistortHeading } from '@/features/cursor/effects/distort-heading';
 import { ProjectCard } from '@/features/projects/ui/project-card';
 import { getFeaturedProjects } from '@/shared/content';
 import type { Locale } from '@/shared/i18n/routing';
@@ -18,9 +19,12 @@ export async function ProjectsGrid({ locale }: Props) {
         <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--fg-muted)]">
           {t('eyebrow')}
         </p>
-        <h2 className="mt-4 max-w-3xl font-serif text-4xl font-normal leading-[1] tracking-[-0.02em] text-[var(--fg-primary)] md:text-6xl">
+        <DistortHeading
+          as="h2"
+          className="mt-4 max-w-3xl font-serif text-4xl font-normal leading-[1] tracking-[-0.02em] text-[var(--fg-primary)] md:text-6xl"
+        >
           {t('title')}
-        </h2>
+        </DistortHeading>
 
         {projects.length === 0 ? (
           <p className="mt-12 font-serif italic text-[var(--fg-tertiary)]">{t('empty')}</p>
