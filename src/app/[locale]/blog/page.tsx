@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { DistortHeading } from '@/features/cursor/effects/distort-heading';
 import { PostCard } from '@/features/blog/ui/post-card';
 import { getPosts } from '@/shared/content';
 import { type Locale, routing } from '@/shared/i18n/routing';
@@ -34,9 +35,12 @@ export default async function BlogIndexPage({ params }: Props) {
     <main>
       <section>
         <Container size="wide" className="py-24 md:py-32">
-          <h1 className="max-w-3xl font-serif text-4xl font-normal leading-[1] tracking-[-0.02em] text-[var(--fg-primary)] md:text-6xl">
+          <DistortHeading
+            as="h1"
+            className="max-w-3xl font-serif text-4xl font-normal leading-[1] tracking-[-0.02em] text-[var(--fg-primary)] md:text-6xl"
+          >
             {t('title')}
-          </h1>
+          </DistortHeading>
           <p className="mt-6 max-w-2xl font-serif text-lg italic text-[var(--fg-tertiary)]">
             {t('subtitle')}
           </p>
