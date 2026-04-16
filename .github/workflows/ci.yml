@@ -22,6 +22,8 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      - name: Generate content-collections types
+        run: pnpm exec content-collections build
       - run: pnpm typecheck
       - run: pnpm check
       - run: pnpm test
