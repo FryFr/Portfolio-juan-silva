@@ -181,7 +181,7 @@ graph LR
     C --> C1[production build]
     C1 --> C2[32 e2e, 8 axe routes]
     D --> D1[desktop ≥ 0.95]
-    D --> D2[mobile ≥ 0.80, 4x CPU]
+    D --> D2[mobile ≥ 0.70, 4x CPU]
     D --> D3[resource budgets]
 ```
 

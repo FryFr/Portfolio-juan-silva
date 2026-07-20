@@ -124,10 +124,25 @@ and let two real WCAG failures ship. Do not narrow it back.
 so the network never goes quiet for the 500ms it requires and the spec times out
 instead of reporting. Playwright's own docs discourage it.
 
-Lighthouse runs twice: `.lighthouserc.json` (desktop, 0.95) and
-`.lighthouserc.mobile.json` (mobile, 4x CPU throttle, 0.80). Desktop-only auditing
-is how a mobile regression ships. Resource budgets cap script/font/image/total —
-a category score is too coarse to catch a re-added 4MB image.
+Lighthouse runs twice: `.lighthouserc.json` (desktop) and
+`.lighthouserc.mobile.json` (mobile, 4x CPU throttle). Desktop-only auditing is how
+a mobile regression ships. Resource budgets cap script/font/image/total — a
+category score is too coarse to catch a re-added 4MB image.
+
+**The mobile threshold is 0.70 and that is deliberate — do not raise it to match a
+local run.** Absolute Lighthouse scores are not portable between machines. The
+same commit measured:
+
+| | benchmarkIndex | mobile performance |
+|---|---|---|
+| M-series laptop | 4410 | 0.88 |
+| GitHub Actions runner | 2319 | 0.75 |
+
+The runner is roughly half the speed, and Lighthouse then applies its 4x CPU
+slowdown on top, so CI simulates a far harsher device than the same config does
+locally. The gate exists to catch regressions on the machine that runs it, so it
+is calibrated to CI's number with ~5 points of headroom. A threshold set from a
+fast laptop fails every PR and gets deleted.
 
 ## Environment
 
