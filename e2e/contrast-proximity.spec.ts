@@ -1,4 +1,4 @@
-import { expect, type Locator, test } from '@playwright/test';
+import { expect, type Locator, type Page, test } from '@playwright/test';
 
 /**
  * Regression suite for the cursor-proximity invisible-text bug.
@@ -46,6 +46,34 @@ function readColours(target: Locator): Promise<{ color: Rgb; background: Rgb }> 
   });
 }
 
+/**
+ * Scroll the first reveal target into view and park the cursor on it.
+ *
+ * The scroll is not incidental. Since the hero became a full-viewport section the
+ * body copy sits below the fold, and the effect is gated by an IntersectionObserver
+ * — off-screen, the rAF loop early-returns and never publishes --reveal, so the
+ * assertions would pass or fail for reasons unrelated to contrast.
+ */
+async function focusRevealTarget(page: Page): Promise<Locator> {
+  // .reveal-text is applied only once the mount gate confirms a fine pointer, so
+  // its presence also proves the SSR/hydration gate resolved correctly.
+  const target = page.locator('.reveal-text').first();
+  await expect(target).toBeVisible();
+  await target.scrollIntoViewIfNeeded();
+
+  const box = await target.boundingBox();
+  expect(box, 'reveal target has no layout box').not.toBeNull();
+  if (!box) throw new Error('unreachable');
+
+  // Park the pointer dead centre — peak intensity, the worst case.
+  await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+  await expect
+    .poll(async () => target.evaluate((el) => el.style.getPropertyValue('--reveal')))
+    .not.toBe('');
+
+  return target;
+}
+
 function relativeLuminance([r, g, b]: Rgb): number {
   const channel = (v: number) => {
     const c = v / 255;
@@ -68,21 +96,7 @@ for (const scheme of ['light', 'dark'] as const) {
     test('body copy stays above WCAG AA with the cursor on it', async ({ page }) => {
       await page.goto('/es');
 
-      // .reveal-text is applied only once the mount gate confirms a fine pointer,
-      // so its presence also proves the SSR/hydration gate resolved correctly.
-      const target = page.locator('.reveal-text').first();
-      await expect(target).toBeVisible();
-
-      const box = await target.boundingBox();
-      expect(box).not.toBeNull();
-      if (!box) return;
-
-      // Park the pointer dead centre — peak intensity, the worst case.
-      await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
-      await expect
-        .poll(async () => target.evaluate((el) => el.style.getPropertyValue('--reveal')))
-        .not.toBe('');
-
+      const target = await focusRevealTarget(page);
       const { color, background } = await readColours(target);
 
       const ratio = contrastRatio(color, background);
@@ -95,17 +109,7 @@ for (const scheme of ['light', 'dark'] as const) {
     test('never resolves to the page background colour', async ({ page }) => {
       await page.goto('/es');
 
-      const target = page.locator('.reveal-text').first();
-      await expect(target).toBeVisible();
-
-      const box = await target.boundingBox();
-      if (!box) return;
-
-      await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
-      await expect
-        .poll(async () => target.evaluate((el) => el.style.getPropertyValue('--reveal')))
-        .not.toBe('');
-
+      const target = await focusRevealTarget(page);
       const { color, background } = await readColours(target);
 
       expect(color.join(',')).not.toBe(background.join(','));

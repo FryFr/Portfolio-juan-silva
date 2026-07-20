@@ -51,6 +51,9 @@
   --color-subtle: var(--fg-tertiary);
   --color-muted: var(--fg-muted);
 
+  --color-invert: var(--bg-invert);
+  --color-on-invert: var(--fg-invert);
+
   --color-accent: var(--accent);
   --color-success: var(--accent-success);
   --color-warn: var(--accent-warn);
@@ -69,6 +72,10 @@
     --fg-secondary: #3d2e1a;
     --fg-tertiary: #5a4a35;
     --fg-muted: #6b5943;
+    /* Inverted surface, always declared as a PAIR. A lone --bg-invert with no
+       matching foreground is exactly how a contrast bug gets written. 15.8:1. */
+    --bg-invert: #1a1208;
+    --fg-invert: #f5f1ea;
     --accent: #7a6030;
     --accent-rgb: 122 96 48;
     --accent-success: #55703c;
@@ -85,6 +92,8 @@
     --fg-secondary: #e8dfcf;
     --fg-tertiary: #b8a589;
     --fg-muted: #a89272;
+    --bg-invert: #f5f1ea;
+    --fg-invert: #1a1208;
     --accent: #d4b584;
     --accent-rgb: 212 181 132;
     --accent-success: #8ba970;
