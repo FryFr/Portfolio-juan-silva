@@ -129,20 +129,33 @@ Lighthouse runs twice: `.lighthouserc.json` (desktop) and
 a mobile regression ships. Resource budgets cap script/font/image/total — a
 category score is too coarse to catch a re-added 4MB image.
 
-**The mobile threshold is 0.70 and that is deliberate — do not raise it to match a
-local run.** Absolute Lighthouse scores are not portable between machines. The
-same commit measured:
+**The performance thresholds are 0.80 desktop / 0.70 mobile and that is deliberate
+— do not raise them to match a local run.**
+
+Two separate reasons, both learned by failing CI.
+
+*Scores are not portable between machines.* The same commit measured:
 
 | | benchmarkIndex | mobile performance |
 |---|---|---|
 | M-series laptop | 4410 | 0.88 |
 | GitHub Actions runner | 2319 | 0.75 |
 
-The runner is roughly half the speed, and Lighthouse then applies its 4x CPU
-slowdown on top, so CI simulates a far harsher device than the same config does
-locally. The gate exists to catch regressions on the machine that runs it, so it
-is calibrated to CI's number with ~5 points of headroom. A threshold set from a
-fast laptop fails every PR and gets deleted.
+The runner is roughly half the speed, and Lighthouse applies its 4x CPU slowdown
+on top, so CI simulates a far harsher device than the identical config does
+locally.
+
+*Shared runners are noisy.* Desktop performance on effectively identical code
+scored `>= 0.95` on one run and `0.86` on the next. That is variance, not a
+regression, and a gate that fires on noise gets ignored and then deleted.
+
+Mitigations: `numberOfRuns: 3` so assertions run against the median, and
+thresholds with real headroom below the observed floor.
+
+**The resource budgets are the strict half of this gate and should stay strict.**
+Bytes are deterministic — they do not vary with CPU — so `resource-summary:*` is
+what actually catches a regression like a re-added 4MB image. The performance
+score is the loose, noisy half.
 
 ## Environment
 
