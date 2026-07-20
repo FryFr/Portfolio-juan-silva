@@ -1,7 +1,7 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
 import type { Project } from '@/content-collections';
+import { ProjectCover } from '@/features/projects/ui/project-cover';
 import type { Locale } from '@/shared/i18n/routing';
 
 type Props = {
@@ -15,20 +15,7 @@ export async function ProjectCard({ project, locale }: Props) {
   return (
     <article className="group relative border-t border-border pt-8">
       <div className="flex flex-col gap-6 md:flex-row md:gap-10">
-        {project.cover && (
-          <Link
-            href={`/${locale}/projects/${project.slug}`}
-            className="relative block aspect-[4/3] w-full shrink-0 overflow-hidden rounded-sm border border-border bg-surface md:w-72"
-          >
-            <Image
-              src={project.cover}
-              alt={project.title}
-              fill
-              className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-              sizes="(max-width: 768px) 100vw, 288px"
-            />
-          </Link>
-        )}
+        <ProjectCover project={project} locale={locale} className="md:w-72" />
 
         <div className="flex min-w-0 flex-1 flex-col gap-4">
           <header className="flex items-baseline justify-between gap-4">

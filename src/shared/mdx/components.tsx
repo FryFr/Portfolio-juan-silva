@@ -85,9 +85,19 @@ type MdxImgProps = {
 
 function MdxImg({ src, alt }: MdxImgProps) {
   if (!src) return null;
+  // width/height are placeholders — MDX gives us no intrinsic dimensions. `h-auto`
+  // makes the browser use the loaded image's real aspect ratio instead of the
+  // declared 16:9, which was stretching every portrait asset (val-verso is 480x720).
   return (
     <span className="my-6 block overflow-hidden rounded">
-      <Image src={src} alt={alt ?? ''} width={1200} height={675} className="rounded" />
+      <Image
+        src={src}
+        alt={alt ?? ''}
+        width={1200}
+        height={675}
+        sizes="(max-width: 768px) 100vw, 768px"
+        className="h-auto w-full rounded"
+      />
     </span>
   );
 }
