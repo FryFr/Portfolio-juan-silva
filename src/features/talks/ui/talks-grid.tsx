@@ -19,7 +19,7 @@ export async function TalksGrid({ locale }: Props) {
     <ul className="mt-16 space-y-16">
       {talks.map((talk) => (
         <li key={talk.slug}>
-          <TalkCard talk={talk} />
+          <TalkCard talk={talk} locale={locale} />
         </li>
       ))}
     </ul>

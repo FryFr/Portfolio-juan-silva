@@ -195,7 +195,14 @@
       "empty": "Todavía no hay charlas cargadas.",
       "slides": "Slides",
       "video": "Video",
-      "deliveredIn": "Idioma de la charla"
+      "deliveredIn": "Idioma de la charla",
+      "readMore": "Ver la charla"
+    },
+    "detail": {
+      "backToList": "← Todas las charlas",
+      "event": "Evento",
+      "year": "Año",
+      "language": "Idioma"
     }
   },
   "contact": {

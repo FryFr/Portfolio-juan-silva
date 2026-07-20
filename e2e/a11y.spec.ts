@@ -1,7 +1,19 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
-const routes = ['/es', '/en', '/es/projects', '/es/blog', '/es/talks'] as const;
+// Index routes plus one detail route of each kind. Detail pages were previously
+// unaudited, which meant the case-study, blog and talk templates — three of the
+// four page layouts on the site — had no accessibility coverage at all.
+const routes = [
+  '/es',
+  '/en',
+  '/es/projects',
+  '/es/blog',
+  '/es/talks',
+  '/es/projects/n8n-automations',
+  '/es/blog/de-mecatronica-a-ia',
+  '/es/talks/manageengine-partner-training-2025',
+] as const;
 
 for (const route of routes) {
   test(`a11y: ${route}`, async ({ page }) => {

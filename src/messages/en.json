@@ -195,7 +195,14 @@
       "empty": "No talks yet.",
       "slides": "Slides",
       "video": "Video",
-      "deliveredIn": "Talk language"
+      "deliveredIn": "Talk language",
+      "readMore": "View the talk"
+    },
+    "detail": {
+      "backToList": "← All talks",
+      "event": "Event",
+      "year": "Year",
+      "language": "Language"
     }
   },
   "contact": {
