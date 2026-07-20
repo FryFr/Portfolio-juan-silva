@@ -196,7 +196,9 @@ Measured on a production build:
 | Desktop | **100** | **100** | 96 | **100** |
 | Mobile · 4× CPU, ~1.6 Mbps | **88** | **100** | 96 | **100** |
 
-*(best practices is 96 locally only — two `/_vercel/*` scripts that exist only when deployed.)*
+**TBT 20 ms, CLS 0** across five canvas fields — every loop runs after hydration and is IntersectionObserver-gated, so only the visible one runs. Mobile is LCP-bound at 3.9s, i.e. network rather than paint.
+
+Two caveats on those numbers. Best practices is 96 locally only — two `/_vercel/*` scripts that exist only when deployed. And the mobile gate is set to **0.70, not 0.88**: absolute Lighthouse scores are not portable between machines, and the CI runner benchmarks at roughly half the speed of the laptop these were measured on *before* Lighthouse applies its 4× slowdown. The gate is calibrated to the machine that runs it.
 
 Budgets cap script, font, image and total transfer. A category score is far too
 coarse to catch "someone re-added a 4 MB portrait", which is a thing that actually
