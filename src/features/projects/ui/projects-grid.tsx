@@ -14,20 +14,18 @@ export async function ProjectsGrid({ locale }: Props) {
   const projects = getFeaturedProjects(locale);
 
   return (
-    <section className="border-t border-[var(--bg-tertiary)]">
+    <section className="border-t border-border">
       <Container size="wide" className="py-24 md:py-32">
-        <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--fg-muted)]">
-          {t('eyebrow')}
-        </p>
+        <p className="font-mono text-eyebrow uppercase text-muted">{t('eyebrow')}</p>
         <DistortHeading
           as="h2"
-          className="mt-4 max-w-3xl font-serif text-4xl font-normal leading-[1] tracking-[-0.02em] text-[var(--fg-primary)] md:text-6xl"
+          className="mt-4 max-w-3xl font-serif text-4xl font-normal leading-[1] tracking-[-0.02em] text-foreground md:text-6xl"
         >
           {t('title')}
         </DistortHeading>
 
         {projects.length === 0 ? (
-          <p className="mt-12 font-serif italic text-[var(--fg-tertiary)]">{t('empty')}</p>
+          <p className="mt-12 font-serif italic text-subtle">{t('empty')}</p>
         ) : (
           <div className="mt-16 space-y-20">
             {projects.map((project) => (

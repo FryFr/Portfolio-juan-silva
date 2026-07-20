@@ -13,15 +13,15 @@ export async function Navbar({ locale }: Props) {
   const t = await getTranslations('common');
 
   return (
-    <header className="sticky top-0 z-40 border-b border-[var(--bg-tertiary)] bg-[var(--bg-primary)]/80 backdrop-blur">
+    <header className="sticky top-0 z-40 border-b border-border bg-background/80 backdrop-blur">
       <Container size="wide">
         <nav className="flex h-14 items-center justify-between gap-6" aria-label="Primary">
           <Link
             href="/"
-            className="font-serif text-lg font-normal tracking-tight text-[var(--fg-primary)] hover:text-[var(--fg-secondary)]"
+            className="font-serif text-lg font-normal tracking-tight text-foreground transition-colors duration-150 ease-out-expo hover:text-body"
           >
             {t('siteName')}
-            <span className="text-[var(--accent)]">.</span>
+            <span className="text-accent">.</span>
           </Link>
 
           <ul className="hidden items-center gap-6 md:flex">
@@ -29,7 +29,7 @@ export async function Navbar({ locale }: Props) {
               <li key={item.key}>
                 <Link
                   href={item.path}
-                  className="font-mono text-[11px] uppercase tracking-[0.15em] text-[var(--fg-tertiary)] hover:text-[var(--fg-primary)]"
+                  className="font-mono text-eyebrow uppercase text-subtle transition-colors duration-150 ease-out-expo hover:text-foreground"
                 >
                   {t(`nav.${item.key}`)}
                 </Link>

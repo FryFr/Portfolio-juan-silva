@@ -16,12 +16,7 @@ export function LocaleSwitcher({ currentLocale, className }: Props) {
   const [isPending, startTransition] = useTransition();
 
   return (
-    <div
-      className={cn(
-        'flex items-center gap-1 font-mono text-[10px] uppercase tracking-[0.15em]',
-        className,
-      )}
-    >
+    <div className={cn('flex items-center gap-1 font-mono text-eyebrow uppercase', className)}>
       {routing.locales.map((locale) => {
         const isActive = locale === currentLocale;
         return (
@@ -35,10 +30,10 @@ export function LocaleSwitcher({ currentLocale, className }: Props) {
               });
             }}
             className={cn(
-              'h-8 px-2 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]',
+              'h-8 px-2 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
               isActive
-                ? 'text-[var(--fg-primary)] underline underline-offset-4'
-                : 'text-[var(--fg-tertiary)] hover:text-[var(--fg-primary)]',
+                ? 'text-foreground underline underline-offset-4'
+                : 'text-subtle hover:text-foreground',
             )}
           >
             {locale}

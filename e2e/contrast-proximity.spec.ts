@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, type Locator, test } from '@playwright/test';
 
 /**
  * Regression suite for the cursor-proximity invisible-text bug.
@@ -18,23 +18,33 @@ const AA_NORMAL_TEXT = 4.5;
 type Rgb = [number, number, number];
 
 /**
- * Resolve any CSS colour to sRGB inside the page.
+ * Read the element's text colour and the page background, both resolved to sRGB
+ * inside the browser.
  *
  * getComputedStyle returns color-mix(in oklab, ...) as an oklab() value, which no
  * amount of regex will turn into channels. Canvas accepts every CSS colour syntax
  * the browser understands and hands back the sRGB bytes it would actually paint —
  * which is precisely what a human eye receives, and therefore what WCAG is about.
  */
-const TO_RGB = `(value) => {
-  const canvas = document.createElement('canvas');
-  canvas.width = 1;
-  canvas.height = 1;
-  const ctx = canvas.getContext('2d');
-  ctx.fillStyle = value;
-  ctx.fillRect(0, 0, 1, 1);
-  const [r, g, b] = ctx.getImageData(0, 0, 1, 1).data;
-  return [r, g, b];
-}`;
+function readColours(target: Locator): Promise<{ color: Rgb; background: Rgb }> {
+  return target.evaluate((el) => {
+    const toRgb = (value: string): [number, number, number] => {
+      const canvas = document.createElement('canvas');
+      canvas.width = 1;
+      canvas.height = 1;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) throw new Error('no 2d canvas context');
+      ctx.fillStyle = value;
+      ctx.fillRect(0, 0, 1, 1);
+      const data = ctx.getImageData(0, 0, 1, 1).data;
+      return [data[0] ?? 0, data[1] ?? 0, data[2] ?? 0];
+    };
+    return {
+      color: toRgb(getComputedStyle(el).color),
+      background: toRgb(getComputedStyle(document.body).backgroundColor),
+    };
+  });
+}
 
 function relativeLuminance([r, g, b]: Rgb): number {
   const channel = (v: number) => {
@@ -73,13 +83,7 @@ for (const scheme of ['light', 'dark'] as const) {
         .poll(async () => target.evaluate((el) => el.style.getPropertyValue('--reveal')))
         .not.toBe('');
 
-      const { color, background } = await target.evaluate((el, toRgbSrc) => {
-        const toRgb = eval(toRgbSrc) as (v: string) => [number, number, number];
-        return {
-          color: toRgb(getComputedStyle(el).color),
-          background: toRgb(getComputedStyle(document.body).backgroundColor),
-        };
-      }, TO_RGB);
+      const { color, background } = await readColours(target);
 
       const ratio = contrastRatio(color, background);
       expect(
@@ -102,12 +106,9 @@ for (const scheme of ['light', 'dark'] as const) {
         .poll(async () => target.evaluate((el) => el.style.getPropertyValue('--reveal')))
         .not.toBe('');
 
-      const { color, background } = await target.evaluate((el) => ({
-        color: getComputedStyle(el).color,
-        background: getComputedStyle(document.body).backgroundColor,
-      }));
+      const { color, background } = await readColours(target);
 
-      expect(color).not.toBe(background);
+      expect(color.join(',')).not.toBe(background.join(','));
     });
   });
 }

@@ -6,6 +6,54 @@
   --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
   --font-serif: var(--font-serif), Georgia, serif;
   --font-mono: var(--font-mono), ui-monospace, monospace;
+
+  /* Type scale. Fluid sizes are clamped so the display setting can bleed to the
+     viewport edges without a media query per breakpoint. */
+  --text-eyebrow: 0.6875rem; /* 11px. Was 10px, which is illegible at 0.18em tracking. */
+  --text-eyebrow--line-height: 1;
+  --text-eyebrow--letter-spacing: 0.18em;
+  --text-display: clamp(3.5rem, 12vw, 11rem);
+  --text-display--line-height: 0.85;
+  --text-display--letter-spacing: -0.04em;
+  --text-section: clamp(2.25rem, 6vw, 5rem);
+  --text-section--line-height: 0.95;
+  --text-section--letter-spacing: -0.02em;
+  --text-lead: clamp(1.25rem, 2.5vw, 1.75rem);
+  --text-lead--line-height: 1.45;
+
+  /* Motion vocabulary. Phase 4's scroll system builds on these rather than
+     scattering ad-hoc durations across components. */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
+  --duration-fast: 150ms;
+  --duration-base: 300ms;
+  --duration-slow: 600ms;
+}
+
+/*
+ * `inline` is load-bearing.
+ *
+ * A plain `@theme { --color-foreground: #1a1208 }` bakes the literal value into
+ * every generated utility, so the .dark overrides below would never reach it.
+ * `@theme inline` emits `color: var(--fg-primary)` instead — the utility points at
+ * the runtime variable, so the existing cascade keeps working untouched.
+ *
+ * Names describe the ROLE, not the original variable: --bg-tertiary was used 19
+ * times and 21 of the 21 border declarations, so it is `border`, not a background.
+ */
+@theme inline {
+  --color-background: var(--bg-primary);
+  --color-surface: var(--bg-secondary);
+  --color-border: var(--bg-tertiary);
+
+  --color-foreground: var(--fg-primary);
+  --color-body: var(--fg-secondary);
+  --color-subtle: var(--fg-tertiary);
+  --color-muted: var(--fg-muted);
+
+  --color-accent: var(--accent);
+  --color-success: var(--accent-success);
+  --color-warn: var(--accent-warn);
 }
 
 @layer base {
@@ -13,28 +61,30 @@
     --bg-primary: #f5f1ea;
     --bg-secondary: #ece3d2;
     --bg-tertiary: #e8dfcf;
-    --bg-invert: #1a1208;
+    /* Contrast on --bg-primary #f5f1ea:
+       primary 15.8:1 · secondary 11.2:1 · tertiary 7.6:1 · muted 6.0:1
+       tertiary and muted were 5.95:1 and 4.83:1. Muted carries every eyebrow and
+       label on the site; 4.83 cleared AA by 0.33 and failed real eyes. */
     --fg-primary: #1a1208;
     --fg-secondary: #3d2e1a;
-    --fg-tertiary: #6b5943;
-    --fg-muted: #7a6747;
-    --fg-subtle: #b8a589;
+    --fg-tertiary: #5a4a35;
+    --fg-muted: #6b5943;
     --accent: #7a6030;
     --accent-rgb: 122 96 48;
-    --accent-success: #7a9960;
-    --accent-warn: #e07856;
+    --accent-success: #55703c;
+    --accent-warn: #a8442a;
   }
 
   .dark {
     --bg-primary: #1a1208;
     --bg-secondary: #241a0e;
     --bg-tertiary: #2e2214;
-    --bg-invert: #f5f1ea;
+    /* Contrast on --bg-primary #1a1208:
+       primary 15.8:1 · secondary 13.2:1 · tertiary 7.7:1 · muted 6.2:1 */
     --fg-primary: #f5f1ea;
     --fg-secondary: #e8dfcf;
     --fg-tertiary: #b8a589;
-    --fg-muted: #9a8567;
-    --fg-subtle: #6b5943;
+    --fg-muted: #a89272;
     --accent: #d4b584;
     --accent-rgb: 212 181 132;
     --accent-success: #8ba970;

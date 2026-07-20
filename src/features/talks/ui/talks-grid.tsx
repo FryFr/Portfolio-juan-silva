@@ -12,7 +12,7 @@ export async function TalksGrid({ locale }: Props) {
   const talks = getTalks(locale);
 
   if (talks.length === 0) {
-    return <p className="mt-12 font-serif italic text-[var(--fg-tertiary)]">{t('empty')}</p>;
+    return <p className="mt-12 font-serif italic text-subtle">{t('empty')}</p>;
   }
 
   return (

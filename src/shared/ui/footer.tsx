@@ -20,17 +20,17 @@ export async function Footer() {
   const whatsappUrl = buildWhatsAppUrl(tContact('whatsappMessage'));
 
   return (
-    <footer className="mt-24 border-t border-[var(--bg-tertiary)] py-10">
+    <footer className="mt-24 border-t border-border py-10">
       <Container size="wide">
         <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
-          <p className="font-serif text-sm italic text-[var(--fg-tertiary)]">{t('builtWith')}</p>
-          <ul className="flex items-center gap-4 font-mono text-[10px] uppercase tracking-[0.15em] text-[var(--fg-tertiary)]">
+          <p className="font-serif text-sm italic text-subtle">{t('builtWith')}</p>
+          <ul className="flex items-center gap-4 font-mono text-eyebrow uppercase text-subtle">
             <li>
               <a
                 href={siteConfig.social.github}
                 target="_blank"
                 rel="noreferrer noopener"
-                className="hover:text-[var(--fg-primary)]"
+                className="transition-colors duration-150 ease-out-expo hover:text-foreground"
               >
                 github
               </a>
@@ -40,7 +40,7 @@ export async function Footer() {
                 href={siteConfig.social.linkedin}
                 target="_blank"
                 rel="noreferrer noopener"
-                className="hover:text-[var(--fg-primary)]"
+                className="transition-colors duration-150 ease-out-expo hover:text-foreground"
               >
                 linkedin
               </a>
@@ -50,7 +50,7 @@ export async function Footer() {
                 href={siteConfig.social.youtube}
                 target="_blank"
                 rel="noreferrer noopener"
-                className="hover:text-[var(--fg-primary)]"
+                className="transition-colors duration-150 ease-out-expo hover:text-foreground"
               >
                 youtube
               </a>
@@ -60,7 +60,7 @@ export async function Footer() {
                 href={whatsappUrl}
                 target="_blank"
                 rel="noreferrer noopener"
-                className="hover:text-[var(--fg-primary)]"
+                className="transition-colors duration-150 ease-out-expo hover:text-foreground"
                 aria-label={`WhatsApp +${CONTACT.whatsappE164}`}
               >
                 whatsapp
@@ -69,12 +69,10 @@ export async function Footer() {
           </ul>
         </div>
         <div className="mt-8 flex flex-col items-start justify-between gap-2 md:flex-row md:items-center">
-          <p className="font-mono text-[10px] uppercase tracking-[0.15em] text-[var(--fg-muted)]">
+          <p className="font-mono text-eyebrow uppercase text-muted">
             {t('lastUpdated', { date: formattedDate })}
           </p>
-          <p className="font-mono text-[10px] uppercase tracking-[0.15em] text-[var(--fg-muted)]">
-            {t('copyright', { year })}
-          </p>
+          <p className="font-mono text-eyebrow uppercase text-muted">{t('copyright', { year })}</p>
         </div>
       </Container>
     </footer>

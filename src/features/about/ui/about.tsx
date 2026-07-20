@@ -13,19 +13,17 @@ export async function About() {
   const bio = Array.from({ length: ABOUT_BIO_PARAGRAPHS }, (_, i) => t(`bio.${i}`));
 
   return (
-    <section className="border-t border-[var(--bg-tertiary)]">
+    <section className="border-t border-border">
       <Container size="wide" className="py-24 md:py-32">
-        <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--fg-muted)]">
-          {t('eyebrow')}
-        </p>
+        <p className="font-mono text-eyebrow uppercase text-muted">{t('eyebrow')}</p>
         <DistortHeading
           as="h2"
-          className="mt-4 max-w-3xl font-serif text-4xl font-normal leading-[1] tracking-[-0.02em] text-[var(--fg-primary)] md:text-6xl"
+          className="mt-4 max-w-3xl font-serif text-4xl font-normal leading-[1] tracking-[-0.02em] text-foreground md:text-6xl"
         >
           {t('title')}
         </DistortHeading>
         <div className="mt-12 flex flex-col gap-10 md:flex-row md:items-start md:gap-16">
-          <div className="relative aspect-[3/4] w-full max-w-xs shrink-0 overflow-hidden rounded-sm border border-[var(--bg-tertiary)]">
+          <div className="relative aspect-[3/4] w-full max-w-xs shrink-0 overflow-hidden rounded-sm border border-border">
             <Image
               src="/images/portrait/juan-silva-formal.jpg"
               alt="Juan Silva"
@@ -39,11 +37,11 @@ export async function About() {
               aria-hidden="true"
               className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/70 to-transparent"
             />
-            <span className="absolute bottom-3 left-3 font-mono text-[10px] uppercase tracking-[0.15em] text-white">
+            <span className="absolute bottom-3 left-3 font-mono text-eyebrow uppercase text-white">
               fig.01 — Juan Silva
             </span>
           </div>
-          <div className="max-w-2xl space-y-6 font-serif text-lg leading-relaxed text-[var(--fg-secondary)] md:text-xl">
+          <div className="max-w-2xl space-y-6 font-serif text-lg leading-relaxed text-body md:text-xl">
             {bio.map((paragraph) => (
               <ProximityReveal key={paragraph}>{paragraph}</ProximityReveal>
             ))}
@@ -51,25 +49,19 @@ export async function About() {
         </div>
 
         <div className="mt-20">
-          <h3 className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--fg-muted)]">
-            {t('skillsTitle')}
-          </h3>
+          <h3 className="font-mono text-eyebrow uppercase text-muted">{t('skillsTitle')}</h3>
           <div className="mt-6">
             <SkillsGrid />
           </div>
         </div>
 
         <div className="mt-20">
-          <h3 className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--fg-muted)]">
-            {t('timelineTitle')}
-          </h3>
+          <h3 className="font-mono text-eyebrow uppercase text-muted">{t('timelineTitle')}</h3>
           <Timeline />
         </div>
 
         <div className="mt-20">
-          <h3 className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--fg-muted)]">
-            {t('softSkillsTitle')}
-          </h3>
+          <h3 className="font-mono text-eyebrow uppercase text-muted">{t('softSkillsTitle')}</h3>
           <div className="mt-6">
             <SoftSkills />
           </div>

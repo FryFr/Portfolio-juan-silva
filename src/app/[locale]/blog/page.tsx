@@ -37,16 +37,14 @@ export default async function BlogIndexPage({ params }: Props) {
         <Container size="wide" className="py-24 md:py-32">
           <DistortHeading
             as="h1"
-            className="max-w-3xl font-serif text-4xl font-normal leading-[1] tracking-[-0.02em] text-[var(--fg-primary)] md:text-6xl"
+            className="max-w-3xl font-serif text-4xl font-normal leading-[1] tracking-[-0.02em] text-foreground md:text-6xl"
           >
             {t('title')}
           </DistortHeading>
-          <p className="mt-6 max-w-2xl font-serif text-lg italic text-[var(--fg-tertiary)]">
-            {t('subtitle')}
-          </p>
+          <p className="mt-6 max-w-2xl font-serif text-lg italic text-subtle">{t('subtitle')}</p>
 
           {posts.length === 0 ? (
-            <p className="mt-12 font-serif italic text-[var(--fg-tertiary)]">{t('empty')}</p>
+            <p className="mt-12 font-serif italic text-subtle">{t('empty')}</p>
           ) : (
             <ul className="mt-16 space-y-16">
               {posts.map((post) => (

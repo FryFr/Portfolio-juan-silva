@@ -15,17 +15,15 @@ export async function TalkCard({ talk }: Props) {
   }
 
   return (
-    <article className="flex flex-col gap-4 border-t border-[var(--bg-tertiary)] pt-8">
-      <p className="font-mono text-xs uppercase tracking-[0.15em] text-[var(--fg-muted)]">
+    <article className="flex flex-col gap-4 border-t border-border pt-8">
+      <p className="font-mono text-xs uppercase tracking-[0.15em] text-muted">
         {eyebrowParts.join(' · ')}
       </p>
-      <DistortHeading as="h2" className="font-serif text-2xl text-[var(--fg-primary)]">
+      <DistortHeading as="h2" className="font-serif text-2xl text-foreground">
         {talk.title}
       </DistortHeading>
-      <p className="max-w-2xl font-serif text-base italic text-[var(--fg-tertiary)]">
-        {talk.summary}
-      </p>
-      <p className="font-mono text-xs uppercase tracking-[0.15em] text-[var(--fg-muted)]">
+      <p className="max-w-2xl font-serif text-base italic text-subtle">{talk.summary}</p>
+      <p className="font-mono text-xs uppercase tracking-[0.15em] text-muted">
         {t('deliveredIn')}: {talk.language.toUpperCase()}
       </p>
       {(talk.slides || talk.video) && (
@@ -36,7 +34,7 @@ export async function TalkCard({ talk }: Props) {
                 href={talk.slides}
                 target="_blank"
                 rel="noreferrer noopener"
-                className="font-mono text-xs uppercase tracking-[0.15em] text-[var(--accent)] underline underline-offset-4"
+                className="font-mono text-xs uppercase tracking-[0.15em] text-accent underline underline-offset-4"
               >
                 {t('slides')}
               </a>
@@ -48,7 +46,7 @@ export async function TalkCard({ talk }: Props) {
                 href={talk.video}
                 target="_blank"
                 rel="noreferrer noopener"
-                className="font-mono text-xs uppercase tracking-[0.15em] text-[var(--accent)] underline underline-offset-4"
+                className="font-mono text-xs uppercase tracking-[0.15em] text-accent underline underline-offset-4"
               >
                 {t('video')}
               </a>

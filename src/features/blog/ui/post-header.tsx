@@ -15,16 +15,16 @@ export async function PostHeader({ post }: Props) {
     <header className="flex flex-col gap-8">
       <DistortHeading
         as="h1"
-        className="font-serif text-4xl font-normal leading-[1.05] tracking-[-0.02em] text-[var(--fg-primary)] md:text-5xl"
+        className="font-serif text-4xl font-normal leading-[1.05] tracking-[-0.02em] text-foreground md:text-5xl"
       >
         {post.title}
       </DistortHeading>
 
-      <ProximityReveal className="max-w-2xl font-serif text-lg italic text-[var(--fg-tertiary)] md:text-xl">
+      <ProximityReveal className="max-w-2xl font-serif text-lg italic text-subtle md:text-xl">
         {post.summary}
       </ProximityReveal>
 
-      <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--fg-muted)]">
+      <p className="font-mono text-eyebrow uppercase text-muted">
         <span>
           {t('publishedOn')} {post.publishedAt}
         </span>
@@ -33,12 +33,9 @@ export async function PostHeader({ post }: Props) {
       </p>
 
       {post.tags.length > 0 && (
-        <ul className="flex flex-wrap gap-x-3 gap-y-1 font-mono text-xs text-[var(--fg-secondary)]">
+        <ul className="flex flex-wrap gap-x-3 gap-y-1 font-mono text-xs text-body">
           {post.tags.map((tag) => (
-            <li
-              key={tag}
-              className="border border-[var(--bg-tertiary)] px-2 py-1 uppercase tracking-[0.15em]"
-            >
+            <li key={tag} className="border border-border px-2 py-1 uppercase tracking-[0.15em]">
               {tag}
             </li>
           ))}

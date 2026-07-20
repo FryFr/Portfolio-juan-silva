@@ -7,7 +7,7 @@ export function Tag({ className, ...props }: TagProps) {
   return (
     <span
       className={cn(
-        'inline-flex items-center border border-[var(--fg-muted)] px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.15em] text-[var(--fg-tertiary)]',
+        'inline-flex items-center border border-muted px-2 py-0.5 font-mono text-eyebrow uppercase text-subtle',
         className,
       )}
       {...props}

@@ -15,16 +15,14 @@ export async function CaseStudyNav({ locale, prev, next }: Props) {
   const t = await getTranslations('projects.detail');
 
   return (
-    <nav className="grid grid-cols-1 gap-6 border-t border-[var(--bg-tertiary)] pt-12 md:grid-cols-2">
+    <nav className="grid grid-cols-1 gap-6 border-t border-border pt-12 md:grid-cols-2">
       {prev ? (
         <Link
           href={`/${locale}/projects/${prev.slug}`}
           className="group flex flex-col gap-2 text-left"
         >
-          <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--fg-muted)]">
-            {t('prev')}
-          </span>
-          <span className="font-serif text-2xl text-[var(--fg-primary)] underline-offset-4 group-hover:underline">
+          <span className="font-mono text-eyebrow uppercase text-muted">{t('prev')}</span>
+          <span className="font-serif text-2xl text-foreground underline-offset-4 group-hover:underline">
             {prev.title}
           </span>
         </Link>
@@ -36,10 +34,8 @@ export async function CaseStudyNav({ locale, prev, next }: Props) {
           href={`/${locale}/projects/${next.slug}`}
           className="group flex flex-col gap-2 text-right md:items-end"
         >
-          <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--fg-muted)]">
-            {t('next')}
-          </span>
-          <span className="font-serif text-2xl text-[var(--fg-primary)] underline-offset-4 group-hover:underline">
+          <span className="font-mono text-eyebrow uppercase text-muted">{t('next')}</span>
+          <span className="font-serif text-2xl text-foreground underline-offset-4 group-hover:underline">
             {next.title}
           </span>
         </Link>

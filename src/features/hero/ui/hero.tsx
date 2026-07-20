@@ -15,23 +15,23 @@ export async function Hero() {
       <Container size="wide" className="py-24 md:py-32">
         <div className="flex flex-col-reverse items-start gap-12 md:flex-row md:items-center md:gap-16">
           <div className="flex-1">
-            <div className="mb-8 font-mono text-xs uppercase tracking-[0.2em] text-[var(--fg-muted)]">
-              <span className="text-[var(--accent)]">$</span> {t('prompt')}
+            <div className="mb-8 font-mono text-xs uppercase tracking-[0.2em] text-muted">
+              <span className="text-accent">$</span> {t('prompt')}
             </div>
             <DistortHeading
               as="h1"
-              className="font-serif text-7xl font-normal leading-[0.88] tracking-[-0.03em] text-[var(--fg-primary)] md:text-9xl"
+              className="font-serif text-7xl font-normal leading-[0.88] tracking-[-0.03em] text-foreground md:text-9xl"
             >
               {t('title')}
             </DistortHeading>
-            <ProximityReveal className="mt-6 max-w-2xl font-serif text-xl italic text-[var(--fg-tertiary)] md:text-2xl">
+            <ProximityReveal className="mt-6 max-w-2xl font-serif text-xl italic text-subtle md:text-2xl">
               {t('subtitle')}
             </ProximityReveal>
-            <p className="mt-10 font-mono text-sm uppercase tracking-[0.15em] text-[var(--fg-muted)]">
+            <p className="mt-10 font-mono text-sm uppercase tracking-[0.15em] text-muted">
               {t('rolesIntro')} · <RoleRotator phrases={phrases} />
             </p>
           </div>
-          <div className="relative h-48 w-48 shrink-0 overflow-hidden rounded-full border-2 border-[var(--bg-tertiary)] md:h-64 md:w-64">
+          <div className="relative h-48 w-48 shrink-0 overflow-hidden rounded-full border-2 border-border md:h-64 md:w-64">
             <Image
               src="/images/portrait/juan-silva.jpg"
               alt="Juan Silva — Mechatronics Engineer & AI Specialist"
