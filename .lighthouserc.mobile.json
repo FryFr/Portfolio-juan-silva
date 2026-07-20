@@ -4,10 +4,7 @@
       "startServerCommand": "pnpm start",
       "startServerReadyPattern": "Ready in",
       "startServerReadyTimeout": 60000,
-      "url": [
-        "http://localhost:3000/es",
-        "http://localhost:3000/es/projects"
-      ],
+      "url": ["http://localhost:3000/es", "http://localhost:3000/es/projects"],
       "numberOfRuns": 3,
       "settings": {
         "formFactor": "mobile",
