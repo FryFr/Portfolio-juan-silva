@@ -70,19 +70,24 @@ export function ProjectIndex({ entries, readMoreLabel }: Props) {
                 ) : (
                   // Projects without artwork get a deliberate tile rather than a
                   // near-empty dot field, which read as a missing image.
-                  <span aria-hidden="true" className="absolute inset-0 block bg-invert">
+                  //
+                  // bg-surface, NOT bg-invert. Invert flips with the theme, so on a
+                  // dark page these tiles turned bright cream and read as two blown-out
+                  // holes in the grid — obvious in a full-page screenshot, invisible
+                  // when checking one card in one theme.
+                  <span aria-hidden="true" className="absolute inset-0 block bg-surface">
                     <span
-                      className="absolute inset-0 block opacity-40"
+                      className="absolute inset-0 block"
                       style={{
                         backgroundImage:
-                          'radial-gradient(circle at 20% 15%, rgb(var(--accent-rgb) / 0.55), transparent 55%), radial-gradient(circle at 85% 80%, rgb(var(--accent-rgb) / 0.35), transparent 60%)',
+                          'radial-gradient(circle at 22% 18%, rgb(var(--accent-rgb) / 0.28), transparent 58%), radial-gradient(circle at 82% 78%, rgb(var(--accent-rgb) / 0.18), transparent 62%)',
                       }}
                     />
                     <span
-                      className="absolute inset-0 block opacity-25"
+                      className="absolute inset-0 block opacity-30"
                       style={{
                         backgroundImage:
-                          'radial-gradient(circle at center, var(--fg-invert) 1px, transparent 1px)',
+                          'radial-gradient(circle at center, rgb(var(--fg-rgb) / 0.6) 1px, transparent 1px)',
                         backgroundSize: '16px 16px',
                       }}
                     />

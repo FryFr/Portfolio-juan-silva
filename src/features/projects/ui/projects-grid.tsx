@@ -6,6 +6,7 @@ import { getFeaturedProjects } from '@/shared/content';
 import type { Locale } from '@/shared/i18n/routing';
 import { Container } from '@/shared/ui/container';
 import { Eyebrow } from '@/shared/ui/eyebrow';
+import { FieldCanvas } from '@/shared/ui/field-canvas';
 
 type Props = {
   locale: Locale;
@@ -26,8 +27,9 @@ export async function ProjectsGrid({ locale }: Props) {
   }));
 
   return (
-    <section className="border-t border-border">
-      <Container size="wide" className="py-24 md:py-32">
+    <section className="relative overflow-hidden border-t border-border">
+      <FieldCanvas kind="lattice" className="pointer-events-none absolute inset-0 block" />
+      <Container size="wide" className="relative py-24 md:py-32">
         <Eyebrow>{t('eyebrow')}</Eyebrow>
         <DistortHeading
           as="h2"

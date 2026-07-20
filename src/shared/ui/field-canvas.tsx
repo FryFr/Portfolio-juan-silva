@@ -7,9 +7,24 @@ import { makeNoise2D } from '@/shared/lib/noise';
 
 type Kind = 'flow' | 'lattice';
 
+/**
+ * Which surface the field is drawn on.
+ *
+ * `invert` is not cosmetic. The contact band paints --bg-invert, so a field using
+ * --fg-rgb resolves to dark marks on a dark ground there — the same class of
+ * mistake as the original ProximityReveal bug, where a colour calibrated for one
+ * ground was reused on another. On an inverted surface the field reads from
+ * --fg-invert-rgb instead, and drops the accent, which is tuned for the page
+ * background and disappears against the inverted one.
+ */
+type Tone = 'default' | 'invert';
+
 type Props = {
   kind: Kind;
+  tone?: Tone;
   className?: string;
+  /** 0–1 multiplier. Lets quieter sections carry the same field more softly. */
+  intensity?: number;
 };
 
 type Particle = { x: number; y: number; life: number };
@@ -30,13 +45,17 @@ const noise = makeNoise2D();
  * Purely decorative: aria-hidden, and every caller renders real content on top
  * that stands alone if this never paints.
  */
-export function FieldCanvas({ kind, className }: Props) {
+export function FieldCanvas({ kind, tone = 'default', className, intensity = 1 }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const cursorRef = useCursor();
   const cursorActive = useCursorActive();
   // Read through a ref so toggling pointer capability never restarts the loop.
   const cursorEnabled = useRef(cursorActive);
   cursorEnabled.current = cursorActive;
+  const toneRef = useRef(tone);
+  toneRef.current = tone;
+  const intensityRef = useRef(intensity);
+  intensityRef.current = intensity;
 
   useEffect(() => {
     const maybeCanvas = canvasRef.current;
@@ -108,7 +127,11 @@ export function FieldCanvas({ kind, className }: Props) {
       ctx.fillRect(0, 0, width, height);
       ctx.globalCompositeOperation = 'source-over';
 
-      const accent = token('--accent-rgb', '122 96 48');
+      const inverted = toneRef.current === 'invert';
+      const ink = inverted
+        ? token('--fg-invert-rgb', '245 241 234')
+        : token('--accent-rgb', '122 96 48');
+      const k = intensityRef.current;
       ctx.lineWidth = 1;
       const r2 = FLOW_RADIUS * FLOW_RADIUS;
 
@@ -135,7 +158,7 @@ export function FieldCanvas({ kind, className }: Props) {
         const nx = p.x + Math.cos(angle) * step;
         const ny = p.y + Math.sin(angle) * step;
 
-        ctx.strokeStyle = `rgb(${accent} / ${0.42 * Math.min(boost, 1.9)})`;
+        ctx.strokeStyle = `rgb(${ink} / ${0.42 * k * Math.min(boost, 1.9)})`;
         ctx.beginPath();
         ctx.moveTo(p.x, p.y);
         ctx.lineTo(nx, ny);
@@ -156,8 +179,12 @@ export function FieldCanvas({ kind, className }: Props) {
       ctx.clearRect(0, 0, width, height);
       const gap = 22;
       const amp = 26;
-      const fg = token('--fg-rgb', '26 18 8');
-      const accent = token('--accent-rgb', '122 96 48');
+      const inverted = toneRef.current === 'invert';
+      const fg = inverted ? token('--fg-invert-rgb', '245 241 234') : token('--fg-rgb', '26 18 8');
+      // The accent is tuned against the page background and vanishes on the
+      // inverted band, so there the highlight is just a brighter ink.
+      const accent = inverted ? fg : token('--accent-rgb', '122 96 48');
+      const k = intensityRef.current;
       const r2 = LATTICE_RADIUS * LATTICE_RADIUS;
 
       for (let y = gap; y < height; y += gap) {
@@ -184,7 +211,9 @@ export function FieldCanvas({ kind, className }: Props) {
           }
 
           const hot = m > 0.55;
-          ctx.fillStyle = hot ? `rgb(${accent} / 0.8)` : `rgb(${fg} / ${0.1 + m * 0.32})`;
+          ctx.fillStyle = hot
+            ? `rgb(${accent} / ${0.8 * k})`
+            : `rgb(${fg} / ${(0.1 + m * 0.32) * k})`;
           ctx.beginPath();
           ctx.arc(px, py, hot ? 1.9 : 1.1, 0, Math.PI * 2);
           ctx.fill();

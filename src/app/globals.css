@@ -80,6 +80,7 @@
        and cannot interpolate a hex token. */
     --accent-rgb: 122 96 48;
     --fg-rgb: 26 18 8;
+    --fg-invert-rgb: 245 241 234;
     --accent-success: #55703c;
     --accent-warn: #a8442a;
   }
@@ -99,6 +100,7 @@
     --accent: #d4b584;
     --accent-rgb: 212 181 132;
     --fg-rgb: 245 241 234;
+    --fg-invert-rgb: 26 18 8;
     --accent-success: #8ba970;
     --accent-warn: #f08866;
   }

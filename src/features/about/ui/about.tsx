@@ -67,9 +67,18 @@ export async function About() {
         </div>
       </section>
 
-      {/* 2 — Numbers. Different surface, different rhythm, no prose at all. */}
-      <section className="border-t border-border bg-surface">
-        <Container size="wide" className="py-20 md:py-28">
+      {/* 2 — Numbers. Different surface, different rhythm, no prose at all.
+          The field carries through at reduced intensity: the same language, but
+          this band is the quiet beat between two loud ones and should not shout
+          back. Section rhythm is what fixed "hard to understand the structure";
+          running every field at full strength would flatten it again. */}
+      <section className="relative overflow-hidden border-t border-border bg-surface">
+        <FieldCanvas
+          kind="lattice"
+          intensity={0.55}
+          className="pointer-events-none absolute inset-0 block"
+        />
+        <Container size="wide" className="relative py-20 md:py-28">
           <Stats />
         </Container>
       </section>

@@ -3,6 +3,7 @@ import { ContactButton } from '@/features/contact/ui/contact-button';
 import { LinkedInIcon, WhatsAppIcon } from '@/features/contact/ui/icons';
 import { buildLinkedInUrl, buildWhatsAppUrl } from '@/shared/config/contact';
 import { Container } from '@/shared/ui/container';
+import { FieldCanvas } from '@/shared/ui/field-canvas';
 
 /**
  * Was 33 words, zero imagery, zero icons, on the same border-t + Container
@@ -18,8 +19,17 @@ export async function ContactSection() {
   const linkedinUrl = buildLinkedInUrl();
 
   return (
-    <section id="contact" className="bg-invert text-on-invert">
-      <Container size="wide" className="py-28 md:py-40">
+    <section id="contact" className="relative overflow-hidden bg-invert text-on-invert">
+      {/* tone="invert": this band paints --bg-invert, so a field drawn from
+          --fg-rgb would be dark marks on a dark ground — the same mistake as
+          reusing a colour calibrated for a different surface. */}
+      <FieldCanvas
+        kind="lattice"
+        tone="invert"
+        intensity={0.7}
+        className="pointer-events-none absolute inset-0 block"
+      />
+      <Container size="wide" className="relative py-28 md:py-40">
         <p className="font-mono text-eyebrow uppercase text-on-invert/60">{t('eyebrow')}</p>
 
         {/* Plain h2, not DistortHeading: the per-character split effect reads as
