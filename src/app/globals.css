@@ -20,6 +20,7 @@
     --fg-muted: #7a6747;
     --fg-subtle: #b8a589;
     --accent: #7a6030;
+    --accent-rgb: 122 96 48;
     --accent-success: #7a9960;
     --accent-warn: #e07856;
   }
@@ -35,6 +36,7 @@
     --fg-muted: #9a8567;
     --fg-subtle: #6b5943;
     --accent: #d4b584;
+    --accent-rgb: 212 181 132;
     --accent-success: #8ba970;
     --accent-warn: #f08866;
   }
@@ -65,4 +67,33 @@
       scroll-behavior: auto !important;
     }
   }
+}
+
+/*
+ * Cursor proximity reveal.
+ *
+ * Deliberately unlayered: Tailwind's utilities live in @layer utilities, and
+ * unlayered rules outrank layered ones, so this wins over a `text-*` utility on
+ * the same element without !important or a specificity hack.
+ *
+ * The JS side writes ONLY the unitless `--reveal` progress value (0 -> 1). Colour
+ * is resolved here, from tokens.
+ *
+ * INVARIANT: both endpoints of the mix must sit on the same side of --bg-primary.
+ * In light mode --fg-secondary (11.2:1) and --accent (5.3:1) are both dark on a
+ * light background; in dark mode both are light on a dark one. Every point on the
+ * ramp therefore clears WCAG AA by construction, in both themes.
+ *
+ * This replaces a hardcoded rgb() lerp whose endpoint was #f5f1ea — the literal
+ * value of --bg-primary in light mode — which faded body text to exactly the page
+ * background (1:1 contrast, invisible) as the cursor approached.
+ */
+.reveal-text {
+  --reveal: 0;
+  color: color-mix(in oklab, var(--fg-secondary), var(--accent) calc(var(--reveal) * 100%));
+  text-shadow: 0 0 calc(var(--reveal) * 8px)
+    color-mix(in oklab, transparent, var(--accent) calc(var(--reveal) * 22%));
+  transition:
+    color 0.3s ease,
+    text-shadow 0.3s ease;
 }

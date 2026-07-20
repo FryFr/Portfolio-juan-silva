@@ -33,7 +33,13 @@ export async function About() {
               className="object-cover"
               sizes="(max-width: 768px) 100vw, 320px"
             />
-            <span className="absolute bottom-3 left-3 font-mono text-[10px] uppercase tracking-[0.15em] text-white/70">
+            {/* Scrim, not opacity: contrast against a photograph is otherwise
+                undefined and varies with whatever pixels sit behind the text. */}
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/70 to-transparent"
+            />
+            <span className="absolute bottom-3 left-3 font-mono text-[10px] uppercase tracking-[0.15em] text-white">
               fig.01 — Juan Silva
             </span>
           </div>

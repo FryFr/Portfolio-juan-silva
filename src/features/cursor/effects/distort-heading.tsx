@@ -1,9 +1,8 @@
 'use client';
 
-import { useReducedMotion } from 'motion/react';
 import { useEffect, useRef } from 'react';
 import { useCursor } from '@/features/cursor/context/use-cursor';
-import { useIsTouch } from '@/features/cursor/lib/use-is-touch';
+import { useCursorActive } from '@/features/cursor/lib/use-cursor-active';
 
 type Props = {
   as: 'h1' | 'h2' | 'h3';
@@ -17,14 +16,11 @@ const SCALE_BOOST = 0.25;
 
 export function DistortHeading({ as: Tag, children, className }: Props) {
   const cursorRef = useCursor();
-  const isTouch = useIsTouch();
-  const prefersReducedMotion = useReducedMotion();
+  const active = useCursorActive();
   const containerRef = useRef<HTMLHeadingElement>(null);
   const charsRef = useRef<HTMLSpanElement[]>([]);
   const rafRef = useRef<number>(0);
   const visibleRef = useRef(false);
-
-  const active = !isTouch && !prefersReducedMotion;
 
   useEffect(() => {
     if (!active || !containerRef.current) return;
@@ -83,6 +79,10 @@ export function DistortHeading({ as: Tag, children, className }: Props) {
     return () => cancelAnimationFrame(rafRef.current);
   }, [active, cursorRef]);
 
+  // Baseline: a plain text node. This is what the server renders on every device,
+  // and what touch / reduced-motion users keep. Splitting into per-character spans
+  // during SSR meant touch devices got the enhanced markup and then swapped it out
+  // after hydration — a layout change on the hero H1.
   if (!active) {
     return <Tag className={className}>{children}</Tag>;
   }

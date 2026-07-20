@@ -20,7 +20,7 @@ export function CursorSpotlight() {
       const el = spotRef.current;
       if (el) {
         const opacity = 0.08 + Math.min(state.speed * 0.004, 0.12);
-        el.style.background = `radial-gradient(circle, rgba(212,181,132,${opacity}) 0%, rgba(212,181,132,${opacity * 0.25}) 40%, transparent 70%)`;
+        el.style.background = `radial-gradient(circle, rgb(var(--accent-rgb) / ${opacity}) 0%, rgb(var(--accent-rgb) / ${opacity * 0.25}) 40%, transparent 70%)`;
       }
 
       rafRef.current = requestAnimationFrame(tick);
@@ -40,7 +40,7 @@ export function CursorSpotlight() {
         y,
         translateX: '-50%',
         translateY: '-50%',
-        background: 'radial-gradient(circle, rgba(212,181,132,0.08) 0%, transparent 70%)',
+        background: 'radial-gradient(circle, rgb(var(--accent-rgb) / 0.08) 0%, transparent 70%)',
       }}
     />
   );

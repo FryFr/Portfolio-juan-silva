@@ -80,7 +80,7 @@ export function CursorBlob() {
         scaleX: 'var(--blob-scale-x, 1)',
         scaleY: 'var(--blob-scale-y, 1)',
         background:
-          'radial-gradient(circle, rgba(212,181,132,0.9) 0%, rgba(212,181,132,0.3) 60%, transparent 100%)',
+          'radial-gradient(circle, rgb(var(--accent-rgb) / 0.9) 0%, rgb(var(--accent-rgb) / 0.3) 60%, transparent 100%)',
         mixBlendMode: 'screen',
         transition: 'width 0.15s, height 0.15s',
       }}

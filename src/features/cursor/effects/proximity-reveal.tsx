@@ -1,9 +1,8 @@
 'use client';
 
-import { useReducedMotion } from 'motion/react';
 import { type ReactNode, useEffect, useRef } from 'react';
 import { useCursor } from '@/features/cursor/context/use-cursor';
-import { useIsTouch } from '@/features/cursor/lib/use-is-touch';
+import { useCursorActive } from '@/features/cursor/lib/use-cursor-active';
 
 type Tag = 'p' | 'span' | 'div';
 
@@ -23,13 +22,10 @@ const PROXIMITY_RADIUS = 300;
 
 export function ProximityReveal({ children, className, as: tag = 'p' }: Props) {
   const cursorRef = useCursor();
-  const isTouch = useIsTouch();
-  const prefersReducedMotion = useReducedMotion();
+  const active = useCursorActive();
   const elRef = useRef<TagRefMap[typeof tag]>(null);
   const rafRef = useRef<number>(0);
   const visibleRef = useRef(false);
-
-  const active = !isTouch && !prefersReducedMotion;
 
   useEffect(() => {
     if (!active || !elRef.current) return;
@@ -65,17 +61,11 @@ export function ProximityReveal({ children, className, as: tag = 'p' }: Props) {
       const dy = cursor.y - closestY;
       const dist = Math.sqrt(dx * dx + dy * dy);
 
-      if (dist < PROXIMITY_RADIUS) {
-        const intensity = 1 - dist / PROXIMITY_RADIUS;
-        const r = Math.round(154 + (245 - 154) * intensity);
-        const g = Math.round(133 + (241 - 133) * intensity);
-        const b = Math.round(103 + (234 - 103) * intensity);
-        el.style.color = `rgb(${r}, ${g}, ${b})`;
-        el.style.textShadow = `0 0 ${intensity * 8}px rgba(212,181,132,${intensity * 0.15})`;
-      } else {
-        el.style.color = '';
-        el.style.textShadow = 'none';
-      }
+      // Write progress only. Colour is resolved from tokens by `.reveal-text` in
+      // globals.css, so this loop can never produce an out-of-gamut or
+      // theme-inverted value the way a hardcoded rgb() lerp could.
+      const intensity = dist < PROXIMITY_RADIUS ? 1 - dist / PROXIMITY_RADIUS : 0;
+      el.style.setProperty('--reveal', intensity.toFixed(3));
 
       rafRef.current = requestAnimationFrame(tick);
     }
@@ -89,8 +79,7 @@ export function ProximityReveal({ children, className, as: tag = 'p' }: Props) {
   return (
     <Tag
       ref={elRef as React.RefObject<HTMLParagraphElement>}
-      className={className}
-      style={active ? { transition: 'color 0.3s ease, text-shadow 0.3s ease' } : undefined}
+      className={active ? `${className ?? ''} reveal-text`.trim() : className}
     >
       {children}
     </Tag>
