@@ -9,6 +9,7 @@ import { DistortHeading } from '@/features/cursor/effects/distort-heading';
 import { ProximityReveal } from '@/features/cursor/effects/proximity-reveal';
 import { Container } from '@/shared/ui/container';
 import { Eyebrow } from '@/shared/ui/eyebrow';
+import { FieldCanvas } from '@/shared/ui/field-canvas';
 
 /**
  * About used to be one 271-word block — 84% of the entire `home` namespace — with
@@ -28,37 +29,40 @@ export async function About() {
       {/* 1 — Statement. Image is a contained portrait rather than a half-screen
           bleed: at that size it out-shouted the statement it was meant to support,
           and the crop outran the source resolution. */}
-      <section
-        id="about"
-        className="grid grid-cols-1 items-center gap-12 border-t border-border px-6 py-24 md:grid-cols-[minmax(0,22rem)_1fr] md:gap-20 md:px-12 md:py-32 lg:px-20"
-      >
-        <div className="reveal relative aspect-[3/4] w-full max-w-[18rem] overflow-hidden rounded-sm border border-border md:max-w-none">
-          <Image
-            src="/images/portrait/juan-silva-formal.jpg"
-            alt="Juan Silva"
-            fill
-            className="object-cover"
-            sizes="(max-width: 768px) 18rem, 22rem"
-          />
-        </div>
+      <section id="about" className="relative overflow-hidden border-t border-border">
+        {/* Structural counterpart to the hero's flow field: same accent, same
+            point vocabulary, under tension rather than in motion. */}
+        <FieldCanvas kind="lattice" className="pointer-events-none absolute inset-0 block" />
 
-        <div className="reveal flex flex-col justify-center">
-          <Eyebrow>{t('eyebrow')}</Eyebrow>
-          <DistortHeading
-            as="h2"
-            className="mt-6 font-sans text-section font-light text-foreground"
-          >
-            {t('title')}
-          </DistortHeading>
-          <div className="mt-10 space-y-6">
-            {bio.map((paragraph) => (
-              <ProximityReveal
-                key={paragraph}
-                className="max-w-xl font-sans text-lead leading-relaxed text-body"
-              >
-                {paragraph}
-              </ProximityReveal>
-            ))}
+        <div className="relative grid grid-cols-1 items-center gap-12 px-6 py-24 md:grid-cols-[minmax(0,22rem)_1fr] md:gap-20 md:px-12 md:py-32 lg:px-20">
+          <div className="reveal relative aspect-[3/4] w-full max-w-[18rem] overflow-hidden rounded-sm border border-border md:max-w-none">
+            <Image
+              src="/images/portrait/juan-silva-formal.jpg"
+              alt="Juan Silva"
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 18rem, 22rem"
+            />
+          </div>
+
+          <div className="reveal flex flex-col justify-center">
+            <Eyebrow>{t('eyebrow')}</Eyebrow>
+            <DistortHeading
+              as="h2"
+              className="mt-6 font-sans text-section font-light text-foreground"
+            >
+              {t('title')}
+            </DistortHeading>
+            <div className="mt-10 space-y-6">
+              {bio.map((paragraph) => (
+                <ProximityReveal
+                  key={paragraph}
+                  className="max-w-xl font-sans text-lead leading-relaxed text-body"
+                >
+                  {paragraph}
+                </ProximityReveal>
+              ))}
+            </div>
           </div>
         </div>
       </section>

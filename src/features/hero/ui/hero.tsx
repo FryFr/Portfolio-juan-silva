@@ -3,6 +3,7 @@ import { getTranslations } from 'next-intl/server';
 import { DistortHeading } from '@/features/cursor/effects/distort-heading';
 import { HERO_ROLE_KEYS } from '@/features/hero/data';
 import { RoleRotator } from '@/features/hero/ui/role-rotator';
+import { FieldCanvas } from '@/shared/ui/field-canvas';
 
 export async function Hero() {
   const t = await getTranslations('home.hero');
@@ -12,7 +13,19 @@ export async function Hero() {
     // svh, not vh: mobile browser chrome makes 100vh overflow by the height of the
     // address bar, which puts a scrollbar on a section meant to fit exactly.
     <section className="relative flex min-h-[100svh] flex-col justify-between overflow-hidden">
-      <div className="grid flex-1 items-center gap-10 px-6 pt-28 pb-12 md:grid-cols-[1fr_auto] md:gap-16 md:px-12 md:pt-32 md:pb-20 lg:px-20">
+      <FieldCanvas kind="flow" className="pointer-events-none absolute inset-0 block" />
+
+      {/* Legibility scrim, text column only.
+          The field runs at full presence everywhere it is actually seen; this
+          just lifts the ground back out from under the display type, which
+          otherwise shares a tonal range with the trails. Narrow and heavily
+          feathered, so it reads as depth rather than a panel. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-y-0 left-0 w-full bg-gradient-to-r from-background via-background/80 to-transparent md:w-3/5"
+      />
+
+      <div className="relative grid flex-1 items-center gap-10 px-6 pt-28 pb-12 md:grid-cols-[1fr_auto] md:gap-16 md:px-12 md:pt-32 md:pb-20 lg:px-20">
         <div className="flex flex-col justify-center">
           <p className="font-mono text-sm uppercase tracking-[0.22em] text-muted md:text-base">
             <span className="text-accent">$</span> {t('prompt')}
@@ -49,7 +62,7 @@ export async function Hero() {
       </div>
 
       {/* The old hero gave no indication anything existed below it. */}
-      <div className="flex items-center justify-end border-t border-border px-6 py-5 md:px-12 lg:px-20">
+      <div className="relative flex items-center justify-end border-t border-border px-6 py-5 md:px-12 lg:px-20">
         <span aria-hidden="true" className="font-mono text-eyebrow uppercase text-muted">
           scroll ↓
         </span>

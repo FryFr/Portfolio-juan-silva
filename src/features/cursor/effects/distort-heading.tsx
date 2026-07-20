@@ -14,6 +14,16 @@ const GRAVITY_RADIUS = 250;
 const GRAVITY_STRENGTH = 35;
 const SCALE_BOOST = 0.25;
 
+/**
+ * Vertical pull is damped hard relative to horizontal.
+ *
+ * Display headings are set at line-height 0.95, so an undamped pull drags
+ * characters far enough to collide with the line above or below — "inteligencia
+ * artificial" rendered as two overlapping words. Horizontal travel has nowhere to
+ * collide, so it keeps the full strength that makes the effect readable.
+ */
+const VERTICAL_DAMPING = 0.32;
+
 export function DistortHeading({ as: Tag, children, className }: Props) {
   const cursorRef = useCursor();
   const active = useCursorActive();
@@ -62,7 +72,7 @@ export function DistortHeading({ as: Tag, children, className }: Props) {
         if (dist < GRAVITY_RADIUS) {
           const intensity = (1 - dist / GRAVITY_RADIUS) ** 2;
           const pullX = (dx / dist) * GRAVITY_STRENGTH * intensity;
-          const pullY = (dy / dist) * GRAVITY_STRENGTH * intensity;
+          const pullY = (dy / dist) * GRAVITY_STRENGTH * intensity * VERTICAL_DAMPING;
           const scale = 1 + SCALE_BOOST * intensity;
           el.style.transform = `translate(${pullX}px, ${pullY}px) scale(${scale})`;
           el.style.transition = 'transform 0.08s ease-out';

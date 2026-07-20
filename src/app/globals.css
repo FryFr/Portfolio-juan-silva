@@ -76,7 +76,10 @@
     --bg-invert: #1a1208;
     --fg-invert: #f5f1ea;
     --accent: #7a6030;
+    /* Channel triplets for canvas work, which needs rgb() with a runtime alpha
+       and cannot interpolate a hex token. */
     --accent-rgb: 122 96 48;
+    --fg-rgb: 26 18 8;
     --accent-success: #55703c;
     --accent-warn: #a8442a;
   }
@@ -95,6 +98,7 @@
     --fg-invert: #1a1208;
     --accent: #d4b584;
     --accent-rgb: 212 181 132;
+    --fg-rgb: 245 241 234;
     --accent-success: #8ba970;
     --accent-warn: #f08866;
   }
