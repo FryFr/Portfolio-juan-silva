@@ -53,7 +53,7 @@ export default async function BlogDetailPage({ params }: Props) {
           <PostHeader post={post} />
         </div>
 
-        <article className="mt-16 max-w-none font-serif text-body">
+        <article className="mt-16 max-w-none font-sans text-body">
           <MdxBody code={post.body} />
         </article>
 

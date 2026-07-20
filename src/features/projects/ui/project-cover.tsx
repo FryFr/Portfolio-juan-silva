@@ -64,7 +64,7 @@ export function ProjectCover({ project, locale, className, sizes }: Props) {
           twice; the link's aria-label carries the accessible name. */}
       <span aria-hidden="true" className="relative flex h-full flex-col justify-between p-5">
         <span className="font-mono text-eyebrow uppercase text-muted">{project.year}</span>
-        <span className="font-serif text-2xl leading-[1.05] text-foreground md:text-3xl">
+        <span className="font-sans text-2xl leading-[1.05] text-foreground md:text-3xl">
           {project.title}
         </span>
         <span className="flex flex-wrap gap-x-3 gap-y-1 font-mono text-eyebrow uppercase text-muted">

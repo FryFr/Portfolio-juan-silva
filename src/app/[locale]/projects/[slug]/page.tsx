@@ -53,7 +53,7 @@ export default async function ProjectDetailPage({ params }: Props) {
           <CaseStudyHeader project={project} />
         </div>
 
-        <article className="mt-16 max-w-none font-serif text-body">
+        <article className="mt-16 max-w-none font-sans text-body">
           <MdxBody code={project.body} />
         </article>
 

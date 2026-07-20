@@ -24,7 +24,7 @@ export async function ContactSection() {
 
         {/* Plain h2, not DistortHeading: the per-character split effect reads as
             signature on the hero and as repetition when it is on every heading. */}
-        <h2 className="mt-6 max-w-4xl font-serif text-display font-light leading-[0.9] text-on-invert">
+        <h2 className="mt-6 max-w-4xl font-sans text-display font-light leading-[0.9] text-on-invert">
           {t('heading')}
         </h2>
 
@@ -34,7 +34,7 @@ export async function ContactSection() {
             same class of bug as the original hardcoded lerp. An effect that reads
             theme tokens cannot be dropped onto a surface those tokens do not
             describe. */}
-        <p className="mt-10 max-w-2xl font-serif text-lead leading-relaxed text-on-invert/80">
+        <p className="mt-10 max-w-2xl font-sans text-lead leading-relaxed text-on-invert/80">
           {t('copy')}
         </p>
 

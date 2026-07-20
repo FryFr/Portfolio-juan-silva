@@ -14,7 +14,7 @@ export async function RelatedPosts({ posts, locale }: Props) {
 
   return (
     <section className="flex flex-col gap-8 border-t border-border pt-12">
-      <h2 className="font-serif text-2xl text-foreground md:text-3xl">{t('relatedTitle')}</h2>
+      <h2 className="font-sans text-2xl text-foreground md:text-3xl">{t('relatedTitle')}</h2>
       <ul className="grid grid-cols-1 gap-8 md:grid-cols-3">
         {posts.map((post) => (
           <li key={post.slug}>
@@ -22,8 +22,8 @@ export async function RelatedPosts({ posts, locale }: Props) {
               href={`/${locale}/blog/${post.slug}`}
               className="flex flex-col gap-3 underline-offset-4 hover:underline"
             >
-              <h3 className="font-serif text-xl text-foreground">{post.title}</h3>
-              <p className="font-serif text-base italic text-subtle">{post.summary}</p>
+              <h3 className="font-sans text-xl text-foreground">{post.title}</h3>
+              <p className="font-sans text-base italic text-subtle">{post.summary}</p>
             </Link>
           </li>
         ))}

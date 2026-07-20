@@ -20,12 +20,12 @@ export async function CaseStudyHeader({ project }: Props) {
 
       <DistortHeading
         as="h1"
-        className="font-serif text-4xl font-normal leading-[1.05] tracking-[-0.02em] text-foreground md:text-5xl"
+        className="font-sans text-4xl font-normal leading-[1.05] tracking-[-0.02em] text-foreground md:text-5xl"
       >
         {project.title}
       </DistortHeading>
 
-      <ProximityReveal className="max-w-2xl font-serif text-lg italic text-subtle md:text-xl">
+      <ProximityReveal className="max-w-2xl font-sans text-lg italic text-subtle md:text-xl">
         {project.summary}
       </ProximityReveal>
 
@@ -33,16 +33,16 @@ export async function CaseStudyHeader({ project }: Props) {
         {project.client && (
           <div>
             <dt className="font-mono text-eyebrow uppercase text-muted">{t('client')}</dt>
-            <dd className="mt-1 font-serif text-base text-body">{project.client}</dd>
+            <dd className="mt-1 font-sans text-base text-body">{project.client}</dd>
           </div>
         )}
         <div>
           <dt className="font-mono text-eyebrow uppercase text-muted">{t('role')}</dt>
-          <dd className="mt-1 font-serif text-base text-body">{project.role}</dd>
+          <dd className="mt-1 font-sans text-base text-body">{project.role}</dd>
         </div>
         <div>
           <dt className="font-mono text-eyebrow uppercase text-muted">{t('year')}</dt>
-          <dd className="mt-1 font-serif text-base text-body">{project.year}</dd>
+          <dd className="mt-1 font-sans text-base text-body">{project.year}</dd>
         </div>
       </dl>
 

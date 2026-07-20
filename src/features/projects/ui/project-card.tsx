@@ -19,7 +19,7 @@ export async function ProjectCard({ project, locale }: Props) {
 
         <div className="flex min-w-0 flex-1 flex-col gap-4">
           <header className="flex items-baseline justify-between gap-4">
-            <h3 className="font-serif text-2xl text-foreground md:text-3xl">
+            <h3 className="font-sans text-2xl text-foreground md:text-3xl">
               <Link
                 href={`/${locale}/projects/${project.slug}`}
                 className="underline-offset-4 hover:underline"
@@ -32,12 +32,12 @@ export async function ProjectCard({ project, locale }: Props) {
             </span>
           </header>
 
-          <p className="max-w-2xl font-serif text-lg italic text-subtle">{project.summary}</p>
+          <p className="max-w-2xl font-sans text-lg italic text-subtle">{project.summary}</p>
 
           <dl className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div>
               <dt className="font-mono text-eyebrow uppercase text-muted">{t('role')}</dt>
-              <dd className="mt-1 font-serif text-base text-body">{project.role}</dd>
+              <dd className="mt-1 font-sans text-base text-body">{project.role}</dd>
             </div>
             <div>
               <dt className="font-mono text-eyebrow uppercase text-muted">{t('stack')}</dt>

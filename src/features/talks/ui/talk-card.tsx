@@ -22,7 +22,7 @@ export async function TalkCard({ talk, locale }: Props) {
       <p className="font-mono text-xs uppercase tracking-[0.15em] text-muted">
         {eyebrowParts.join(' · ')}
       </p>
-      <h2 className="font-serif text-2xl text-foreground">
+      <h2 className="font-sans text-2xl text-foreground">
         <Link
           href={href}
           className="underline-offset-4 transition-colors duration-150 ease-out-expo hover:text-accent hover:underline"
@@ -30,7 +30,7 @@ export async function TalkCard({ talk, locale }: Props) {
           {talk.title}
         </Link>
       </h2>
-      <p className="max-w-2xl font-serif text-base italic text-subtle">{talk.summary}</p>
+      <p className="max-w-2xl font-sans text-base italic text-subtle">{talk.summary}</p>
       <p className="font-mono text-xs uppercase tracking-[0.15em] text-muted">
         {t('deliveredIn')}: {talk.language.toUpperCase()}
       </p>

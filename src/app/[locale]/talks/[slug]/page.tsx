@@ -48,27 +48,27 @@ export default async function TalkDetailPage({ params }: Props) {
         </Link>
 
         <header className="mt-12">
-          <h1 className="max-w-3xl font-serif text-4xl font-normal leading-[1.05] tracking-[-0.02em] text-foreground md:text-5xl">
+          <h1 className="max-w-3xl font-sans text-4xl font-normal leading-[1.05] tracking-[-0.02em] text-foreground md:text-5xl">
             {talk.title}
           </h1>
-          <p className="mt-6 max-w-2xl font-serif text-lg italic text-subtle md:text-xl">
+          <p className="mt-6 max-w-2xl font-sans text-lg italic text-subtle md:text-xl">
             {talk.summary}
           </p>
 
           <dl className="mt-10 grid grid-cols-1 gap-6 border-t border-border pt-8 sm:grid-cols-3">
             <div>
               <dt className="font-mono text-eyebrow uppercase text-muted">{t('event')}</dt>
-              <dd className="mt-1 font-serif text-base text-body">
+              <dd className="mt-1 font-sans text-base text-body">
                 {talk.city ? `${talk.event} · ${talk.city}` : talk.event}
               </dd>
             </div>
             <div>
               <dt className="font-mono text-eyebrow uppercase text-muted">{t('year')}</dt>
-              <dd className="mt-1 font-serif text-base text-body">{talk.year}</dd>
+              <dd className="mt-1 font-sans text-base text-body">{talk.year}</dd>
             </div>
             <div>
               <dt className="font-mono text-eyebrow uppercase text-muted">{t('language')}</dt>
-              <dd className="mt-1 font-serif text-base text-body">{talk.language.toUpperCase()}</dd>
+              <dd className="mt-1 font-sans text-base text-body">{talk.language.toUpperCase()}</dd>
             </div>
           </dl>
 
@@ -102,7 +102,7 @@ export default async function TalkDetailPage({ params }: Props) {
           )}
         </header>
 
-        <article className="mt-16 max-w-none font-serif text-body">
+        <article className="mt-16 max-w-none font-sans text-body">
           <MdxBody code={talk.body} />
         </article>
       </Container>

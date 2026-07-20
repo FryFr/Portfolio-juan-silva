@@ -15,12 +15,12 @@ export async function PostHeader({ post }: Props) {
     <header className="flex flex-col gap-8">
       <DistortHeading
         as="h1"
-        className="font-serif text-4xl font-normal leading-[1.05] tracking-[-0.02em] text-foreground md:text-5xl"
+        className="font-sans text-4xl font-normal leading-[1.05] tracking-[-0.02em] text-foreground md:text-5xl"
       >
         {post.title}
       </DistortHeading>
 
-      <ProximityReveal className="max-w-2xl font-serif text-lg italic text-subtle md:text-xl">
+      <ProximityReveal className="max-w-2xl font-sans text-lg italic text-subtle md:text-xl">
         {post.summary}
       </ProximityReveal>
 

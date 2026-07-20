@@ -22,7 +22,7 @@ export async function CaseStudyNav({ locale, prev, next }: Props) {
           className="group flex flex-col gap-2 text-left"
         >
           <span className="font-mono text-eyebrow uppercase text-muted">{t('prev')}</span>
-          <span className="font-serif text-2xl text-foreground underline-offset-4 group-hover:underline">
+          <span className="font-sans text-2xl text-foreground underline-offset-4 group-hover:underline">
             {prev.title}
           </span>
         </Link>
@@ -35,7 +35,7 @@ export async function CaseStudyNav({ locale, prev, next }: Props) {
           className="group flex flex-col gap-2 text-right md:items-end"
         >
           <span className="font-mono text-eyebrow uppercase text-muted">{t('next')}</span>
-          <span className="font-serif text-2xl text-foreground underline-offset-4 group-hover:underline">
+          <span className="font-sans text-2xl text-foreground underline-offset-4 group-hover:underline">
             {next.title}
           </span>
         </Link>

@@ -25,23 +25,28 @@ export async function About() {
 
   return (
     <>
-      {/* 1 — Statement. Full-bleed image, oversized pull-quote, no container. */}
-      <section id="about" className="grid grid-cols-1 border-t border-border md:grid-cols-2">
-        <div className="relative min-h-[60svh] border-b border-border md:min-h-[80svh] md:border-r md:border-b-0">
+      {/* 1 — Statement. Image is a contained portrait rather than a half-screen
+          bleed: at that size it out-shouted the statement it was meant to support,
+          and the crop outran the source resolution. */}
+      <section
+        id="about"
+        className="grid grid-cols-1 items-center gap-12 border-t border-border px-6 py-24 md:grid-cols-[minmax(0,22rem)_1fr] md:gap-20 md:px-12 md:py-32 lg:px-20"
+      >
+        <div className="reveal relative aspect-[3/4] w-full max-w-[18rem] overflow-hidden rounded-sm border border-border md:max-w-none">
           <Image
             src="/images/portrait/juan-silva-formal.jpg"
             alt="Juan Silva"
             fill
             className="object-cover"
-            sizes="(max-width: 768px) 100vw, 50vw"
+            sizes="(max-width: 768px) 18rem, 22rem"
           />
         </div>
 
-        <div className="flex flex-col justify-center px-6 py-20 md:px-12 md:py-24 lg:px-16">
+        <div className="reveal flex flex-col justify-center">
           <Eyebrow>{t('eyebrow')}</Eyebrow>
           <DistortHeading
             as="h2"
-            className="mt-6 font-serif text-section font-light text-foreground"
+            className="mt-6 font-sans text-section font-light text-foreground"
           >
             {t('title')}
           </DistortHeading>
@@ -49,7 +54,7 @@ export async function About() {
             {bio.map((paragraph) => (
               <ProximityReveal
                 key={paragraph}
-                className="max-w-xl font-serif text-lead leading-relaxed text-body"
+                className="max-w-xl font-sans text-lead leading-relaxed text-body"
               >
                 {paragraph}
               </ProximityReveal>
@@ -60,7 +65,7 @@ export async function About() {
 
       {/* 2 — Numbers. Different surface, different rhythm, no prose at all. */}
       <section className="border-t border-border bg-surface">
-        <Container size="wide" className="py-20 md:py-24">
+        <Container size="wide" className="py-20 md:py-28">
           <Stats />
         </Container>
       </section>
@@ -70,20 +75,26 @@ export async function About() {
         <Container size="wide" className="py-24 md:py-32">
           <div className="grid grid-cols-1 gap-16 lg:grid-cols-[2fr_1fr] lg:gap-24">
             <div>
-              <Eyebrow as="h3">{t('skillsTitle')}</Eyebrow>
+              <Eyebrow as="h3" className="reveal">
+                {t('skillsTitle')}
+              </Eyebrow>
               <div className="mt-8">
                 <SkillsGrid />
               </div>
               <div className="mt-14">
-                <Eyebrow as="h3">{t('softSkillsTitle')}</Eyebrow>
-                <div className="mt-6">
+                <Eyebrow as="h3" className="reveal">
+                  {t('softSkillsTitle')}
+                </Eyebrow>
+                <div className="reveal mt-6">
                   <SoftSkills />
                 </div>
               </div>
             </div>
 
             <div>
-              <Eyebrow as="h3">{t('timelineTitle')}</Eyebrow>
+              <Eyebrow as="h3" className="reveal">
+                {t('timelineTitle')}
+              </Eyebrow>
               <Timeline />
             </div>
           </div>

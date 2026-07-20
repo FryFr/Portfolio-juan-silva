@@ -23,7 +23,7 @@ export async function Footer() {
     <footer className="mt-24 border-t border-border py-10">
       <Container size="wide">
         <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
-          <p className="font-serif text-sm italic text-subtle">{t('builtWith')}</p>
+          <p className="font-sans text-sm italic text-subtle">{t('builtWith')}</p>
           <ul className="flex items-center gap-4 font-mono text-eyebrow uppercase text-subtle">
             <li>
               <a

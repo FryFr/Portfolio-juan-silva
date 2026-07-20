@@ -10,7 +10,7 @@ type MDXComponents = Record<string, React.ElementType>;
 
 function MdxH2({ children, ...props }: HTMLAttributes<HTMLHeadingElement>) {
   return (
-    <h2 className="mb-4 mt-10 font-serif text-2xl text-foreground" {...props}>
+    <h2 className="mb-4 mt-10 font-sans text-2xl text-foreground" {...props}>
       {children}
     </h2>
   );
@@ -18,7 +18,7 @@ function MdxH2({ children, ...props }: HTMLAttributes<HTMLHeadingElement>) {
 
 function MdxH3({ children, ...props }: HTMLAttributes<HTMLHeadingElement>) {
   return (
-    <h3 className="mb-3 mt-8 font-serif text-xl text-body" {...props}>
+    <h3 className="mb-3 mt-8 font-sans text-xl text-body" {...props}>
       {children}
     </h3>
   );

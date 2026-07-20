@@ -18,7 +18,7 @@ export async function Navbar({ locale }: Props) {
         <nav className="flex h-14 items-center justify-between gap-6" aria-label="Primary">
           <Link
             href="/"
-            className="font-serif text-lg font-normal tracking-tight text-foreground transition-colors duration-150 ease-out-expo hover:text-body"
+            className="font-sans text-lg font-normal tracking-tight text-foreground transition-colors duration-150 ease-out-expo hover:text-body"
           >
             {t('siteName')}
             <span className="text-accent">.</span>

@@ -4,7 +4,6 @@
 
 @theme {
   --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-serif: var(--font-serif), Georgia, serif;
   --font-mono: var(--font-mono), ui-monospace, monospace;
 
   /* Type scale. Fluid sizes are clamped so the display setting can bleed to the
@@ -147,6 +146,125 @@
  * value of --bg-primary in light mode — which faded body text to exactly the page
  * background (1:1 contrast, invisible) as the cursor approached.
  */
+/*
+ * Scroll-driven reveals.
+ *
+ * animation-timeline runs on the compositor, costs 0 KB, and — unlike anything
+ * gated behind the cursor — works on touch devices. That is the whole point: the
+ * site had no scroll motion at all, so on a phone it was a static document.
+ *
+ * --i staggers children of a list without a class per index.
+ */
+@keyframes reveal-rise {
+  from {
+    opacity: 0;
+    transform: translateY(1.75rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.reveal {
+  animation: reveal-rise linear both;
+  animation-timeline: view();
+  animation-range: entry 0% cover 35%;
+}
+
+.reveal-stagger > * {
+  animation: reveal-rise linear both;
+  animation-timeline: view();
+  animation-range: entry 0% cover 40%;
+  animation-delay: calc(var(--i, 0) * 60ms);
+}
+
+/* Timeline: a signal charging along a path. */
+@keyframes timeline-charge {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes timeline-node-fill {
+  from {
+    background-color: var(--bg-primary);
+  }
+  to {
+    background-color: var(--accent);
+  }
+}
+
+.timeline {
+  view-timeline-name: --timeline-track;
+  view-timeline-axis: block;
+}
+
+.timeline-charge {
+  transform-origin: top;
+  animation: timeline-charge linear both;
+  animation-timeline: --timeline-track;
+  animation-range: entry 60% cover 70%;
+}
+
+.timeline-node {
+  animation: timeline-node-fill linear both;
+  animation-timeline: view();
+  animation-range: entry 20% entry 90%;
+}
+
+/*
+ * Progressive enhancement. A fallback that is never exercised is not a fallback,
+ * so these set the final visible state explicitly rather than relying on the
+ * animation having run.
+ */
+@supports not (animation-timeline: view()) {
+  .reveal,
+  .reveal-stagger > * {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .timeline-charge {
+    animation: none;
+    transform: scaleY(1);
+  }
+
+  .timeline-node {
+    animation: none;
+    background-color: var(--accent);
+  }
+}
+
+/*
+ * The global prefers-reduced-motion block clamps animation-duration to 0.01ms,
+ * which does NOT neutralise these: a progress-based timeline drives the animation
+ * from scroll position, not from elapsed time, so duration is not the lever.
+ * They have to be switched off explicitly.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .reveal-stagger > * {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .timeline-charge {
+    animation: none !important;
+    transform: scaleY(1) !important;
+  }
+
+  .timeline-node {
+    animation: none !important;
+    background-color: var(--accent) !important;
+  }
+}
+
 .reveal-text {
   --reveal: 0;
   color: color-mix(in oklab, var(--fg-secondary), var(--accent) calc(var(--reveal) * 100%));

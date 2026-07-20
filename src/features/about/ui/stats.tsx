@@ -1,4 +1,5 @@
 import { getTranslations } from 'next-intl/server';
+import { CountUp } from '@/features/about/ui/count-up';
 
 type Stat = { value: string; label: string };
 
@@ -13,15 +14,15 @@ export async function Stats() {
   const stats = t.raw('stats') as Stat[];
 
   return (
-    <dl className="grid grid-cols-2 gap-x-8 gap-y-10 md:grid-cols-4">
-      {stats.map((stat) => (
-        <div key={stat.label}>
+    <dl className="reveal-stagger grid grid-cols-2 gap-x-8 gap-y-12 md:grid-cols-4">
+      {stats.map((stat, i) => (
+        <div key={stat.label} style={{ '--i': i } as React.CSSProperties}>
           <dt className="sr-only">{stat.label}</dt>
           <dd>
-            <span className="block font-serif text-5xl leading-none tracking-[-0.03em] text-foreground md:text-6xl">
-              {stat.value}
+            <span className="block font-sans text-6xl font-light leading-none tracking-[-0.04em] text-foreground md:text-7xl">
+              <CountUp value={stat.value} />
             </span>
-            <span className="mt-3 block font-mono text-eyebrow uppercase text-muted">
+            <span className="mt-4 block font-mono text-eyebrow uppercase text-muted">
               {stat.label}
             </span>
           </dd>
