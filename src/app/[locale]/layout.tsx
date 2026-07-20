@@ -23,7 +23,11 @@ const poppins = Poppins({
   subsets: ['latin'],
   variable: '--font-sans',
   display: 'swap',
-  weight: ['300', '400', '500', '600'],
+  // 300 display, 400 body, 500 labels. 600 was declared and used nowhere, and
+  // next/font emits the full weight x style cross product, so it was costing two
+  // files — on mobile the fonts are the largest non-script asset and land
+  // directly on LCP.
+  weight: ['300', '400', '500'],
   style: ['normal', 'italic'],
 });
 

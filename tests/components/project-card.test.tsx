@@ -47,7 +47,7 @@ const IGNORE_DECORATIVE = '[aria-hidden="true"], [aria-hidden="true"] *';
 describe('ProjectCard', () => {
   it('renders the project title as a heading', async () => {
     render(await ProjectCard({ project: mockProject, locale: 'es' }));
-    const heading = screen.getByRole('heading', { level: 3 });
+    const heading = screen.getByRole('heading', { level: 2 });
     expect(heading).toHaveTextContent('Acme Platform');
   });
 
@@ -60,7 +60,7 @@ describe('ProjectCard', () => {
     render(await ProjectCard({ project: mockProject, locale: 'es' }));
     // Scoped to the heading. The cover is also a link to the same URL, so an
     // unscoped byRole('link') query is ambiguous and would pass for the wrong node.
-    const link = within(screen.getByRole('heading', { level: 3 })).getByRole('link');
+    const link = within(screen.getByRole('heading', { level: 2 })).getByRole('link');
     expect(link).toHaveAttribute('href', expect.stringMatching(/\/projects\/acme-platform/));
   });
 

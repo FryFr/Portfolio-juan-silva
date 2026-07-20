@@ -19,14 +19,17 @@ export async function ProjectCard({ project, locale }: Props) {
 
         <div className="flex min-w-0 flex-1 flex-col gap-4">
           <header className="flex items-baseline justify-between gap-4">
-            <h3 className="font-sans text-2xl text-foreground md:text-3xl">
+            {/* h2, not h3. This card is only used on the projects index, where it
+                sits directly beneath the page h1 — an h3 there skips a level and
+                breaks the document outline screen-reader users navigate by. */}
+            <h2 className="font-sans text-2xl text-foreground md:text-3xl">
               <Link
                 href={`/${locale}/projects/${project.slug}`}
                 className="underline-offset-4 hover:underline"
               >
                 {project.title}
               </Link>
-            </h3>
+            </h2>
             <span className="shrink-0 font-mono text-xs uppercase tracking-[0.15em] text-muted">
               {project.year}
             </span>
