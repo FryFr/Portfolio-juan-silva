@@ -23,7 +23,7 @@
   "home": {
     "hero": {
       "prompt": "whoami — portfolio",
-      "title": "Juan Silva.",
+      "title": "Juan Silva",
       "subtitle": "Ingeniero mecatrónico, especialista en IA y automatización de sistemas empresariales.",
       "roles": {
         "ai": "AI & Business Systems Specialist",
@@ -35,7 +35,7 @@
     },
     "about": {
       "eyebrow": "Sobre mí",
-      "title": "Donde la ingeniería se encuentra con la inteligencia artificial.",
+      "title": "Donde la ingeniería se encuentra con la inteligencia artificial",
       "bio": [
         "Ingeniero Mecatrónico convertido en especialista en IA. Diseño sistemas que conectan hardware, software y decisiones de negocio — de brazos robóticos a agentes de IA en producción."
       ],
@@ -131,7 +131,7 @@
     },
     "projects": {
       "eyebrow": "Trabajo destacado",
-      "title": "Proyectos que moldearon cómo pienso.",
+      "title": "Proyectos que moldearon cómo pienso",
       "empty": "Todavía no hay proyectos destacados.",
       "year": "Año",
       "role": "Rol",

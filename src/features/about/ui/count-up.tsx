@@ -7,6 +7,8 @@ type Props = {
   value: string;
 };
 
+const DURATION_MS = 900;
+
 /**
  * Counts a stat up from zero the first time it scrolls into view.
  *
@@ -17,29 +19,31 @@ type Props = {
  * Parses whatever prefix/suffix surrounds the number ("+30%" -> "+" 30 "%") so the
  * message files stay human-readable and locale-editable rather than being split
  * into value/prefix/suffix keys.
+ *
+ * Every dependency below is a primitive. An earlier version depended on the regex
+ * match array, which React sees as a new object on every render — the effect
+ * re-ran each render, reset the display to 0, and the counter was permanently
+ * stuck at zero. Object identity in a dependency array is a silent reset loop.
  */
 export function CountUp({ value }: Props) {
-  const match = value.match(/^(\D*)(\d+)(.*)$/);
+  const match = /^(\D*)(\d+)(.*)$/.exec(value);
   const target = match ? Number(match[2]) : 0;
   const prefix = match?.[1] ?? '';
   const suffix = match?.[3] ?? '';
+  const numeric = match !== null;
 
   const ref = useRef<HTMLSpanElement>(null);
+  // Server and first client render show the final value, so the number is right
+  // with JS disabled and never paints as a stuck zero.
   const [display, setDisplay] = useState(target);
-  const [ready, setReady] = useState(false);
-
-  // Server and first client render show the final value, so the number is correct
-  // with JS disabled and never renders as a flash of zero.
-  useEffect(() => {
-    if (!match) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    setReady(true);
-    setDisplay(0);
-  }, [match]);
 
   useEffect(() => {
-    if (!ready || !ref.current) return;
     const el = ref.current;
+    if (!el || !numeric) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    setDisplay(0);
+
     let raf = 0;
     let started = false;
 
@@ -48,10 +52,9 @@ export function CountUp({ value }: Props) {
         if (started || !entries[0]?.isIntersecting) return;
         started = true;
 
-        const duration = 1100;
         const start = performance.now();
         const tick = (now: number) => {
-          const t = Math.min((now - start) / duration, 1);
+          const t = Math.min((now - start) / DURATION_MS, 1);
           // easeOutExpo, matching --ease-out-expo so JS motion and CSS motion
           // share one feel rather than drifting apart.
           const eased = t === 1 ? 1 : 1 - 2 ** (-10 * t);
@@ -60,7 +63,7 @@ export function CountUp({ value }: Props) {
         };
         raf = requestAnimationFrame(tick);
       },
-      { threshold: 0.4 },
+      { threshold: 0.35 },
     );
 
     observer.observe(el);
@@ -68,9 +71,9 @@ export function CountUp({ value }: Props) {
       observer.disconnect();
       cancelAnimationFrame(raf);
     };
-  }, [ready, target]);
+  }, [target, numeric]);
 
-  if (!match) return <span>{value}</span>;
+  if (!numeric) return <span>{value}</span>;
 
   return (
     <span ref={ref}>

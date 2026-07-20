@@ -48,9 +48,27 @@ describe('DistortHeading', () => {
   it('splits text into individual char spans once enhanced', async () => {
     const { container } = render(<DistortHeading as="h3">AB</DistortHeading>);
     await waitFor(() => {
-      const chars = container.querySelectorAll('[aria-hidden="true"]');
+      // Characters live inside a per-word wrapper, so query one level down.
+      const chars = container.querySelectorAll('[aria-hidden="true"] > span');
       expect(chars.length).toBeGreaterThanOrEqual(2);
     });
+  });
+
+  // Regression guard for mid-word line breaks.
+  //
+  // A flat run of inline-block character spans lets the browser break a line
+  // between ANY two characters, because each one is its own inline-level box. On
+  // a heading long enough to wrap that produced "Proyectos que moldea / ron cómo
+  // pienso" — only visible by looking at a rendered page, never from the code.
+  it('groups characters into per-word wrappers so lines cannot break mid-word', async () => {
+    const { container } = render(<DistortHeading as="h2">Hola mundo cruel</DistortHeading>);
+    await waitFor(() => {
+      const words = container.querySelectorAll('[aria-hidden="true"]');
+      expect(words.length).toBe(3);
+    });
+    for (const word of container.querySelectorAll('[aria-hidden="true"]')) {
+      expect(word).toHaveClass('whitespace-nowrap');
+    }
   });
 
   // The accessible name must survive in BOTH branches. e2e/home.spec.ts asserts

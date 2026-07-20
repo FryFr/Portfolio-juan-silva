@@ -169,14 +169,14 @@
 .reveal {
   animation: reveal-rise linear both;
   animation-timeline: view();
-  animation-range: entry 0% cover 35%;
+  animation-range: entry 0% entry 75%;
 }
 
 .reveal-stagger > * {
   animation: reveal-rise linear both;
   animation-timeline: view();
-  animation-range: entry 0% cover 40%;
-  animation-delay: calc(var(--i, 0) * 60ms);
+  animation-range: entry 0% entry 80%;
+  animation-delay: calc(var(--i, 0) * 45ms);
 }
 
 /* Timeline: a signal charging along a path. */
@@ -207,7 +207,7 @@
   transform-origin: top;
   animation: timeline-charge linear both;
   animation-timeline: --timeline-track;
-  animation-range: entry 60% cover 70%;
+  animation-range: entry 85% cover 45%;
 }
 
 .timeline-node {

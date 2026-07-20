@@ -70,8 +70,8 @@ export function SignalGraph({ categories }: Props) {
         nodes.push({
           x: Math.random() * width,
           y: Math.random() * height,
-          vx: (Math.random() - 0.5) * 0.12,
-          vy: (Math.random() - 0.5) * 0.12,
+          vx: (Math.random() - 0.5) * 0.26,
+          vy: (Math.random() - 0.5) * 0.26,
           r: 3.5,
           hub: true,
           group: gi,
@@ -81,8 +81,8 @@ export function SignalGraph({ categories }: Props) {
           nodes.push({
             x: Math.random() * width,
             y: Math.random() * height,
-            vx: (Math.random() - 0.5) * 0.18,
-            vy: (Math.random() - 0.5) * 0.18,
+            vx: (Math.random() - 0.5) * 0.34,
+            vy: (Math.random() - 0.5) * 0.34,
             r: 1.6,
             hub: false,
             group: gi,
@@ -120,7 +120,7 @@ export function SignalGraph({ categories }: Props) {
         raf = requestAnimationFrame(frame);
         return;
       }
-      t += 0.012;
+      t += 0.03;
       ctx.clearRect(0, 0, width, height);
 
       for (const n of nodes) {
@@ -150,7 +150,7 @@ export function SignalGraph({ categories }: Props) {
         const a = nodes[e.a];
         const b = nodes[e.b];
         if (!a || !b) return;
-        const p = (t * 0.35 + i * 0.11) % 1;
+        const p = (t * 0.55 + i * 0.09) % 1;
         ctx.beginPath();
         ctx.arc(a.x + (b.x - a.x) * p, a.y + (b.y - a.y) * p, 1.5, 0, Math.PI * 2);
         ctx.fill();

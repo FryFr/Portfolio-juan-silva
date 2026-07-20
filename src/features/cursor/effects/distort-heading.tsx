@@ -87,33 +87,42 @@ export function DistortHeading({ as: Tag, children, className }: Props) {
     return <Tag className={className}>{children}</Tag>;
   }
 
-  const chars = children.split('').map((char, i) => {
-    if (char === ' ') {
-      return (
-        // biome-ignore lint/suspicious/noArrayIndexKey: chars are static, derived from immutable children string
-        <span key={`${i}-space`} className="inline-block w-[0.3em]">
-          &nbsp;
-        </span>
-      );
-    }
-    return (
-      <span
-        // biome-ignore lint/suspicious/noArrayIndexKey: chars are static, derived from immutable children string
-        key={`${i}-${char}`}
-        ref={(el) => {
-          if (el) charsRef.current[i] = el;
-        }}
-        aria-hidden="true"
-        className="inline-block will-change-auto"
-      >
-        {char}
-      </span>
-    );
-  });
+  // Characters are grouped into per-word wrappers rather than emitted as one flat
+  // run of inline-block spans.
+  //
+  // A flat run lets the browser line-break between ANY two characters, because
+  // every character is its own inline-level box. On a heading long enough to wrap
+  // that produced breaks mid-word — "Proyectos que moldea / ron cómo pienso".
+  // Wrapping each word keeps breaks between words where they belong.
+  let charIndex = 0;
+  const words = children.split(' ');
 
   return (
     <Tag ref={containerRef} className={className} aria-label={children}>
-      {chars}
+      {words.map((word, wi) => (
+        <span
+          // biome-ignore lint/suspicious/noArrayIndexKey: derived from an immutable children string
+          key={`w-${wi}-${word}`}
+          aria-hidden="true"
+          className="inline-block whitespace-nowrap"
+        >
+          {word.split('').map((char) => {
+            const i = charIndex++;
+            return (
+              <span
+                key={`c-${i}-${char}`}
+                ref={(el) => {
+                  if (el) charsRef.current[i] = el;
+                }}
+                className="inline-block will-change-auto"
+              >
+                {char}
+              </span>
+            );
+          })}
+          {wi < words.length - 1 ? ' ' : null}
+        </span>
+      ))}
     </Tag>
   );
 }

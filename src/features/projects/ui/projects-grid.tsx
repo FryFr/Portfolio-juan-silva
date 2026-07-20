@@ -20,6 +20,7 @@ export async function ProjectsGrid({ locale }: Props) {
     title: project.title,
     year: project.year,
     stack: project.stack,
+    summary: project.summary,
     cover: project.cover,
     href: `/${locale}/projects/${project.slug}`,
   }));
@@ -39,7 +40,7 @@ export async function ProjectsGrid({ locale }: Props) {
           <p className="mt-12 font-sans italic text-subtle">{t('empty')}</p>
         ) : (
           <div className="mt-16">
-            <ProjectIndex entries={entries} />
+            <ProjectIndex entries={entries} readMoreLabel={t('caseStudy')} />
           </div>
         )}
 
