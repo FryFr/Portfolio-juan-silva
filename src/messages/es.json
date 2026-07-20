@@ -23,7 +23,7 @@
   "home": {
     "hero": {
       "prompt": "whoami — portfolio",
-      "title": "Juan Silva.",
+      "title": "Juan Silva",
       "subtitle": "Ingeniero mecatrónico, especialista en IA y automatización de sistemas empresariales.",
       "roles": {
         "ai": "AI & Business Systems Specialist",
@@ -35,10 +35,15 @@
     },
     "about": {
       "eyebrow": "Sobre mí",
-      "title": "Donde la ingeniería se encuentra con la inteligencia artificial.",
+      "title": "Donde la ingeniería se encuentra con la inteligencia artificial",
       "bio": [
-        "Soy Ingeniero Mecatrónico con más de 5 años de experiencia conectando ingeniería, software, inteligencia artificial y sistemas empresariales. Actualmente trabajo como Business Systems & AI Specialist, diseñando e implementando soluciones inteligentes y escalables que optimizan procesos operativos y toma de decisiones.",
-        "Mi formación en mecatrónica me permitió trabajar en robótica, diseño mecánico y manufactura digital. En paralelo, desarrollé experiencia en liderazgo gestionando operaciones y equipos multidisciplinarios de hasta 1200 personas, logrando incrementos del 30% en ventas."
+        "Ingeniero Mecatrónico convertido en especialista en IA. Diseño sistemas que conectan hardware, software y decisiones de negocio — de brazos robóticos a agentes de IA en producción."
+      ],
+      "stats": [
+        { "value": "5+", "label": "Años de experiencia" },
+        { "value": "1200", "label": "Personas lideradas" },
+        { "value": "+30%", "label": "Incremento en ventas" },
+        { "value": "13", "label": "Proyectos entregados" }
       ],
       "skillsTitle": "Lo que hago",
       "skills": {
@@ -114,42 +119,25 @@
           "place": "Universidad EAN"
         }
       },
-      "softSkillsTitle": "Soft Skills",
+      "softSkillsTitle": "También",
       "softSkills": [
-        {
-          "label": "Liderazgo",
-          "description": "Supervisión de equipos y gestión de cuentas de cliente"
-        },
-        {
-          "label": "Comunicación bilingüe",
-          "description": "Español nativo / Inglés fluido — documentación técnica y presentaciones en ambos idiomas"
-        },
-        {
-          "label": "Consultoría técnica",
-          "description": "Traducción de necesidades de negocio a soluciones técnicas implementables"
-        },
-        {
-          "label": "Presentaciones técnicas",
-          "description": "Speaker en eventos como ManageEngine Partner Training — Hotel Sheraton Bogotá"
-        },
-        {
-          "label": "Resolución de problemas",
-          "description": "Debugging, análisis de causa raíz y diseño de soluciones bajo presión"
-        },
-        {
-          "label": "Gestión de proyectos",
-          "description": "Coordinación de equipos multidisciplinarios y entrega de proyectos end-to-end"
-        }
+        "Liderazgo de equipos",
+        "Español nativo / Inglés fluido",
+        "Consultoría técnica",
+        "Speaking en conferencias",
+        "Análisis de causa raíz",
+        "Gestión de proyectos"
       ]
     },
     "projects": {
       "eyebrow": "Trabajo destacado",
-      "title": "Proyectos que moldearon cómo pienso.",
+      "title": "Proyectos que moldearon cómo pienso",
       "empty": "Todavía no hay proyectos destacados.",
       "year": "Año",
       "role": "Rol",
       "stack": "Stack",
       "caseStudy": "Ver caso de estudio",
+      "viewAll": "Ver los 13 proyectos",
       "live": "Sitio live",
       "repo": "Ver en GitHub"
     }
@@ -195,7 +183,14 @@
       "empty": "Todavía no hay charlas cargadas.",
       "slides": "Slides",
       "video": "Video",
-      "deliveredIn": "Idioma de la charla"
+      "deliveredIn": "Idioma de la charla",
+      "readMore": "Ver la charla"
+    },
+    "detail": {
+      "backToList": "← Todas las charlas",
+      "event": "Evento",
+      "year": "Año",
+      "language": "Idioma"
     }
   },
   "contact": {

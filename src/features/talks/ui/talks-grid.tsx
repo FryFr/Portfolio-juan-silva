@@ -12,14 +12,14 @@ export async function TalksGrid({ locale }: Props) {
   const talks = getTalks(locale);
 
   if (talks.length === 0) {
-    return <p className="mt-12 font-serif italic text-[var(--fg-tertiary)]">{t('empty')}</p>;
+    return <p className="mt-12 font-sans italic text-subtle">{t('empty')}</p>;
   }
 
   return (
     <ul className="mt-16 space-y-16">
       {talks.map((talk) => (
         <li key={talk.slug}>
-          <TalkCard talk={talk} />
+          <TalkCard talk={talk} locale={locale} />
         </li>
       ))}
     </ul>

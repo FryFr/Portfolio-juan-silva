@@ -1,9 +1,8 @@
 'use client';
 
-import { useReducedMotion } from 'motion/react';
 import { type ReactNode, useCallback, useEffect, useRef } from 'react';
 import { CursorContext, type CursorState } from '@/features/cursor/context/use-cursor';
-import { useIsTouch } from '@/features/cursor/lib/use-is-touch';
+import { useCursorActive } from '@/features/cursor/lib/use-cursor-active';
 import { CursorBlob } from '@/features/cursor/ui/cursor-blob';
 import { CursorSpotlight } from '@/features/cursor/ui/cursor-spotlight';
 
@@ -12,9 +11,9 @@ type Props = {
 };
 
 export function CursorProvider({ children }: Props) {
-  const isTouch = useIsTouch();
-  const prefersReducedMotion = useReducedMotion();
-  const active = !isTouch && !prefersReducedMotion;
+  // False until mounted, so mobile no longer ships two fixed-position motion.div
+  // elements in the SSR HTML only to tear them down on hydration.
+  const active = useCursorActive();
 
   const stateRef = useRef<CursorState>({
     x: 0,

@@ -1,7 +1,7 @@
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import type { Metadata } from 'next';
-import { Fraunces, Inter, JetBrains_Mono } from 'next/font/google';
+import { JetBrains_Mono, Poppins } from 'next/font/google';
 import { notFound } from 'next/navigation';
 import { hasLocale, NextIntlClientProvider } from 'next-intl';
 import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
@@ -15,17 +15,20 @@ import { Navbar } from '@/shared/ui/navbar';
 import { ThemeProvider } from '@/shared/ui/theme-provider';
 import '../globals.css';
 
-const fraunces = Fraunces({
-  subsets: ['latin'],
-  variable: '--font-serif',
-  display: 'swap',
-  axes: ['opsz', 'SOFT', 'WONK'],
-});
-
-const inter = Inter({
+// Poppins replaces Fraunces + Inter. Fraunces is a formal display serif; the site
+// it was fronting is a mechatronics engineer shipping AI systems, and the type
+// read stiffer than the work. Poppins is geometric and round — friendlier without
+// being unserious. One family across display and body, mono kept for labels.
+const poppins = Poppins({
   subsets: ['latin'],
   variable: '--font-sans',
   display: 'swap',
+  // 300 display, 400 body, 500 labels. 600 was declared and used nowhere, and
+  // next/font emits the full weight x style cross product, so it was costing two
+  // files — on mobile the fonts are the largest non-script asset and land
+  // directly on LCP.
+  weight: ['300', '400', '500'],
+  style: ['normal', 'italic'],
 });
 
 const jetbrainsMono = JetBrains_Mono({
@@ -128,7 +131,7 @@ export default async function LocaleLayout({ children, params }: Props) {
     <html
       lang={locale}
       suppressHydrationWarning
-      className={`${fraunces.variable} ${inter.variable} ${jetbrainsMono.variable}`}
+      className={`${poppins.variable} ${jetbrainsMono.variable}`}
     >
       <body className="flex min-h-screen flex-col font-sans antialiased">
         <ThemeProvider

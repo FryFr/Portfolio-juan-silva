@@ -5,7 +5,12 @@ export const siteConfig = {
   title: 'Juan Silva — Mechatronics Engineer & AI Specialist',
   description:
     'Portfolio personal de Juan Silva. Ingeniero Mecatrónico, Business Systems & AI Specialist. IA, automatización, robótica y sistemas empresariales.',
-  url: 'https://juan-silva.dev',
+  // Feeds canonical tags, OpenGraph, JSON-LD and every sitemap entry. This was
+  // https://juan-silva.dev, which does not resolve (NXDOMAIN) — pointing canonicals
+  // at a non-existent host tells crawlers the authoritative copy lives somewhere
+  // unreachable, which can suppress indexing of the copy that does work.
+  // Switch this back once the custom domain is registered and pointed at Vercel.
+  url: 'https://portfolio-juan-silva-eight.vercel.app',
   author: {
     name: 'Juan Silva',
     handle: 'FryFr',

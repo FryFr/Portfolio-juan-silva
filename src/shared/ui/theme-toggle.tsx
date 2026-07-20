@@ -24,16 +24,21 @@ export function ThemeToggle({ labelLight, labelDark, className }: Props) {
   return (
     <button
       type="button"
-      aria-label={nextLabel}
+      // No aria-label. An aria-label REPLACES the accessible name, so the visible
+      // word "light" was not part of it — a voice-control user saying "click
+      // light" matched nothing. WCAG 2.5.3 Label in Name requires the accessible
+      // name to contain the visible text, so the visible word stays in the name
+      // and the extra context is appended in a screen-reader-only span.
       suppressHydrationWarning
       onClick={() => setTheme(isDark ? 'light' : 'dark')}
       className={cn(
-        'inline-flex h-8 items-center gap-2 px-2 font-mono text-[10px] uppercase tracking-[0.15em] text-[var(--fg-tertiary)] hover:text-[var(--fg-primary)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]',
+        'inline-flex h-8 items-center gap-2 px-2 font-mono text-eyebrow uppercase text-subtle transition-colors duration-150 ease-out-expo hover:text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
         className,
       )}
     >
       <span aria-hidden="true">{mounted ? (isDark ? '◐' : '◑') : '◐'}</span>
       <span>{mounted ? (isDark ? 'dark' : 'light') : '—'}</span>
+      <span className="sr-only">{nextLabel}</span>
     </button>
   );
 }

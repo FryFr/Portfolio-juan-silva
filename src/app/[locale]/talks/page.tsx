@@ -35,13 +35,11 @@ export default async function TalksIndexPage({ params }: Props) {
         <Container size="wide" className="py-24 md:py-32">
           <DistortHeading
             as="h1"
-            className="max-w-3xl font-serif text-4xl font-normal leading-[1] tracking-[-0.02em] text-[var(--fg-primary)] md:text-6xl"
+            className="max-w-3xl font-sans text-4xl font-normal leading-[1] tracking-[-0.02em] text-foreground md:text-6xl"
           >
             {t('title')}
           </DistortHeading>
-          <p className="mt-6 max-w-2xl font-serif text-lg italic text-[var(--fg-tertiary)]">
-            {t('subtitle')}
-          </p>
+          <p className="mt-6 max-w-2xl font-sans text-lg italic text-subtle">{t('subtitle')}</p>
 
           <TalksGrid locale={typedLocale} />
         </Container>

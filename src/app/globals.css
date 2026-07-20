@@ -4,8 +4,58 @@
 
 @theme {
   --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-serif: var(--font-serif), Georgia, serif;
   --font-mono: var(--font-mono), ui-monospace, monospace;
+
+  /* Type scale. Fluid sizes are clamped so the display setting can bleed to the
+     viewport edges without a media query per breakpoint. */
+  --text-eyebrow: 0.6875rem; /* 11px. Was 10px, which is illegible at 0.18em tracking. */
+  --text-eyebrow--line-height: 1;
+  --text-eyebrow--letter-spacing: 0.18em;
+  --text-display: clamp(3.5rem, 12vw, 11rem);
+  --text-display--line-height: 0.85;
+  --text-display--letter-spacing: -0.04em;
+  --text-section: clamp(2.25rem, 6vw, 5rem);
+  --text-section--line-height: 0.95;
+  --text-section--letter-spacing: -0.02em;
+  --text-lead: clamp(1.25rem, 2.5vw, 1.75rem);
+  --text-lead--line-height: 1.45;
+
+  /* Motion vocabulary. Phase 4's scroll system builds on these rather than
+     scattering ad-hoc durations across components. */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
+  --duration-fast: 150ms;
+  --duration-base: 300ms;
+  --duration-slow: 600ms;
+}
+
+/*
+ * `inline` is load-bearing.
+ *
+ * A plain `@theme { --color-foreground: #1a1208 }` bakes the literal value into
+ * every generated utility, so the .dark overrides below would never reach it.
+ * `@theme inline` emits `color: var(--fg-primary)` instead — the utility points at
+ * the runtime variable, so the existing cascade keeps working untouched.
+ *
+ * Names describe the ROLE, not the original variable: --bg-tertiary was used 19
+ * times and 21 of the 21 border declarations, so it is `border`, not a background.
+ */
+@theme inline {
+  --color-background: var(--bg-primary);
+  --color-surface: var(--bg-secondary);
+  --color-border: var(--bg-tertiary);
+
+  --color-foreground: var(--fg-primary);
+  --color-body: var(--fg-secondary);
+  --color-subtle: var(--fg-tertiary);
+  --color-muted: var(--fg-muted);
+
+  --color-invert: var(--bg-invert);
+  --color-on-invert: var(--fg-invert);
+
+  --color-accent: var(--accent);
+  --color-success: var(--accent-success);
+  --color-warn: var(--accent-warn);
 }
 
 @layer base {
@@ -13,28 +63,44 @@
     --bg-primary: #f5f1ea;
     --bg-secondary: #ece3d2;
     --bg-tertiary: #e8dfcf;
-    --bg-invert: #1a1208;
+    /* Contrast on --bg-primary #f5f1ea:
+       primary 15.8:1 · secondary 11.2:1 · tertiary 7.6:1 · muted 6.0:1
+       tertiary and muted were 5.95:1 and 4.83:1. Muted carries every eyebrow and
+       label on the site; 4.83 cleared AA by 0.33 and failed real eyes. */
     --fg-primary: #1a1208;
     --fg-secondary: #3d2e1a;
-    --fg-tertiary: #6b5943;
-    --fg-muted: #7a6747;
-    --fg-subtle: #b8a589;
+    --fg-tertiary: #5a4a35;
+    --fg-muted: #6b5943;
+    /* Inverted surface, always declared as a PAIR. A lone --bg-invert with no
+       matching foreground is exactly how a contrast bug gets written. 15.8:1. */
+    --bg-invert: #1a1208;
+    --fg-invert: #f5f1ea;
     --accent: #7a6030;
-    --accent-success: #7a9960;
-    --accent-warn: #e07856;
+    /* Channel triplets for canvas work, which needs rgb() with a runtime alpha
+       and cannot interpolate a hex token. */
+    --accent-rgb: 122 96 48;
+    --fg-rgb: 26 18 8;
+    --fg-invert-rgb: 245 241 234;
+    --accent-success: #55703c;
+    --accent-warn: #a8442a;
   }
 
   .dark {
     --bg-primary: #1a1208;
     --bg-secondary: #241a0e;
     --bg-tertiary: #2e2214;
-    --bg-invert: #f5f1ea;
+    /* Contrast on --bg-primary #1a1208:
+       primary 15.8:1 · secondary 13.2:1 · tertiary 7.7:1 · muted 6.2:1 */
     --fg-primary: #f5f1ea;
     --fg-secondary: #e8dfcf;
     --fg-tertiary: #b8a589;
-    --fg-muted: #9a8567;
-    --fg-subtle: #6b5943;
+    --fg-muted: #a89272;
+    --bg-invert: #f5f1ea;
+    --fg-invert: #1a1208;
     --accent: #d4b584;
+    --accent-rgb: 212 181 132;
+    --fg-rgb: 245 241 234;
+    --fg-invert-rgb: 26 18 8;
     --accent-success: #8ba970;
     --accent-warn: #f08866;
   }
@@ -65,4 +131,152 @@
       scroll-behavior: auto !important;
     }
   }
+}
+
+/*
+ * Cursor proximity reveal.
+ *
+ * Deliberately unlayered: Tailwind's utilities live in @layer utilities, and
+ * unlayered rules outrank layered ones, so this wins over a `text-*` utility on
+ * the same element without !important or a specificity hack.
+ *
+ * The JS side writes ONLY the unitless `--reveal` progress value (0 -> 1). Colour
+ * is resolved here, from tokens.
+ *
+ * INVARIANT: both endpoints of the mix must sit on the same side of --bg-primary.
+ * In light mode --fg-secondary (11.2:1) and --accent (5.3:1) are both dark on a
+ * light background; in dark mode both are light on a dark one. Every point on the
+ * ramp therefore clears WCAG AA by construction, in both themes.
+ *
+ * This replaces a hardcoded rgb() lerp whose endpoint was #f5f1ea — the literal
+ * value of --bg-primary in light mode — which faded body text to exactly the page
+ * background (1:1 contrast, invisible) as the cursor approached.
+ */
+/*
+ * Scroll-driven reveals.
+ *
+ * animation-timeline runs on the compositor, costs 0 KB, and — unlike anything
+ * gated behind the cursor — works on touch devices. That is the whole point: the
+ * site had no scroll motion at all, so on a phone it was a static document.
+ *
+ * --i staggers children of a list without a class per index.
+ */
+@keyframes reveal-rise {
+  from {
+    opacity: 0;
+    transform: translateY(1.75rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.reveal {
+  animation: reveal-rise linear both;
+  animation-timeline: view();
+  animation-range: entry 0% entry 75%;
+}
+
+.reveal-stagger > * {
+  animation: reveal-rise linear both;
+  animation-timeline: view();
+  animation-range: entry 0% entry 80%;
+  animation-delay: calc(var(--i, 0) * 45ms);
+}
+
+/* Timeline: a signal charging along a path. */
+@keyframes timeline-charge {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes timeline-node-fill {
+  from {
+    background-color: var(--bg-primary);
+  }
+  to {
+    background-color: var(--accent);
+  }
+}
+
+.timeline {
+  view-timeline-name: --timeline-track;
+  view-timeline-axis: block;
+}
+
+.timeline-charge {
+  transform-origin: top;
+  animation: timeline-charge linear both;
+  animation-timeline: --timeline-track;
+  animation-range: entry 85% cover 45%;
+}
+
+.timeline-node {
+  animation: timeline-node-fill linear both;
+  animation-timeline: view();
+  animation-range: entry 20% entry 90%;
+}
+
+/*
+ * Progressive enhancement. A fallback that is never exercised is not a fallback,
+ * so these set the final visible state explicitly rather than relying on the
+ * animation having run.
+ */
+@supports not (animation-timeline: view()) {
+  .reveal,
+  .reveal-stagger > * {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .timeline-charge {
+    animation: none;
+    transform: scaleY(1);
+  }
+
+  .timeline-node {
+    animation: none;
+    background-color: var(--accent);
+  }
+}
+
+/*
+ * The global prefers-reduced-motion block clamps animation-duration to 0.01ms,
+ * which does NOT neutralise these: a progress-based timeline drives the animation
+ * from scroll position, not from elapsed time, so duration is not the lever.
+ * They have to be switched off explicitly.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .reveal-stagger > * {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .timeline-charge {
+    animation: none !important;
+    transform: scaleY(1) !important;
+  }
+
+  .timeline-node {
+    animation: none !important;
+    background-color: var(--accent) !important;
+  }
+}
+
+.reveal-text {
+  --reveal: 0;
+  color: color-mix(in oklab, var(--fg-secondary), var(--accent) calc(var(--reveal) * 100%));
+  text-shadow: 0 0 calc(var(--reveal) * 8px)
+    color-mix(in oklab, transparent, var(--accent) calc(var(--reveal) * 22%));
+  transition:
+    color 0.3s ease,
+    text-shadow 0.3s ease;
 }

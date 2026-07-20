@@ -1,9 +1,8 @@
 'use client';
 
-import { useReducedMotion } from 'motion/react';
 import { useEffect, useRef } from 'react';
 import { useCursor } from '@/features/cursor/context/use-cursor';
-import { useIsTouch } from '@/features/cursor/lib/use-is-touch';
+import { useCursorActive } from '@/features/cursor/lib/use-cursor-active';
 
 type Props = {
   as: 'h1' | 'h2' | 'h3';
@@ -15,16 +14,23 @@ const GRAVITY_RADIUS = 250;
 const GRAVITY_STRENGTH = 35;
 const SCALE_BOOST = 0.25;
 
+/**
+ * Vertical pull is damped hard relative to horizontal.
+ *
+ * Display headings are set at line-height 0.95, so an undamped pull drags
+ * characters far enough to collide with the line above or below — "inteligencia
+ * artificial" rendered as two overlapping words. Horizontal travel has nowhere to
+ * collide, so it keeps the full strength that makes the effect readable.
+ */
+const VERTICAL_DAMPING = 0.32;
+
 export function DistortHeading({ as: Tag, children, className }: Props) {
   const cursorRef = useCursor();
-  const isTouch = useIsTouch();
-  const prefersReducedMotion = useReducedMotion();
+  const active = useCursorActive();
   const containerRef = useRef<HTMLHeadingElement>(null);
   const charsRef = useRef<HTMLSpanElement[]>([]);
   const rafRef = useRef<number>(0);
   const visibleRef = useRef(false);
-
-  const active = !isTouch && !prefersReducedMotion;
 
   useEffect(() => {
     if (!active || !containerRef.current) return;
@@ -66,7 +72,7 @@ export function DistortHeading({ as: Tag, children, className }: Props) {
         if (dist < GRAVITY_RADIUS) {
           const intensity = (1 - dist / GRAVITY_RADIUS) ** 2;
           const pullX = (dx / dist) * GRAVITY_STRENGTH * intensity;
-          const pullY = (dy / dist) * GRAVITY_STRENGTH * intensity;
+          const pullY = (dy / dist) * GRAVITY_STRENGTH * intensity * VERTICAL_DAMPING;
           const scale = 1 + SCALE_BOOST * intensity;
           el.style.transform = `translate(${pullX}px, ${pullY}px) scale(${scale})`;
           el.style.transition = 'transform 0.08s ease-out';
@@ -83,37 +89,50 @@ export function DistortHeading({ as: Tag, children, className }: Props) {
     return () => cancelAnimationFrame(rafRef.current);
   }, [active, cursorRef]);
 
+  // Baseline: a plain text node. This is what the server renders on every device,
+  // and what touch / reduced-motion users keep. Splitting into per-character spans
+  // during SSR meant touch devices got the enhanced markup and then swapped it out
+  // after hydration — a layout change on the hero H1.
   if (!active) {
     return <Tag className={className}>{children}</Tag>;
   }
 
-  const chars = children.split('').map((char, i) => {
-    if (char === ' ') {
-      return (
-        // biome-ignore lint/suspicious/noArrayIndexKey: chars are static, derived from immutable children string
-        <span key={`${i}-space`} className="inline-block w-[0.3em]">
-          &nbsp;
-        </span>
-      );
-    }
-    return (
-      <span
-        // biome-ignore lint/suspicious/noArrayIndexKey: chars are static, derived from immutable children string
-        key={`${i}-${char}`}
-        ref={(el) => {
-          if (el) charsRef.current[i] = el;
-        }}
-        aria-hidden="true"
-        className="inline-block will-change-auto"
-      >
-        {char}
-      </span>
-    );
-  });
+  // Characters are grouped into per-word wrappers rather than emitted as one flat
+  // run of inline-block spans.
+  //
+  // A flat run lets the browser line-break between ANY two characters, because
+  // every character is its own inline-level box. On a heading long enough to wrap
+  // that produced breaks mid-word — "Proyectos que moldea / ron cómo pienso".
+  // Wrapping each word keeps breaks between words where they belong.
+  let charIndex = 0;
+  const words = children.split(' ');
 
   return (
     <Tag ref={containerRef} className={className} aria-label={children}>
-      {chars}
+      {words.map((word, wi) => (
+        <span
+          // biome-ignore lint/suspicious/noArrayIndexKey: derived from an immutable children string
+          key={`w-${wi}-${word}`}
+          aria-hidden="true"
+          className="inline-block whitespace-nowrap"
+        >
+          {word.split('').map((char) => {
+            const i = charIndex++;
+            return (
+              <span
+                key={`c-${i}-${char}`}
+                ref={(el) => {
+                  if (el) charsRef.current[i] = el;
+                }}
+                className="inline-block will-change-auto"
+              >
+                {char}
+              </span>
+            );
+          })}
+          {wi < words.length - 1 ? ' ' : null}
+        </span>
+      ))}
     </Tag>
   );
 }

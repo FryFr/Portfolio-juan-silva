@@ -1,10 +1,10 @@
 <div align="center">
 
-# 🌐 Juan Silva — Portfolio v2
+# 🌐 Juan Silva — Portfolio
 
 ### Mechatronics Engineer & AI Specialist
 
-*A modern, bilingual portfolio built from scratch with performance, accessibility, and interactive design at its core.*
+*A bilingual portfolio built around generative visuals, scroll-driven motion, and an accessibility budget that fails the build.*
 
 [![Next.js](https://img.shields.io/badge/Next.js-16-000000?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
 [![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
@@ -14,7 +14,7 @@
 [![Vercel](https://img.shields.io/badge/Vercel-Deployed-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://portfolio-juan-silva-eight.vercel.app)
 [![License](https://img.shields.io/badge/License-Proprietary-red?style=for-the-badge)](LICENSE)
 
-**[Live Site](https://portfolio-juan-silva-eight.vercel.app) · [Architecture](#-architecture) · [Features](#-features-in-detail) · [Cursor System](#-cursor-interaction-system) · [Getting Started](#-getting-started)**
+**[Live Site](https://portfolio-juan-silva-eight.vercel.app) · [Architecture](#-architecture) · [Visual layer](#-the-visual-layer) · [Motion](#-motion) · [Getting Started](#-getting-started)**
 
 </div>
 
@@ -22,41 +22,39 @@
 
 ## 📖 Overview
 
-This is the **complete rewrite** of my personal portfolio — the previous version was built in 2023 with Next.js 13, plain JavaScript, and Tailwind 3. After two years without updates and a significant career evolution (from IT Consultant to AI Specialist), it no longer reflected my technical level or professional identity.
+A ground-up rebuild of my portfolio. The previous version was Next.js 13, plain
+JavaScript and Tailwind 3, written in 2023 and left untouched through a career
+move from IT consulting to AI engineering.
 
-The v2 is a ground-up rebuild with a modern stack, feature-based architecture, bilingual content, interactive cursor effects, and a CI pipeline with automated testing and Lighthouse budgets.
-
-### What Makes It Different
-
-- **Cursor Interaction System** — custom `requestAnimationFrame`-based effects: morphing blob, spotlight glow, per-character text distortion, and proximity-based text reveal
-- **Bilingual MDX Content** — 13 projects, blog posts, and conference talks in both Spanish and English, with Zod-validated schemas
-- **Editorial Aesthetic** — inspired by Linear, Vercel, Rauno Freiberg, and Emil Kowalski. Large display typography, restrained palette, honest hover states
-- **Server Components First** — RSC by default, `'use client'` only where strictly needed (cursor, theme toggle, locale switcher)
+The current version is built around one idea — **systems and signal** — drawn from
+the actual work: mechatronics on one side, AI and automation on the other. Every
+generative element on the page is a point system in motion, because that is what
+the work looks like.
 
 ---
 
-## 🛠️ The Stack
+## 🛠 Stack
 
 <table>
 <tr><td>
 
-**Framework & Language**
+**Framework**
 - Next.js 16 (App Router + RSC)
 - React 19
-- TypeScript 5 (strict mode)
+- TypeScript 5, strict
 
 </td><td>
 
-**Styling & Animation**
-- Tailwind CSS 4 (Oxide engine)
-- Motion v12 (Framer Motion)
-- next-themes (dark / light)
+**Styling & motion**
+- Tailwind CSS 4 (CSS-first)
+- CSS scroll-driven animation
+- Canvas 2D · next-themes
 
 </td><td>
 
 **Content & i18n**
 - Content Collections + MDX
-- Zod schemas (type-safe frontmatter)
+- Zod-validated frontmatter
 - next-intl v4 (`/es`, `/en`)
 
 </td></tr>
@@ -64,297 +62,177 @@ The v2 is a ground-up rebuild with a modern stack, feature-based architecture, b
 
 **Testing**
 - Vitest + Testing Library
-- Playwright + axe-core (a11y)
-- Lighthouse CI (budget ≥ 0.95)
+- Playwright + axe-core
+- Lighthouse CI, desktop + mobile
 
 </td><td>
 
 **Tooling**
-- Biome (lint + format)
+- Biome
 - pnpm 10
-- GitHub Actions CI
+- GitHub Actions
 
 </td><td>
 
 **Deploy**
 - Vercel
 - Analytics + Speed Insights
-- Automatic preview deploys
 
 </td></tr>
 </table>
 
----
-
-## ✨ Features in Detail
-
-### 🌍 Bilingual Content System
-- **13 projects** with full case studies (problem → solution → stack decisions → impact)
-- **Blog posts** on AI in ITSM, career transitions, and technical architecture
-- **Conference talks** from ManageEngine Partner Training events
-- All content authored in MDX with Zod-validated frontmatter and automatic reading time
-- Locale switching without page reload via next-intl middleware
-
-### 🎨 Editorial Design System
-- **Three-font stack:** Fraunces (serif display), Inter (sans body), JetBrains Mono (code)
-- **Design tokens** via CSS custom properties — theme-aware, no hardcoded colors
-- **Dark / Light mode** with `next-themes`, system preference detection, zero flash on load
-- **Responsive layout** — mobile-first, tested across breakpoints
-
-### 🔍 SEO & Accessibility
-- **JSON-LD** structured data (`Person` + `ProfilePage` schemas)
-- **Dynamic sitemap** and `robots.txt` generation
-- **OpenGraph** metadata per page with locale-aware canonical URLs
-- **WCAG 2.1 AA** compliance verified via axe-core in E2E tests
-- **`prefers-reduced-motion`** respected in all animations
-
-### 📱 Contact Integration
-- **Floating WhatsApp button** — always visible, pre-filled message with locale context
-- **LinkedIn CTA** — direct connection link
-- No contact form — intentional decision to reduce friction and eliminate spam
+**Type:** Poppins for display and body, JetBrains Mono for labels and code.
 
 ---
 
-## 🎯 Cursor Interaction System
+## 🎨 The visual layer
 
-A custom-built cursor interaction layer that transforms the browsing experience on desktop. All effects run on `requestAnimationFrame` loops with `IntersectionObserver` gating for performance.
+Four generative systems, all Canvas 2D. No WebGL and no animation library — these
+are two-dimensional point systems, so `three.js` would cost ~150 KB to draw
+something flat.
 
-```
-┌─────────────────────── CURSOR PROVIDER (global) ──────────────────────┐
-│                                                                        │
-│   mousemove event ──▶ MutableRefObject<{x, y}>                        │
-│                              │                                         │
-│              ┌───────────────┼───────────────────┐                     │
-│              ▼               ▼                   ▼                     │
-│       ┌────────────┐  ┌────────────┐  ┌──────────────────┐            │
-│       │ CursorBlob │  │ Spotlight  │  │ DistortHeading   │            │
-│       │            │  │            │  │                   │            │
-│       │ Morphing   │  │ Dual-layer │  │ Per-character     │            │
-│       │ SVG blob   │  │ radial     │  │ gravity pull      │            │
-│       │ with       │  │ gradient   │  │ based on cursor   │            │
-│       │ spring     │  │ glow       │  │ distance           │            │
-│       │ physics    │  │            │  │                   │            │
-│       └────────────┘  └────────────┘  └──────────────────┘            │
-│                                              │                         │
-│                                   ┌──────────┴──────────┐             │
-│                                   ▼                     ▼             │
-│                           ┌──────────────┐  ┌──────────────────┐      │
-│                           │ Proximity    │  │ Touch detection  │      │
-│                           │ Reveal       │  │ (auto-disable    │      │
-│                           │              │  │  on mobile)      │      │
-│                           │ Edge-distance│  │                  │      │
-│                           │ warm glow    │  │ Reduced motion   │      │
-│                           │ on text      │  │ (auto-disable)   │      │
-│                           └──────────────┘  └──────────────────┘      │
-└────────────────────────────────────────────────────────────────────────┘
-```
+| Where | What |
+|---|---|
+| **Hero** | **Flow field.** Particles advected through value noise, leaving trails. The cursor is a *vortex*, not an attractor — an attractor collapses the whole field into a dot within seconds. |
+| **About, stats, work, contact** | **Displaced lattice.** A point grid pushed out of alignment by travelling noise. The cursor acts as a lens, points parting around it with a smootherstep falloff so there is no visible seam at the influence radius. |
+| **What I do** | **Signal graph.** Skill categories as hubs, technologies as nodes, pulses travelling the edges. |
+| **Track record** | **Charging rail.** A timeline that fills as it scrolls, nodes lighting in sequence. Pure CSS. |
 
-| Effect | What it does | Performance |
-|--------|-------------|-------------|
-| **CursorBlob** | Morphing SVG shape follows cursor with spring-damped physics | SVG filter + rAF |
-| **Spotlight** | Dual-layer radial gradient illuminates content near cursor | CSS radial-gradient + rAF |
-| **DistortHeading** | Each character in headings is pulled toward cursor by gravity | Per-char `getBoundingClientRect` + IntersectionObserver |
-| **ProximityReveal** | Text glows warm gold as cursor approaches (edge-distance calc) | Edge-distance math + CSS transition |
+The field adapts to the surface it sits on rather than being pasted identically
+across the page — full strength on the statement and the work, softer on the
+stats band, and inverted on the contact band. Section rhythm is what makes the
+page readable as distinct sections; running one field at one strength everywhere
+would flatten it.
 
-All effects automatically disable on touch devices and when `prefers-reduced-motion` is active.
+Cost of all of it: **TBT 20 ms, CLS 0.** Every loop runs after hydration and is
+`IntersectionObserver`-gated, so only the visible field runs.
 
 ---
 
-## 🏗️ Architecture
+## 🌀 Motion
 
-Feature-based with **screaming architecture** — each domain owns its directory under `src/features/`.
+**CSS scroll-driven animation is the primary layer.** `animation-timeline: view()`
+costs 0 KB, runs on the compositor, and — unlike anything gated behind a cursor —
+works on touch. That last point is the whole reason it exists: an earlier version
+bound every effect to the mouse, so on a phone the page was a static document.
 
-```
-Portfolio-juan-silva/
-├── content/
-│   ├── projects/*.mdx          # 13 projects (en + es pairs)
-│   ├── posts/*.mdx             # Blog posts (en + es pairs)
-│   └── talks/*.mdx             # Conference talks (en + es pairs)
-├── src/
-│   ├── app/
-│   │   └── [locale]/           # i18n root (es | en)
-│   │       ├── layout.tsx          # Root layout + providers + JSON-LD
-│   │       ├── page.tsx            # Home (composition of feature sections)
-│   │       ├── projects/
-│   │       │   ├── page.tsx        # Projects index grid
-│   │       │   └── [slug]/page.tsx # Case study detail (MDX)
-│   │       ├── blog/
-│   │       │   ├── page.tsx        # Blog index
-│   │       │   └── [slug]/page.tsx # Post detail (MDX + related posts)
-│   │       └── talks/page.tsx      # Talks grid
-│   ├── features/
-│   │   ├── hero/               # Landing hero + animated role rotator
-│   │   ├── about/              # Bio, skills grid, timeline, soft skills
-│   │   ├── projects/           # Project cards + responsive grid
-│   │   ├── case-study/         # MDX case study renderer + prev/next nav
-│   │   ├── blog/               # Post cards, headers, related posts
-│   │   ├── talks/              # Talk cards + grid
-│   │   ├── contact/            # WhatsApp + LinkedIn CTAs, floating button
-│   │   └── cursor/             # Cursor interaction system
-│   │       ├── context/            # Global cursor position provider
-│   │       ├── effects/            # DistortHeading, ProximityReveal
-│   │       ├── lib/                # useIsTouch hook
-│   │       └── ui/                 # CursorBlob, CursorSpotlight
-│   └── shared/
-│       ├── ui/                 # Reusable atoms (Button, Container, Tag, Navbar, Footer)
-│       ├── lib/                # Utilities (cn, formatDate)
-│       ├── config/             # Site config, contact helpers
-│       ├── i18n/               # next-intl routing + request config
-│       ├── mdx/                # MDX component map, callouts, code blocks
-│       └── content/            # Content collection helpers + locale filters
-├── tests/
-│   ├── components/             # RTL component tests
-│   ├── features/cursor/        # Cursor effects unit tests
-│   ├── lib/                    # Pure logic tests (reading time, related posts)
-│   └── helpers/                # renderWithIntl test helper
-├── e2e/                        # Playwright specs (8 spec files)
-│   ├── home.spec.ts
-│   ├── navigation.spec.ts
-│   ├── theme-locale.spec.ts
-│   ├── contact-floating.spec.ts
-│   ├── case-study.spec.ts
-│   ├── blog-detail.spec.ts
-│   ├── metadata.spec.ts        # SEO + JSON-LD validation
-│   └── a11y.spec.ts            # axe-core WCAG 2.1 AA audit
-├── content-collections.ts      # Zod schemas for projects, posts, talks
-├── vercel.json                 # Deploy config (pnpm 10 compat)
-└── .github/workflows/ci.yml   # CI pipeline
-```
+Motion's `whileInView` was rejected on architecture, not weight: it requires
+`'use client'` on every animated component, which here would push next-intl's
+server API across the client boundary for the sake of a fade. `Reveal` is a server
+component.
 
-### Design Patterns
+JS motion appears only where CSS cannot reach — interpolating text content in the
+stat counters, and drawing pixels in the fields.
 
-| Pattern | Where | Why |
-|---------|-------|-----|
-| **Server Components by default** | All features | Zero client JS unless interaction needed |
-| **Container / Presentational** | Per feature directory | Logic isolation, testable UIs |
-| **Content Collections + Zod** | `content-collections.ts` | Type-safe MDX frontmatter at build time |
-| **Adapter via CSS custom properties** | `globals.css` + components | Theme-aware colors without runtime logic |
-| **Zero global state** | Entire app | URL + server state is sufficient |
+`prefers-reduced-motion` is handled explicitly rather than inherited. The usual
+global `animation-duration: 0.01ms` override does nothing to a progress-based
+timeline, because those are driven by scroll position rather than elapsed time —
+without an explicit rule every revealed element stays at `opacity: 0` and the page
+is blank for those users. Five tests hold that shut.
 
 ---
 
-## ⚡ CI Pipeline
+## 🏗 Architecture
 
-GitHub Actions runs on every push to `main` and `refactor/**` branches:
+Feature-sliced. Each domain owns its directory; dependencies run one way.
+
+```
+content/
+├── projects/*.mdx          13 projects, es + en pairs
+├── posts/*.mdx             2 posts
+└── talks/*.mdx             2 talks
+src/
+├── app/[locale]/           routes: home, projects, blog, talks (+ detail pages)
+├── features/
+│   ├── hero/ about/ projects/ case-study/ blog/ talks/ contact/
+│   └── cursor/             blob, spotlight, distort, proximity reveal
+├── shared/
+│   ├── ui/                 primitives, Reveal, Eyebrow, FieldCanvas
+│   ├── lib/                cn, formatDate, noise
+│   ├── i18n/ mdx/ content/ config/
+└── messages/{es,en}.json   all copy, both locales
+```
+
+### Conventions worth knowing
+
+| | |
+|---|---|
+| **Copy** | Lives in `src/messages/*.json`, never in components. Key sets must match across locales or next-intl throws at runtime. |
+| **Content filenames** | `<slug>.{es,en}.mdx`. Anything else throws at build time, by design. |
+| **Middleware** | `proxy.ts` at the root — Next 16 renamed it. |
+| **Colour** | Role-named Tailwind utilities (`text-body`, `border-border`, `bg-surface`) generated from `@theme inline`. No arbitrary `var()` syntax anywhere. |
+| **Server first** | 19 client components out of the whole tree; every page section is RSC. |
+
+`CLAUDE.md` documents the rest — including the traps that have already cost time.
+
+---
+
+## ⚡ CI
+
+Runs on push to `main` and `refactor/**`, and on PRs to `main`.
 
 ```mermaid
 graph LR
-    A[Push / PR] --> B[Lint, Typecheck, Unit Tests]
-    A --> C[Playwright E2E + a11y]
-    C --> D[Lighthouse CI Budget]
-
-    B --> |pnpm typecheck| B1[TypeScript strict]
-    B --> |pnpm check| B2[Biome lint + format]
-    B --> |pnpm test| B3[Vitest 31 tests]
-
-    C --> |pnpm build| C1[Production build smoke]
-    C --> |playwright test| C2[19 E2E tests + axe WCAG 2.1 AA]
-
-    D --> |lhci autorun| D1[Performance ≥ 0.95]
-    D --> D2[Accessibility ≥ 0.95]
-    D --> D3[Best Practices ≥ 0.95]
-    D --> D4[SEO ≥ 0.95]
+    A[Push / PR] --> B[Lint · typecheck · unit]
+    A --> C[Playwright + axe]
+    C --> D[Lighthouse]
+    B --> B1[content-collections build]
+    B1 --> B2[tsc · biome · 46 vitest]
+    C --> C1[production build]
+    C1 --> C2[32 e2e, 8 axe routes]
+    D --> D1[desktop ≥ 0.95]
+    D --> D2[mobile ≥ 0.70, 4x CPU]
+    D --> D3[resource budgets]
 ```
+
+**Accessibility is a build gate, not a claim.** axe runs against eight routes
+including every detail template, and fails on `moderate` and above — narrowing it
+to serious+critical previously let two real WCAG failures ship.
+
+Measured on a production build:
+
+| | performance | accessibility | best practices | SEO |
+|---|---|---|---|---|
+| Desktop | **100** | **100** | 96 | **100** |
+| Mobile · 4× CPU, ~1.6 Mbps | **88** | **100** | 96 | **100** |
+
+**TBT 20 ms, CLS 0** across five canvas fields — every loop runs after hydration and is IntersectionObserver-gated, so only the visible one runs. Mobile is LCP-bound at 3.9s, i.e. network rather than paint.
+
+Two caveats on those numbers. Best practices is 96 locally only — two `/_vercel/*` scripts that exist only when deployed. And the mobile gate is set to **0.70, not 0.88**: absolute Lighthouse scores are not portable between machines, and the CI runner benchmarks at roughly half the speed of the laptop these were measured on *before* Lighthouse applies its 4× slowdown. The gate is calibrated to the machine that runs it.
+
+Budgets cap script, font, image and total transfer. A category score is far too
+coarse to catch "someone re-added a 4 MB portrait", which is a thing that actually
+happened here.
 
 ---
 
 ## 🚀 Getting Started
 
-### Prerequisites
-
-- **Node.js 22+**
-- **pnpm 10+** (`corepack enable && corepack prepare pnpm@latest --activate`)
-
-### Installation
-
 ```bash
-git clone https://github.com/FryFr/Portfolio-juan-silva.git
-cd Portfolio-juan-silva
 pnpm install
+pnpm dev            # http://localhost:3000 → /es
 ```
 
-### Development
+| Command | |
+|---|---|
+| `pnpm dev` | Dev server |
+| `pnpm build` / `pnpm start` | Production build and serve |
+| `pnpm typecheck` | `tsc --noEmit` |
+| `pnpm check` / `check:fix` | Biome |
+| `pnpm test` | Vitest — 46 tests |
+| `pnpm e2e` | Playwright — 32 tests. **Use `--workers=1` locally.** |
+| `pnpm lhci` | Lighthouse, desktop |
 
-```bash
-# Start dev server
-pnpm dev
-# Opens at http://localhost:3000 → redirects to /es
-```
-
-### Production Build
-
-```bash
-pnpm build
-pnpm start
-```
+> `pnpm exec content-collections build` must run before `typecheck` — it generates
+> the content types. CI does this explicitly.
 
 ---
 
-## 📋 Scripts
+## 📁 Content
 
-| Command | Description |
-|---------|-------------|
-| `pnpm dev` | Start Next.js dev server |
-| `pnpm build` | Production build |
-| `pnpm start` | Serve production build |
-| `pnpm typecheck` | TypeScript type check (strict) |
-| `pnpm check` | Biome lint + format check |
-| `pnpm check:fix` | Auto-fix Biome issues |
-| `pnpm test` | Vitest unit + component tests |
-| `pnpm test:watch` | Vitest in watch mode |
-| `pnpm e2e` | Playwright E2E + a11y tests |
-| `pnpm e2e:ui` | Playwright with interactive UI |
-| `pnpm lhci` | Lighthouse CI budget audit |
-
----
-
-## 📁 Content Inventory
-
-<table>
-<thead>
-<tr>
-<th align="left">Type</th>
-<th align="right">Count</th>
-<th align="left">Highlights</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><b>Projects</b></td>
-<td align="right"><b>13</b></td>
-<td>N8N Automations, Dynapro Tracking, Zoho AI, Robotic Arm, MichiBot, Smart Orchard, Milu Web, Krea Catalog, Val Verso, Personal Finances, Sistema de Llenado, Sensor de Distancia, Diomedes Chan</td>
-</tr>
-<tr>
-<td><b>Blog Posts</b></td>
-<td align="right"><b>2</b></td>
-<td>De Mecatrónica a IA, IA en ITSM: Lecciones Reales</td>
-</tr>
-<tr>
-<td><b>Talks</b></td>
-<td align="right"><b>2</b></td>
-<td>ManageEngine Partner Training 2024 & 2025 — Hotel Sheraton Bogotá</td>
-</tr>
-</tbody>
-</table>
-
-Each piece of content exists as an `.en.mdx` + `.es.mdx` pair with full case study structure: **Problem → Solution → Stack Decisions → Impact**.
-
----
-
-## 📈 Roadmap
-
-| Phase | Description | Status |
-|------:|-------------|:------:|
-| **0** | Bootstrap — Next.js 16, Biome, folder structure | ✅ |
-| **1** | i18n + theming + layout base | ✅ |
-| **2** | Content Collections schemas + MDX | ✅ |
-| **3** | Hero + About + Projects grid | ✅ |
-| **4** | Case studies + Blog + Talks | ✅ |
-| **5** | Contact + Floating WhatsApp + Footer | ✅ |
-| **6** | Testing + CI + a11y + Lighthouse | ✅ |
-| **7** | Vercel deploy + Analytics + Speed Insights | ✅ |
-| **—** | Image optimization + performance tuning | 🔜 |
-| **—** | Custom domain | ⏳ |
+**13 projects · 2 posts · 2 talks**, each authored as an `.es.mdx` + `.en.mdx`
+pair with Zod-validated frontmatter. Case studies follow problem → solution →
+stack decisions → impact.
 
 ---
 
@@ -366,8 +244,6 @@ Unauthorized copying or distribution is not permitted.
 ---
 
 <div align="center">
-
-Built with Next.js, TypeScript, and too much coffee ☕
 
 **[portfolio-juan-silva-eight.vercel.app](https://portfolio-juan-silva-eight.vercel.app)**
 

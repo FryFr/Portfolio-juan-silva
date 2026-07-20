@@ -10,7 +10,7 @@ type MDXComponents = Record<string, React.ElementType>;
 
 function MdxH2({ children, ...props }: HTMLAttributes<HTMLHeadingElement>) {
   return (
-    <h2 className="mb-4 mt-10 font-serif text-2xl text-[var(--fg-primary)]" {...props}>
+    <h2 className="mb-4 mt-10 font-sans text-2xl text-foreground" {...props}>
       {children}
     </h2>
   );
@@ -18,7 +18,7 @@ function MdxH2({ children, ...props }: HTMLAttributes<HTMLHeadingElement>) {
 
 function MdxH3({ children, ...props }: HTMLAttributes<HTMLHeadingElement>) {
   return (
-    <h3 className="mb-3 mt-8 font-serif text-xl text-[var(--fg-secondary)]" {...props}>
+    <h3 className="mb-3 mt-8 font-sans text-xl text-body" {...props}>
       {children}
     </h3>
   );
@@ -26,7 +26,7 @@ function MdxH3({ children, ...props }: HTMLAttributes<HTMLHeadingElement>) {
 
 function MdxP({ children, ...props }: HTMLAttributes<HTMLParagraphElement>) {
   return (
-    <p className="mb-4 font-sans text-base leading-relaxed text-[var(--fg-secondary)]" {...props}>
+    <p className="mb-4 font-sans text-base leading-relaxed text-body" {...props}>
       {children}
     </p>
   );
@@ -34,7 +34,7 @@ function MdxP({ children, ...props }: HTMLAttributes<HTMLParagraphElement>) {
 
 function MdxUl({ children, ...props }: HTMLAttributes<HTMLUListElement>) {
   return (
-    <ul className="mb-4 list-disc pl-6 text-[var(--fg-secondary)] [&>li]:mb-1" {...props}>
+    <ul className="mb-4 list-disc pl-6 text-body [&>li]:mb-1" {...props}>
       {children}
     </ul>
   );
@@ -42,7 +42,7 @@ function MdxUl({ children, ...props }: HTMLAttributes<HTMLUListElement>) {
 
 function MdxOl({ children, ...props }: HTMLAttributes<HTMLOListElement>) {
   return (
-    <ol className="mb-4 list-decimal pl-6 text-[var(--fg-secondary)] [&>li]:mb-1" {...props}>
+    <ol className="mb-4 list-decimal pl-6 text-body [&>li]:mb-1" {...props}>
       {children}
     </ol>
   );
@@ -61,7 +61,7 @@ function MdxA({ href, children, ...props }: AnchorHTMLAttributes<HTMLAnchorEleme
   return (
     <a
       href={href}
-      className="underline underline-offset-4 transition-colors hover:text-[var(--accent)]"
+      className="underline underline-offset-4 transition-colors hover:text-accent"
       {...(isExternal ? { target: '_blank', rel: 'noreferrer noopener' } : {})}
       {...props}
     >
@@ -72,10 +72,7 @@ function MdxA({ href, children, ...props }: AnchorHTMLAttributes<HTMLAnchorEleme
 
 function MdxCode({ children, ...props }: HTMLAttributes<HTMLElement>) {
   return (
-    <code
-      className="rounded bg-[var(--bg-secondary)] px-1 py-0.5 font-mono text-sm text-[var(--fg-primary)]"
-      {...props}
-    >
+    <code className="rounded bg-surface px-1 py-0.5 font-mono text-sm text-foreground" {...props}>
       {children}
     </code>
   );
@@ -88,9 +85,19 @@ type MdxImgProps = {
 
 function MdxImg({ src, alt }: MdxImgProps) {
   if (!src) return null;
+  // width/height are placeholders — MDX gives us no intrinsic dimensions. `h-auto`
+  // makes the browser use the loaded image's real aspect ratio instead of the
+  // declared 16:9, which was stretching every portrait asset (val-verso is 480x720).
   return (
     <span className="my-6 block overflow-hidden rounded">
-      <Image src={src} alt={alt ?? ''} width={1200} height={675} className="rounded" />
+      <Image
+        src={src}
+        alt={alt ?? ''}
+        width={1200}
+        height={675}
+        sizes="(max-width: 768px) 100vw, 768px"
+        className="h-auto w-full rounded"
+      />
     </span>
   );
 }

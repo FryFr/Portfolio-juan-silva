@@ -23,7 +23,7 @@
   "home": {
     "hero": {
       "prompt": "whoami — portfolio",
-      "title": "Juan Silva.",
+      "title": "Juan Silva",
       "subtitle": "Mechatronics engineer, AI specialist, and business systems automation.",
       "roles": {
         "ai": "AI & Business Systems Specialist",
@@ -35,10 +35,15 @@
     },
     "about": {
       "eyebrow": "About",
-      "title": "Where engineering meets artificial intelligence.",
+      "title": "Where engineering meets artificial intelligence",
       "bio": [
-        "Mechatronics Engineer with over 5 years of experience bridging engineering, software, artificial intelligence, and business systems. I currently work as a Business Systems & AI Specialist, designing and implementing intelligent, scalable solutions that optimize operational processes and decision-making.",
-        "My mechatronics background allowed me to work across robotics, mechanical design, and digital manufacturing. In parallel, I developed strong leadership experience managing operations and multidisciplinary teams of up to 1,200 people, driving a 30% increase in sales."
+        "Mechatronics Engineer turned AI specialist. I design systems that connect hardware, software, and business decisions — from robotic arms to AI agents in production."
+      ],
+      "stats": [
+        { "value": "5+", "label": "Years of experience" },
+        { "value": "1200", "label": "People led" },
+        { "value": "+30%", "label": "Sales increase" },
+        { "value": "13", "label": "Projects delivered" }
       ],
       "skillsTitle": "What I do",
       "skills": {
@@ -114,42 +119,25 @@
           "place": "EAN University"
         }
       },
-      "softSkillsTitle": "Soft Skills",
+      "softSkillsTitle": "Also",
       "softSkills": [
-        {
-          "label": "Leadership",
-          "description": "Team supervision and client account management"
-        },
-        {
-          "label": "Bilingual communication",
-          "description": "Native Spanish / Fluent English — technical documentation and presentations in both languages"
-        },
-        {
-          "label": "Technical consulting",
-          "description": "Translating business needs into implementable technical solutions"
-        },
-        {
-          "label": "Technical presentations",
-          "description": "Speaker at events like ManageEngine Partner Training — Hotel Sheraton Bogotá"
-        },
-        {
-          "label": "Problem solving",
-          "description": "Debugging, root cause analysis, and solution design under pressure"
-        },
-        {
-          "label": "Project management",
-          "description": "Cross-functional team coordination and end-to-end project delivery"
-        }
+        "Team leadership",
+        "Native Spanish / Fluent English",
+        "Technical consulting",
+        "Conference speaking",
+        "Root cause analysis",
+        "Project management"
       ]
     },
     "projects": {
       "eyebrow": "Featured work",
-      "title": "Projects that shaped how I think.",
+      "title": "Projects that shaped how I think",
       "empty": "No featured projects yet.",
       "year": "Year",
       "role": "Role",
       "stack": "Stack",
       "caseStudy": "View case study",
+      "viewAll": "View all 13 projects",
       "live": "Live site",
       "repo": "View on GitHub"
     }
@@ -195,7 +183,14 @@
       "empty": "No talks yet.",
       "slides": "Slides",
       "video": "Video",
-      "deliveredIn": "Talk language"
+      "deliveredIn": "Talk language",
+      "readMore": "View the talk"
+    },
+    "detail": {
+      "backToList": "← All talks",
+      "event": "Event",
+      "year": "Year",
+      "language": "Language"
     }
   },
   "contact": {

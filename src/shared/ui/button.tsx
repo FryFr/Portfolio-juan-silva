@@ -10,9 +10,9 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 };
 
 const variantMap: Record<Variant, string> = {
-  primary: 'bg-[var(--fg-primary)] text-[var(--bg-primary)] hover:bg-[var(--fg-secondary)]',
-  ghost: 'bg-transparent text-[var(--fg-primary)] hover:bg-[var(--bg-secondary)]',
-  link: 'bg-transparent text-[var(--fg-primary)] underline-offset-4 hover:underline',
+  primary: 'bg-foreground text-background hover:bg-body',
+  ghost: 'bg-transparent text-foreground hover:bg-surface',
+  link: 'bg-transparent text-foreground underline-offset-4 hover:underline',
 };
 
 const sizeMap: Record<Size, string> = {
@@ -31,7 +31,7 @@ export function Button({
     <button
       type={type}
       className={cn(
-        'inline-flex items-center justify-center gap-2 rounded-none font-mono uppercase tracking-[0.15em] transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)] disabled:pointer-events-none disabled:opacity-50',
+        'inline-flex items-center justify-center gap-2 rounded-none font-mono uppercase tracking-[0.15em] transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:pointer-events-none disabled:opacity-50',
         variantMap[variant],
         sizeMap[size],
         className,

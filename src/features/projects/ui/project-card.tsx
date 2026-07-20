@@ -1,7 +1,7 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
 import type { Project } from '@/content-collections';
+import { ProjectCover } from '@/features/projects/ui/project-cover';
 import type { Locale } from '@/shared/i18n/routing';
 
 type Props = {
@@ -13,56 +13,38 @@ export async function ProjectCard({ project, locale }: Props) {
   const t = await getTranslations('home.projects');
 
   return (
-    <article className="group relative border-t border-[var(--bg-tertiary)] pt-8">
+    <article className="group relative border-t border-border pt-8">
       <div className="flex flex-col gap-6 md:flex-row md:gap-10">
-        {project.cover && (
-          <Link
-            href={`/${locale}/projects/${project.slug}`}
-            className="relative block aspect-[4/3] w-full shrink-0 overflow-hidden rounded-sm border border-[var(--bg-tertiary)] bg-[var(--bg-secondary)] md:w-72"
-          >
-            <Image
-              src={project.cover}
-              alt={project.title}
-              fill
-              className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-              sizes="(max-width: 768px) 100vw, 288px"
-            />
-          </Link>
-        )}
+        <ProjectCover project={project} locale={locale} className="md:w-72" />
 
         <div className="flex min-w-0 flex-1 flex-col gap-4">
           <header className="flex items-baseline justify-between gap-4">
-            <h3 className="font-serif text-2xl text-[var(--fg-primary)] md:text-3xl">
+            {/* h2, not h3. This card is only used on the projects index, where it
+                sits directly beneath the page h1 — an h3 there skips a level and
+                breaks the document outline screen-reader users navigate by. */}
+            <h2 className="font-sans text-2xl text-foreground md:text-3xl">
               <Link
                 href={`/${locale}/projects/${project.slug}`}
                 className="underline-offset-4 hover:underline"
               >
                 {project.title}
               </Link>
-            </h3>
-            <span className="shrink-0 font-mono text-xs uppercase tracking-[0.15em] text-[var(--fg-muted)]">
+            </h2>
+            <span className="shrink-0 font-mono text-xs uppercase tracking-[0.15em] text-muted">
               {project.year}
             </span>
           </header>
 
-          <p className="max-w-2xl font-serif text-lg italic text-[var(--fg-tertiary)]">
-            {project.summary}
-          </p>
+          <p className="max-w-2xl font-sans text-lg italic text-subtle">{project.summary}</p>
 
           <dl className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div>
-              <dt className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--fg-muted)]">
-                {t('role')}
-              </dt>
-              <dd className="mt-1 font-serif text-base text-[var(--fg-secondary)]">
-                {project.role}
-              </dd>
+              <dt className="font-mono text-eyebrow uppercase text-muted">{t('role')}</dt>
+              <dd className="mt-1 font-sans text-base text-body">{project.role}</dd>
             </div>
             <div>
-              <dt className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--fg-muted)]">
-                {t('stack')}
-              </dt>
-              <dd className="mt-1 flex flex-wrap gap-x-3 gap-y-1 font-mono text-xs text-[var(--fg-secondary)]">
+              <dt className="font-mono text-eyebrow uppercase text-muted">{t('stack')}</dt>
+              <dd className="mt-1 flex flex-wrap gap-x-3 gap-y-1 font-mono text-xs text-body">
                 {project.stack.map((tech) => (
                   <span key={tech}>{tech}</span>
                 ))}
@@ -78,7 +60,7 @@ export async function ProjectCard({ project, locale }: Props) {
                     href={project.links.live}
                     target="_blank"
                     rel="noreferrer noopener"
-                    className="text-[var(--fg-secondary)] underline underline-offset-4 hover:text-[var(--accent)]"
+                    className="text-body underline underline-offset-4 transition-colors duration-150 ease-out-expo hover:text-accent"
                   >
                     {t('live')}
                   </a>
@@ -90,7 +72,7 @@ export async function ProjectCard({ project, locale }: Props) {
                     href={project.links.repo}
                     target="_blank"
                     rel="noreferrer noopener"
-                    className="inline-flex items-center gap-1.5 text-[var(--fg-secondary)] underline underline-offset-4 hover:text-[var(--accent)]"
+                    className="inline-flex items-center gap-1.5 text-body underline underline-offset-4 transition-colors duration-150 ease-out-expo hover:text-accent"
                   >
                     <svg
                       viewBox="0 0 24 24"
@@ -110,7 +92,7 @@ export async function ProjectCard({ project, locale }: Props) {
                     href={project.links.caseStudy}
                     target="_blank"
                     rel="noreferrer noopener"
-                    className="text-[var(--fg-secondary)] underline underline-offset-4 hover:text-[var(--accent)]"
+                    className="text-body underline underline-offset-4 transition-colors duration-150 ease-out-expo hover:text-accent"
                   >
                     {t('caseStudy')}
                   </a>

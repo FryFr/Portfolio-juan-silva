@@ -72,5 +72,12 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
-      - name: Lighthouse CI
+      # Desktop and mobile are separate runs with separate budgets. The site was
+      # previously audited on desktop only, which is the form factor least likely
+      # to reveal a problem — mobile is where a throttled CPU and a slow
+      # connection actually bite, and it is what most people open a portfolio on.
+      - name: Lighthouse CI (desktop)
         run: pnpm exec lhci autorun
+
+      - name: Lighthouse CI (mobile)
+        run: pnpm exec lhci autorun --config=.lighthouserc.mobile.json

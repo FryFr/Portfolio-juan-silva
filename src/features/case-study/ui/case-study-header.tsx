@@ -12,7 +12,7 @@ export async function CaseStudyHeader({ project }: Props) {
 
   return (
     <header className="flex flex-col gap-8">
-      <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--fg-muted)]">
+      <p className="font-mono text-eyebrow uppercase text-muted">
         <span>{project.year}</span>
         <span className="mx-2">·</span>
         <span>{project.role}</span>
@@ -20,45 +20,35 @@ export async function CaseStudyHeader({ project }: Props) {
 
       <DistortHeading
         as="h1"
-        className="font-serif text-4xl font-normal leading-[1.05] tracking-[-0.02em] text-[var(--fg-primary)] md:text-5xl"
+        className="font-sans text-4xl font-normal leading-[1.05] tracking-[-0.02em] text-foreground md:text-5xl"
       >
         {project.title}
       </DistortHeading>
 
-      <ProximityReveal className="max-w-2xl font-serif text-lg italic text-[var(--fg-tertiary)] md:text-xl">
+      <ProximityReveal className="max-w-2xl font-sans text-lg italic text-subtle md:text-xl">
         {project.summary}
       </ProximityReveal>
 
       <dl className="grid grid-cols-1 gap-4 md:grid-cols-3">
         {project.client && (
           <div>
-            <dt className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--fg-muted)]">
-              {t('client')}
-            </dt>
-            <dd className="mt-1 font-serif text-base text-[var(--fg-secondary)]">
-              {project.client}
-            </dd>
+            <dt className="font-mono text-eyebrow uppercase text-muted">{t('client')}</dt>
+            <dd className="mt-1 font-sans text-base text-body">{project.client}</dd>
           </div>
         )}
         <div>
-          <dt className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--fg-muted)]">
-            {t('role')}
-          </dt>
-          <dd className="mt-1 font-serif text-base text-[var(--fg-secondary)]">{project.role}</dd>
+          <dt className="font-mono text-eyebrow uppercase text-muted">{t('role')}</dt>
+          <dd className="mt-1 font-sans text-base text-body">{project.role}</dd>
         </div>
         <div>
-          <dt className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--fg-muted)]">
-            {t('year')}
-          </dt>
-          <dd className="mt-1 font-serif text-base text-[var(--fg-secondary)]">{project.year}</dd>
+          <dt className="font-mono text-eyebrow uppercase text-muted">{t('year')}</dt>
+          <dd className="mt-1 font-sans text-base text-body">{project.year}</dd>
         </div>
       </dl>
 
       <div>
-        <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--fg-muted)]">
-          {t('stack')}
-        </p>
-        <ul className="mt-2 flex flex-wrap gap-x-3 gap-y-1 font-mono text-xs text-[var(--fg-secondary)]">
+        <p className="font-mono text-eyebrow uppercase text-muted">{t('stack')}</p>
+        <ul className="mt-2 flex flex-wrap gap-x-3 gap-y-1 font-mono text-xs text-body">
           {project.stack.map((tech) => (
             <li key={tech}>{tech}</li>
           ))}
@@ -73,7 +63,7 @@ export async function CaseStudyHeader({ project }: Props) {
                 href={project.links.live}
                 target="_blank"
                 rel="noreferrer noopener"
-                className="text-[var(--fg-secondary)] underline underline-offset-4 hover:text-[var(--accent)]"
+                className="text-body underline underline-offset-4 transition-colors duration-150 ease-out-expo hover:text-accent"
               >
                 {t('live')}
               </a>
@@ -85,7 +75,7 @@ export async function CaseStudyHeader({ project }: Props) {
                 href={project.links.repo}
                 target="_blank"
                 rel="noreferrer noopener"
-                className="inline-flex items-center gap-1.5 text-[var(--fg-secondary)] underline underline-offset-4 hover:text-[var(--accent)]"
+                className="inline-flex items-center gap-1.5 text-body underline underline-offset-4 transition-colors duration-150 ease-out-expo hover:text-accent"
               >
                 <svg
                   viewBox="0 0 24 24"
@@ -105,7 +95,7 @@ export async function CaseStudyHeader({ project }: Props) {
                 href={project.links.caseStudy}
                 target="_blank"
                 rel="noreferrer noopener"
-                className="text-[var(--fg-secondary)] underline underline-offset-4 hover:text-[var(--accent)]"
+                className="text-body underline underline-offset-4 transition-colors duration-150 ease-out-expo hover:text-accent"
               >
                 {t('caseStudy')}
               </a>

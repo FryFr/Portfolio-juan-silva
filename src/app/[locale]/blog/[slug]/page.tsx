@@ -44,7 +44,7 @@ export default async function BlogDetailPage({ params }: Props) {
       <Container size="narrow" className="py-24 md:py-32">
         <Link
           href={`/${typedLocale}/blog`}
-          className="font-mono text-xs uppercase tracking-[0.15em] text-[var(--fg-secondary)] underline-offset-4 hover:text-[var(--accent)] hover:underline"
+          className="font-mono text-xs uppercase tracking-[0.15em] text-body underline-offset-4 transition-colors duration-150 ease-out-expo hover:text-accent hover:underline"
         >
           {t('backToList')}
         </Link>
@@ -53,7 +53,7 @@ export default async function BlogDetailPage({ params }: Props) {
           <PostHeader post={post} />
         </div>
 
-        <article className="prose prose-lg mt-16 max-w-none font-serif text-[var(--fg-secondary)]">
+        <article className="mt-16 max-w-none font-sans text-body">
           <MdxBody code={post.body} />
         </article>
 

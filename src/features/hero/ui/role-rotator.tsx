@@ -30,7 +30,7 @@ export function RoleRotator({ phrases, intervalMs = 2400 }: Props) {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -6 }}
           transition={{ duration: 0.35, ease: 'easeOut' }}
-          className="inline-block text-[var(--accent)]"
+          className="inline-block text-accent"
         >
           {current}
         </motion.span>
