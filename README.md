@@ -180,8 +180,8 @@ graph LR
     B1 --> B2[tsc · biome · 46 vitest]
     C --> C1[production build]
     C1 --> C2[32 e2e, 8 axe routes]
-    D --> D1[desktop ≥ 0.95]
-    D --> D2[mobile ≥ 0.70, 4x CPU]
+    D --> D1[desktop ≥ 0.80, median of 3]
+    D --> D2[mobile ≥ 0.70, 4x CPU, median of 3]
     D --> D3[resource budgets]
 ```
 
@@ -198,7 +198,7 @@ Measured on a production build:
 
 **TBT 20 ms, CLS 0** across five canvas fields — every loop runs after hydration and is IntersectionObserver-gated, so only the visible one runs. Mobile is LCP-bound at 3.9s, i.e. network rather than paint.
 
-Two caveats on those numbers. Best practices is 96 locally only — two `/_vercel/*` scripts that exist only when deployed. And the mobile gate is set to **0.70, not 0.88**: absolute Lighthouse scores are not portable between machines, and the CI runner benchmarks at roughly half the speed of the laptop these were measured on *before* Lighthouse applies its 4× slowdown. The gate is calibrated to the machine that runs it.
+Two caveats on those numbers. Best practices is 96 locally only — two `/_vercel/*` scripts that exist only when deployed. And the CI gates are set well below these numbers — 0.80 desktop, 0.70 mobile, median of three runs. Absolute Lighthouse scores are not portable between machines (the CI runner benchmarks at roughly half this laptop's speed *before* Lighthouse applies its 4× slowdown), and shared runners are noisy enough that the same commit scored 0.95 and 0.86 on consecutive desktop runs. The deterministic half of the gate is the resource budgets, which is what actually catches a regression.
 
 Budgets cap script, font, image and total transfer. A category score is far too
 coarse to catch "someone re-added a 4 MB portrait", which is a thing that actually
