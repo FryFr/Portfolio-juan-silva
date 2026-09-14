@@ -193,6 +193,14 @@
       "language": "Language"
     }
   },
+  "privacy": {
+    "title": "Privacy policy",
+    "personalUse": "This application (HermesAssistant) is for personal use and is used by only one person: Juan Silva.",
+    "access": "It accesses Google Calendar, Google Drive, and Google Docs in read-only mode to display the user's own events and notes in a private assistant.",
+    "sharing": "It does not share, transmit, or sell data to third parties. There are no other users.",
+    "storage": "Data is processed locally on the user's computer and is not stored on third-party servers.",
+    "contact": "Contact: juasebsilmed@gmail.com"
+  },
   "contact": {
     "eyebrow": "Contact",
     "heading": "Let's talk",
