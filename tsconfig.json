@@ -27,6 +27,7 @@
       "@/content-collections/*": ["./.content-collections/generated/*"]
     },
     "noUncheckedIndexedAccess": true,
+    "allowImportingTsExtensions": true,
     "noImplicitOverride": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,

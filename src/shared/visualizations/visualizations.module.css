@@ -1,0 +1,49 @@
+.frame {
+  margin: 0;
+  padding: clamp(1rem, 3vw, 2rem);
+  border: 1px solid var(--fg-muted);
+  border-radius: 1rem;
+  background: var(--bg-primary);
+  color: var(--fg-primary);
+  min-width: 0;
+  overflow-wrap: anywhere;
+  line-height: 1.6;
+}
+.frame p { margin: 0.5rem 0; color: var(--fg-secondary); }
+.frame figcaption { margin-bottom: 1.5rem; }
+.pipeline, .lifecycle, .evidence {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+  gap: 1rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.card { min-width: 0; padding: 1rem; border: 1px solid var(--fg-muted); border-radius: 0.5rem; background: var(--bg-secondary); }
+.arrow { display: block; width: 5rem; height: 1.5rem; margin-top: 1rem; fill: none; stroke: currentColor; stroke-width: 2; }
+.number { display: block; font-variant-numeric: tabular-nums; color: var(--accent); }
+.status { display: inline-block; padding: 0.1rem 0.5rem; border: 1px solid currentColor; border-radius: 0.25rem; }
+.status[data-status="active"] { border-width: 2px; }
+.status[data-status="pending"] { border-style: dashed; }
+.status[data-status="failed"] { border-style: double; border-width: 3px; }
+.cycle { display: flex; gap: 1rem; align-items: center; }
+.cycle .arrow { flex-shrink: 0; margin: 0; }
+.timeline { padding-left: 1.5rem; border-left: 2px solid var(--accent); }
+.timeline li + li { margin-top: 1rem; }
+.timeline time, .meta { display: block; color: var(--fg-secondary); font-size: 0.875rem; }
+.graph { display: block; width: 100%; max-width: 28rem; height: auto; margin: auto; }
+.edge { fill: none; stroke: var(--fg-muted); stroke-width: 2; }
+.node { fill: var(--bg-secondary); stroke: var(--accent); stroke-width: 2; }
+.graph text { fill: var(--fg-primary); font-size: 16px; }
+.nodes, .relationships { padding-left: 1.5rem; }
+.nodes li + li { margin-top: 1rem; }
+.evidence summary { cursor: pointer; font-weight: 600; }
+.evidence a { color: var(--fg-primary); text-decoration: underline; text-underline-offset: 0.2em; }
+.frame :is(summary, a):focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; }
+@media (max-width: 40rem) {
+  .pipeline, .lifecycle, .evidence { grid-template-columns: 1fr; }
+  .pipeline .arrow { transform: rotate(90deg); width: 2rem; margin-left: auto; margin-right: auto; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .frame, .frame * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}

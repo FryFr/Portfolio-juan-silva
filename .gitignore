@@ -57,3 +57,6 @@ Proectos/
 
 .vercel
 .lighthouseci/
+
+# Temporary sanitized automation artifacts
+.content-sync/

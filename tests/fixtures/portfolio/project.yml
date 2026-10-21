@@ -1,0 +1,16 @@
+schemaVersion: 1
+slug: example-project
+repository: example/project
+year: 2026
+stack: [TypeScript, Next.js]
+locales:
+  es:
+    title: Proyecto de ejemplo
+    summary: Metadatos de ejemplo para validación local.
+    role: Ingeniería
+  en:
+    title: Example project
+    summary: Example metadata for local validation.
+    role: Engineering
+links:
+  live: https://example.com

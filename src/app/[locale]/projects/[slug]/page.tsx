@@ -2,10 +2,9 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import { allProjects } from '@/content-collections';
 import { CaseStudyHeader } from '@/features/case-study/ui/case-study-header';
 import { CaseStudyNav } from '@/features/case-study/ui/case-study-nav';
-import { getAdjacentProjects, getProjectBySlug } from '@/shared/content';
+import { getAdjacentProjects, getProjectBySlug, getVisibleProjects } from '@/shared/content';
 import type { Locale } from '@/shared/i18n/routing';
 import { MdxBody } from '@/shared/mdx/mdx-body';
 import { Container } from '@/shared/ui/container';
@@ -15,7 +14,7 @@ type Props = {
 };
 
 export function generateStaticParams() {
-  return allProjects.map((p) => ({ locale: p.locale, slug: p.slug }));
+  return getVisibleProjects().map((p) => ({ locale: p.locale, slug: p.slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

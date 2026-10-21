@@ -24,6 +24,7 @@ const mockProject: Project = {
   role: 'Lead Architect',
   year: 2025,
   stack: ['Next.js', 'TypeScript', 'PostgreSQL'],
+  visibility: 'public',
   featured: true,
   order: 1,
   slug: 'acme-platform',

@@ -4,6 +4,9 @@ import { compileMDX } from '@content-collections/mdx';
 import rehypePrettyCode from 'rehype-pretty-code';
 import remarkGfm from 'remark-gfm';
 import { z } from 'zod';
+import { projectSchema } from './src/shared/content/project-schema';
+import { projectVisibilitySchema } from './src/shared/content/project-visibility';
+import { validatePublicationAssets } from './src/shared/content/publication-assets';
 
 const SUPPORTED_LOCALES = ['es', 'en'] as const;
 type SupportedLocale = (typeof SUPPORTED_LOCALES)[number];
@@ -36,31 +39,16 @@ const projects = defineCollection({
   name: 'projects',
   directory: 'content/projects',
   include: '**/*.mdx',
-  schema: z.object({
-    title: z.string().min(1),
-    summary: z.string().min(1).max(200),
-    role: z.string().min(1),
-    year: z.number().int().min(2000).max(2100),
-    stack: z.array(z.string().min(1)).min(1),
-    client: z.string().optional(),
-    cover: z.string().optional(),
-    links: z
-      .object({
-        live: z.string().url().optional(),
-        repo: z.string().url().optional(),
-        caseStudy: z.string().url().optional(),
-      })
-      .optional(),
-    featured: z.boolean().default(false),
-    order: z.number().int().default(0),
-  }),
+  schema: projectSchema.extend({ visibility: projectVisibilitySchema }),
   transform: async (document, context) => {
     const { slug, locale } = parseFilename(document._meta.filePath);
+    await validatePublicationAssets(document.publication);
     const body = await compileMDX(context, document, mdxOptions);
     return {
       ...document,
       slug,
       locale,
+      visibility: document.visibility ?? 'public',
       url: `/${locale}/projects/${slug}`,
       body,
     };

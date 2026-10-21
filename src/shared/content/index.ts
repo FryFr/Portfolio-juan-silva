@@ -1,13 +1,20 @@
+export type { ProjectPublication } from './project-publication';
+
 import type { Post, Project, Talk } from '@/content-collections';
 import { allPosts, allProjects, allTalks } from '@/content-collections';
 import type { Locale } from '@/shared/i18n/routing';
+import { isProjectVisible } from './project-visibility';
 
 // ---------------------------------------------------------------------------
 // Projects
 // ---------------------------------------------------------------------------
 
+export function getVisibleProjects(): Project[] {
+  return allProjects.filter(isProjectVisible);
+}
+
 export function getProjects(locale: Locale): Project[] {
-  return allProjects
+  return getVisibleProjects()
     .filter((p) => p.locale === locale)
     .sort((a, b) => {
       if (a.order !== b.order) return a.order - b.order;
@@ -20,7 +27,7 @@ export function getFeaturedProjects(locale: Locale): Project[] {
 }
 
 export function getProjectBySlug(locale: Locale, slug: string): Project | undefined {
-  return allProjects.find((p) => p.locale === locale && p.slug === slug);
+  return getVisibleProjects().find((p) => p.locale === locale && p.slug === slug);
 }
 
 // ---------------------------------------------------------------------------
