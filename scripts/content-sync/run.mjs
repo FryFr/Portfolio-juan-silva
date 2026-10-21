@@ -1,57 +1,76 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
-import { digest, github, invariant, OUTPUT, propose, readSource, validateConfig } from './core.mjs';
+import { pathToFileURL } from 'node:url';
+import { validateLocalProject } from '../portfolio/validate.ts';
+import { digest, github, invariant, propose } from './core.mjs';
+import { canonicalCatalog, parseRequest, prepareProjects } from './projects.mjs';
 
-try {
-  const mode = process.argv[2];
-  invariant(['prepare', 'propose', 'fixture'].includes(mode), 'Use prepare, propose or fixture');
-  if (mode === 'fixture') {
-    const { generate } = await import('./core.mjs');
-    const content = generate(JSON.parse(await readFile(process.argv[3], 'utf8')));
-    await mkdir('content/generated', { recursive: true });
-    await writeFile(OUTPUT, content);
-  } else if (mode === 'prepare') {
-    const config = validateConfig({
-      repository: process.env.SOURCE_REPOSITORY,
-      ref: process.env.SOURCE_REF,
-      path: process.env.SOURCE_PATH,
-    });
-    const event = JSON.parse(await readFile(process.env.GITHUB_EVENT_PATH, 'utf8'));
-    const payload =
-      process.env.GITHUB_EVENT_NAME === 'repository_dispatch' ? event.client_payload : event.inputs;
-    invariant(
-      !payload?.repository || payload.repository === config.repository,
-      'Dispatch repository not allowed',
-    );
-    const requestedSha = payload?.sha;
-    if (process.env.GITHUB_EVENT_NAME === 'repository_dispatch')
-      invariant(requestedSha, 'Dispatch requires SHA');
-    const result = await readSource(
-      github(process.env.SOURCE_READ_TOKEN || process.env.GH_TOKEN),
-      config,
-      requestedSha,
-    );
-    await mkdir('.content-sync', { recursive: true });
-    await writeFile(
-      '.content-sync/result.json',
-      JSON.stringify({ ...result, digest: digest(result.content) }),
-    );
-    process.stdout.write('Prepared sanitized content\n');
-  } else {
-    const result = JSON.parse(await readFile('.content-sync/result.json', 'utf8'));
-    invariant(digest(result.content) === result.digest, 'Artifact digest mismatch');
-    const status = await propose(
-      github(process.env.GH_TOKEN),
-      process.env.GITHUB_REPOSITORY,
-      process.env.TARGET_BRANCH,
-      result.content,
-      result.sha,
-    );
-    process.stdout.write(`${status}\n`);
+const root = new URL('../../', import.meta.url);
+
+// Dependency injection is for offline tests only. The CLI always loads the central policy.
+export async function run(
+  mode,
+  {
+    env = process.env,
+    read = readFile,
+    write = writeFile,
+    makeDirectory = mkdir,
+    api = github(env.GH_TOKEN),
+    validate = validateLocalProject,
+  } = {},
+) {
+  invariant(['prepare', 'propose'].includes(mode), 'Use prepare or propose');
+  const policy = JSON.parse(await read(new URL('config/portfolio-allowlist.json', root), 'utf8'));
+  const event = JSON.parse(await read(env.GITHUB_EVENT_PATH, 'utf8'));
+  const request = parseRequest(env.GITHUB_EVENT_NAME, event, policy);
+  invariant(env.TARGET_BRANCH === 'main', 'Only main is an allowed PR base');
+  if (mode === 'prepare') {
+    const content = await prepareProjects(api, request, validate);
+    const artifact =
+      content === null
+        ? { version: 1, noop: true }
+        : { version: 1, content, digest: digest(content) };
+    await makeDirectory('.content-sync', { recursive: true });
+    await write('.content-sync/result.json', `${JSON.stringify(artifact)}\n`);
+    if (env.GITHUB_OUTPUT)
+      await write(env.GITHUB_OUTPUT, `changed=${content !== null}\n`, { flag: 'a' });
+    return content === null ? 'empty allowlist: no changes' : 'prepared';
   }
-} catch (error) {
-  // Never print input, API response bodies or tokens, including JSON/URL parser errors.
-  process.stderr.write(
-    `Content sync failed (${error instanceof SyntaxError ? 'invalid JSON' : error instanceof TypeError ? 'invalid input or transport' : 'validation or API failure'}). Review configuration, permissions and rate limit; rerun after correction.\n`,
+  const result = JSON.parse(await read('.content-sync/result.json', 'utf8'));
+  invariant(result.version === 1, 'Invalid artifact');
+  if (!request.projects.length) {
+    invariant(result.noop === true, 'Empty policy artifact mismatch');
+    return 'empty allowlist: no changes';
+  }
+  invariant(
+    typeof result.content === 'string' && digest(result.content) === result.digest,
+    'Artifact digest mismatch',
   );
-  process.exitCode = 1;
+  const canonicalize = (content) => {
+    const catalog = JSON.parse(content);
+    invariant(catalog.schemaVersion === 1, 'Invalid catalog version');
+    invariant(catalog.projects.length === request.projects.length, 'Catalog policy mismatch');
+    return canonicalCatalog(catalog.projects, validate);
+  };
+  invariant(canonicalize(result.content) === result.content, 'Noncanonical artifact');
+  return propose(
+    api,
+    env.GITHUB_REPOSITORY,
+    env.TARGET_BRANCH,
+    result.content,
+    JSON.parse(result.content).projects[0].sha,
+    canonicalize,
+    env.GITHUB_SHA,
+  );
+}
+
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  try {
+    process.stdout.write(`${await run(process.argv[2])}\n`);
+  } catch {
+    // Source values, parser diagnostics, response bodies and credentials stay out of logs.
+    process.stderr.write(
+      'Content sync failed: validation, permissions or transport. Review configuration and rerun.\n',
+    );
+    process.exitCode = 1;
+  }
 }

@@ -105,6 +105,17 @@ describe('project visibility contract', () => {
     await expect(ProjectDetailPage(props)).rejects.toThrow('NEXT_NOT_FOUND');
   });
 
+  it('keeps visible project metadata tied to curated titles and summaries in both locales', async () => {
+    for (const locale of ['es', 'en'] as const) {
+      for (const project of getProjects(locale)) {
+        const metadata = await generateMetadata({
+          params: Promise.resolve({ locale, slug: project.slug }),
+        });
+        expect(metadata).toEqual({ title: project.title, description: project.summary });
+      }
+    }
+  });
+
   it('excludes hidden URLs from sitemap entries and language alternates', () => {
     const entries = sitemap();
     expect(JSON.stringify(entries)).not.toContain('contract-hidden');

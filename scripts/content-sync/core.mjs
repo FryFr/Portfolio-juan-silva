@@ -175,11 +175,20 @@ export async function readSource(api, config, requestedSha) {
 export const OUTPUT = 'content/generated/source.json';
 export const BRANCH = 'automation/content-sync';
 
-export async function propose(api, repository, base, content, sha) {
+export async function propose(
+  api,
+  repository,
+  base,
+  content,
+  sha,
+  canonicalize = (value) => generate(JSON.parse(value)),
+  expectedBaseSha,
+) {
   invariant(/^[\w.-]+\/[\w.-]+$/.test(repository), 'Invalid target repository');
+  invariant(base === 'main', 'Only main is an allowed PR base');
   validateSha(sha);
   // Revalidate even when passed an artifact from a preceding step.
-  invariant(generate(JSON.parse(content)) === content, 'Output is not canonical');
+  invariant(canonicalize(content) === content, 'Output is not canonical');
   const root = `/repos/${repository}`;
   const current = await api(`${root}/contents/${OUTPUT}?ref=${encodeURIComponent(base)}`, {
     missing: true,
@@ -187,6 +196,11 @@ export async function propose(api, repository, base, content, sha) {
   if (current && Buffer.from(current.content, 'base64').toString('utf8') === content)
     return 'unchanged';
   const baseRef = await api(`${root}/git/ref/heads/${encodeURIComponent(base)}`);
+  if (expectedBaseSha)
+    invariant(
+      baseRef.object.sha === validateSha(expectedBaseSha),
+      'Base changed; rerun with current policy',
+    );
   let branch = await api(`${root}/git/ref/heads/${BRANCH}`, { missing: true });
   if (!branch) {
     await api(`${root}/git/refs`, {
@@ -198,10 +212,23 @@ export async function propose(api, repository, base, content, sha) {
   // Refuse unexpected changes instead of overwriting a contributor's work.
   const compare = await api(`${root}/compare/${encodeURIComponent(base)}...${BRANCH}`);
   invariant(
-    !compare.files?.some((file) => file.filename !== OUTPUT) && compare.status !== 'diverged',
+    Array.isArray(compare.files) &&
+      compare.files.length < 300 &&
+      !compare.files.some(
+        (file) =>
+          file.filename !== OUTPUT || (file.previous_filename && file.previous_filename !== OUTPUT),
+      ) &&
+      ['ahead', 'identical'].includes(compare.status),
     'Automation branch requires manual reconciliation',
   );
   const existing = await api(`${root}/contents/${OUTPUT}?ref=${BRANCH}`, { missing: true });
+  const prs = await api(
+    `${root}/pulls?state=open&head=${encodeURIComponent(`${repository.split('/')[0]}:${BRANCH}`)}&base=${encodeURIComponent(base)}`,
+  );
+  invariant(
+    prs.length <= 1 && prs.every((pr) => pr.draft === true),
+    'Existing PR must remain draft',
+  );
   if (!existing || Buffer.from(existing.content, 'base64').toString('utf8') !== content) {
     await api(`${root}/contents/${OUTPUT}`, {
       method: 'PUT',
@@ -213,9 +240,7 @@ export async function propose(api, repository, base, content, sha) {
       },
     });
   }
-  const prs = await api(
-    `${root}/pulls?state=open&head=${encodeURIComponent(`${repository.split('/')[0]}:${BRANCH}`)}&base=${encodeURIComponent(base)}`,
-  );
+  const body = `Deterministic sanitized JSON. Source commit: ${sha}.\nCatalog SHA-256: ${digest(content)}.\n\nReview every source SHA in the catalog before merging. No automatic merge or deployment.`;
   if (!prs.length)
     await api(`${root}/pulls`, {
       method: 'POST',
@@ -223,9 +248,11 @@ export async function propose(api, repository, base, content, sha) {
         title: 'chore: synchronize sanitized content',
         head: BRANCH,
         base,
-        body: `Deterministic sanitized JSON. Source commit: ${sha}.\n\nReview before merging. No automatic merge or deployment.`,
+        body,
         draft: true,
       },
     });
+  else if (prs[0].body !== body)
+    await api(`${root}/pulls/${prs[0].number}`, { method: 'PATCH', body: { body } });
   return 'proposed';
 }

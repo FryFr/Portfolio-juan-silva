@@ -19,7 +19,8 @@ const text = (max: number) =>
     .min(1)
     .max(max)
     .refine(
-      (value) => !new RegExp('[<>\\x00-\\x1f]').test(value),
+      // biome-ignore lint/suspicious/noControlCharactersInRegex: reject control characters at the input boundary.
+      (value) => !/[<>\x00-\x1f]/.test(value),
       'Control characters and markup are forbidden',
     );
 const translation = z.strictObject({ title: text(100), summary: text(200), role: text(100) });

@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import {
   BRANCH,
+  digest,
   generate,
   github,
   OUTPUT,
@@ -169,7 +170,16 @@ function targetApi({ existing = false, foreign = false } = {}) {
         return path.endsWith('/main') || existing ? { object: { sha } } : null;
       if (path.includes('/compare/'))
         return { status: 'ahead', files: [{ filename: foreign ? 'src/app/page.tsx' : OUTPUT }] };
-      if (path.includes('/pulls?')) return existing ? [{ number: 1 }] : [];
+      if (path.includes('/pulls?'))
+        return existing
+          ? [
+              {
+                number: 1,
+                draft: true,
+                body: `Deterministic sanitized JSON. Source commit: ${sha}.\nCatalog SHA-256: ${digest(generate(source))}.\n\nReview every source SHA in the catalog before merging. No automatic merge or deployment.`,
+              },
+            ]
+          : [];
       throw new Error(`Unexpected fixture path: ${path}`);
     },
   };
@@ -194,4 +204,43 @@ test('rerun reuses branch and PR, foreign edits fail closed', async () => {
     /reconciliation/,
   );
   assert.equal(foreign.writes.length, 0);
+});
+
+test('rejects alternate bases, stale policy revision and promoted PRs without content writes', async () => {
+  const { api, writes } = targetApi({ existing: true });
+  await assert.rejects(propose(api, 'owner/target', BRANCH, generate(source), sha), /base/);
+  await assert.rejects(
+    propose(api, 'owner/target', 'main', generate(source), sha, undefined, 'b'.repeat(40)),
+    /Base changed/,
+  );
+  await assert.rejects(
+    propose(
+      async (path, options) =>
+        path.includes('/pulls?') ? [{ number: 1, draft: false }] : api(path, options),
+      'owner/target',
+      'main',
+      generate(source),
+      sha,
+    ),
+    /draft/,
+  );
+  assert.equal(writes.length, 0);
+});
+
+test('updates existing draft PR provenance and never mutates main', async () => {
+  const { api, writes } = targetApi({ existing: true });
+  await propose(
+    async (path, options) =>
+      path.includes('/pulls?')
+        ? [{ number: 1, draft: true, body: 'Old provenance' }]
+        : api(path, options),
+    'owner/target',
+    'main',
+    generate(source),
+    sha,
+  );
+  assert.equal(writes.length, 1);
+  assert.equal(writes[0].method, 'PATCH');
+  assert.ok(writes[0].path.endsWith('/pulls/1'));
+  assert.ok(writes[0].body.body.includes(digest(generate(source))));
 });

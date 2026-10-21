@@ -1,4 +1,10 @@
-# FASE 5 — contrato local de proyectos, versión 1
+# Contrato local de proyectos, versión 1
+
+La descripción de la fase 5 se conserva como contexto del contrato. El transporte,
+workflow y propuesta de PR ya están implementados; ver
+[automatización segura y checklist CI](portfolio-automation.md). Las menciones a
+una Action futura abajo describen los límites del validador aislado, no el estado
+del flujo integrado.
 
 Esta fase define y valida propuestas de metadatos. No instala una Action, no descarga
 repositorios, no ejecuta código remoto y no modifica el catálogo manual.

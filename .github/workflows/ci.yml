@@ -3,8 +3,13 @@ name: CI
 on:
   push:
     branches: [main, 'refactor/**']
+  workflow_dispatch:
   pull_request:
     branches: [main]
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -16,10 +21,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 22.18.0
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - name: Generate content-collections types
@@ -27,6 +35,15 @@ jobs:
       - run: pnpm typecheck
       - run: pnpm check
       - run: pnpm test
+      - name: Offline parser, transport and proposal tests
+        run: pnpm test:sync
+      - name: Sitemap and metadata contracts
+        run: pnpm test:metadata
+      - name: Generated diff security and scope
+        run: pnpm check:generated-diff
+        env:
+          GENERATED_DIFF_BASE: ${{ github.event.pull_request.base.sha || 'origin/main' }}
+          GENERATED_DIFF_ONLY: ${{ github.head_ref == 'automation/content-sync' || github.ref == 'refs/heads/automation/content-sync' }}
 
   e2e:
     # NOTE: pnpm build here acts as a production build smoke test.
@@ -40,7 +57,7 @@ jobs:
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 22.18.0
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - name: Install Playwright browsers
@@ -68,7 +85,7 @@ jobs:
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 22.18.0
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
