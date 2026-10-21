@@ -149,6 +149,17 @@
       "empty": "Todavía no hay proyectos publicados."
     },
     "detail": {
+      "publication": {
+        "summary": "En este caso de estudio",
+        "metrics": "Métricas",
+        "architecture": "Arquitectura",
+        "timeline": "Cronología",
+        "evidence": "Evidencia",
+        "gallery": "Galería",
+        "privacy": "Nota de privacidad",
+        "related": "Proyectos relacionados",
+        "source": "Ver fuente"
+      },
       "backToList": "← Todos los proyectos",
       "prev": "Anterior",
       "next": "Siguiente",

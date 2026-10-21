@@ -16,7 +16,13 @@
     "test:ui": "vitest --ui",
     "e2e": "playwright test",
     "e2e:ui": "playwright test --ui",
-    "lhci": "lhci autorun"
+    "lhci": "lhci autorun",
+    "portfolio:validate": "node --experimental-strip-types scripts/portfolio/validate.ts",
+    "validate:generated": "node scripts/security/check-generated.mjs",
+    "test:security": "vitest run tests/security",
+    "test:sync": "node --experimental-strip-types --test scripts/content-sync/*.test.mjs",
+    "check:generated-diff": "node --experimental-strip-types scripts/security/check-generated-diff.mjs",
+    "test:metadata": "vitest run tests/lib/project-visibility.test.ts"
   },
   "dependencies": {
     "@content-collections/core": "^0.14.3",
@@ -35,6 +41,7 @@
     "remark-gfm": "^4.0.1",
     "shiki": "^4.0.2",
     "tailwind-merge": "^3.5.0",
+    "yaml": "^2.8.3",
     "zod": "^4.3.6"
   },
   "devDependencies": {

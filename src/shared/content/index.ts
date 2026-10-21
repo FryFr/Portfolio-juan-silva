@@ -1,13 +1,20 @@
+export type { ProjectPublication } from './project-publication';
+
 import type { Post, Project, Talk } from '@/content-collections';
 import { allPosts, allProjects, allTalks } from '@/content-collections';
 import type { Locale } from '@/shared/i18n/routing';
+import { isProjectVisible } from './project-visibility';
 
 // ---------------------------------------------------------------------------
 // Projects
 // ---------------------------------------------------------------------------
 
+export function getVisibleProjects(): Project[] {
+  return allProjects.filter(isProjectVisible);
+}
+
 export function getProjects(locale: Locale): Project[] {
-  return allProjects
+  return getVisibleProjects()
     .filter((p) => p.locale === locale)
     .sort((a, b) => {
       if (a.order !== b.order) return a.order - b.order;
@@ -20,7 +27,7 @@ export function getFeaturedProjects(locale: Locale): Project[] {
 }
 
 export function getProjectBySlug(locale: Locale, slug: string): Project | undefined {
-  return allProjects.find((p) => p.locale === locale && p.slug === slug);
+  return getVisibleProjects().find((p) => p.locale === locale && p.slug === slug);
 }
 
 // ---------------------------------------------------------------------------
@@ -81,4 +88,22 @@ export function getRelatedPosts(locale: Locale, slug: string, limit = 3): Post[]
     .sort((a, b) => b.overlap - a.overlap)
     .slice(0, limit)
     .map((entry) => entry.post);
+}
+
+/** Only visible, same-language projects with an actual shared technology. */
+export function getRelatedProjects(locale: Locale, slug: string, limit = 3): Project[] {
+  const projects = getProjects(locale);
+  const current = projects.find((project) => project.slug === slug);
+  if (!current) return [];
+  const stack = new Set(current.stack);
+  return projects
+    .filter((project) => project.slug !== slug)
+    .map((project) => ({
+      project,
+      overlap: project.stack.filter((tech) => stack.has(tech)).length,
+    }))
+    .filter(({ overlap }) => overlap > 0)
+    .sort((a, b) => b.overlap - a.overlap)
+    .slice(0, Math.max(0, limit))
+    .map(({ project }) => project);
 }

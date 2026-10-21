@@ -1,0 +1,4 @@
+{
+  "schemaVersion": 1,
+  "projects": [{ "repository": "example/project", "repositoryId": 123, "slug": "example-project" }]
+}

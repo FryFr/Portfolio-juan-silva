@@ -1,19 +1,11 @@
 import type { MetadataRoute } from 'next';
 import { siteConfig } from '@/shared/config/site';
-import { getPosts, getProjects, getTalks } from '@/shared/content';
+import { getPosts, getTalks, getVisibleProjects } from '@/shared/content';
 import { type Locale, routing } from '@/shared/i18n/routing';
 
 type Entry = MetadataRoute.Sitemap[number];
 
-/**
- * Previously this emitted two URLs — the locale homepages — while the site had 34
- * documents across projects, posts and talks. Every case study and article was
- * invisible to crawlers unless they happened to follow an internal link.
- *
- * Each entry carries hreflang alternates for both locales, since every piece of
- * content exists as an .es/.en pair by the filename contract in
- * content-collections.ts.
- */
+/** Static pages, posts and talks have paired locales; projects are filtered separately. */
 function localisedEntry(
   path: string,
   options: { lastModified?: Date; changeFrequency: Entry['changeFrequency']; priority: number },
@@ -40,11 +32,21 @@ export default function sitemap(): MetadataRoute.Sitemap {
     localisedEntry(path, { changeFrequency: 'weekly', priority: 0.8 }),
   );
 
-  // Slugs are locale-invariant by the <slug>.{es,en}.mdx contract, so reading the
-  // default locale enumerates every document exactly once.
-  const projects = getProjects(defaultLocale).flatMap((project) =>
-    localisedEntry(`/projects/${project.slug}`, { changeFrequency: 'yearly', priority: 0.7 }),
-  );
+  // Visibility can differ by locale: never invent a route or a hidden alternate.
+  const visibleProjects = getVisibleProjects();
+  const projects: Entry[] = visibleProjects.map((project) => ({
+    url: `${siteConfig.url}${project.url}`,
+    lastModified: new Date(),
+    changeFrequency: 'yearly',
+    priority: project.locale === defaultLocale ? 0.7 : 0.6,
+    alternates: {
+      languages: Object.fromEntries(
+        visibleProjects
+          .filter((translation) => translation.slug === project.slug)
+          .map((translation) => [translation.locale, `${siteConfig.url}${translation.url}`]),
+      ),
+    },
+  }));
 
   const posts = getPosts(defaultLocale).flatMap((post) =>
     localisedEntry(`/blog/${post.slug}`, {

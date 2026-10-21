@@ -1,0 +1,7 @@
+{
+  "repository": "example/project",
+  "repositoryId": 123,
+  "requestedSha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "resolvedSha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "path": ".portfolio/project.yml"
+}
