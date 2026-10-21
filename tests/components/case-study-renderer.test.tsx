@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import ProjectDetailPage from '@/app/[locale]/projects/[slug]/page';
 import { allProjects, type Project } from '@/content-collections';
+import { CaseStudyRenderer } from '@/features/case-study/ui/case-study-renderer';
 import en from '@/messages/en.json';
 import es from '@/messages/es.json';
 import { getProjectBySlug, getRelatedProjects } from '@/shared/content';
@@ -156,8 +157,17 @@ describe.each(['es', 'en'] as const)('case study composition (%s)', (language) =
     );
     expect(container.querySelector('#publication-evidence-report')).toBeInTheDocument();
     const user = userEvent.setup();
+    const summaryLinks = within(summary).getAllByRole('link');
+    summaryLinks[0]?.focus();
+    for (const anchor of summaryLinks.slice(1)) {
+      await user.tab();
+      expect(anchor).toHaveFocus();
+    }
+    await user.tab();
+    expect(screen.getByRole('link', { name: 'Test report' })).toHaveFocus();
+    await user.tab();
     const disclosure = container.querySelector('summary');
-    disclosure?.focus();
+    expect(disclosure).toHaveFocus();
     await user.keyboard('{Enter}');
     expect(container.querySelector('details')).toHaveAttribute('open');
     await user.tab();
@@ -224,4 +234,58 @@ it('selects related projects from visible same-language shared-stack entries and
   }
   expect(getRelatedProjects('en', 'missing')).toEqual([]);
   expect(getRelatedProjects('en', 'michibot', 0)).toEqual([]);
+});
+
+describe.each(['es', 'en'] as const)('incremental renderer (%s)', (language) => {
+  it.each([
+    undefined,
+    {},
+    { metrics: [], timeline: [], evidence: [], gallery: [] },
+  ])('removes stale visual sections when switching to a project without visual data: %j', (emptyPublication) => {
+    const labels = (language === 'es' ? es : en).projects.detail.publication;
+    const props = {
+      locale: language,
+      labels,
+      hero: <h1>Project title</h1>,
+      navigation: <nav aria-label="Adjacent projects" />,
+      children: <p>Original narrative</p>,
+    };
+    const populated = {
+      title: 'Visual project',
+      cover: '/images/test-cover.png',
+      publication,
+    };
+    const view = render(
+      <CaseStudyRenderer
+        {...props}
+        project={populated}
+        relatedProjects={[{ slug: 'related', title: 'Related case', summary: 'Description' }]}
+      />,
+    );
+    expect(screen.getByRole('navigation', { name: labels.summary })).toBeVisible();
+    expect(screen.getByRole('region', { name: labels.related })).toBeVisible();
+    view.rerender(
+      <CaseStudyRenderer
+        {...props}
+        project={{ title: 'Text project', publication: emptyPublication }}
+      />,
+    );
+    expect(screen.queryByRole('navigation', { name: labels.summary })).not.toBeInTheDocument();
+    expect(screen.queryByRole('region')).not.toBeInTheDocument();
+    expect(screen.queryByRole('figure')).not.toBeInTheDocument();
+    expect(screen.queryByRole('img')).not.toBeInTheDocument();
+    expect(screen.queryByRole('link')).not.toBeInTheDocument();
+    expect(screen.getByRole('article')).toHaveTextContent('Original narrative');
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Project title');
+    expect(screen.getByRole('navigation', { name: 'Adjacent projects' })).toBeInTheDocument();
+    view.rerender(<CaseStudyRenderer {...props} project={populated} />);
+    const summary = screen.getByRole('navigation', { name: labels.summary });
+    expect(within(summary).getAllByRole('link')).toHaveLength(6);
+    for (const anchor of within(summary).getAllByRole('link')) {
+      const region = screen.getByRole('region', { name: anchor.textContent ?? '' });
+      expect(anchor).toHaveAttribute('href', `#${region.id}`);
+      region.focus();
+      expect(region).toHaveFocus();
+    }
+  });
 });

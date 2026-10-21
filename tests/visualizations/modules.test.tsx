@@ -35,6 +35,11 @@ describe('visualization contracts and server fallbacks', () => {
     <EvidencePanel key="evidence" {...common} items={[]} />,
   ])('renders an explicit empty state without JavaScript', (component) => {
     expect(renderToStaticMarkup(component)).toContain('No data');
+    render(component);
+    expect(screen.getByRole('figure', { name: common.title })).toBeVisible();
+    expect(screen.getByText(common.emptyLabel)).toBeVisible();
+    expect(screen.queryByRole('list')).not.toBeInTheDocument();
+    expect(screen.queryByRole('link')).not.toBeInTheDocument();
   });
 
   it('keeps stage order, descriptions and localized status in semantic HTML', () => {
@@ -133,6 +138,14 @@ describe('visualization contracts and server fallbacks', () => {
     expect(document.querySelector('details')).toHaveAttribute('open');
     await user.tab();
     expect(screen.getByRole('link', { name: 'Read report' })).toHaveFocus();
+    await user.tab({ shift: true });
+    expect(screen.getByText('Benchmark')).toHaveFocus();
+    await user.keyboard(' ');
+    expect(document.querySelector('details')).not.toHaveAttribute('open');
+    await user.keyboard(' ');
+    expect(document.querySelector('details')).toHaveAttribute('open');
+    await user.keyboard('{Enter}');
+    expect(document.querySelector('details')).not.toHaveAttribute('open');
   });
 
   it.each([
