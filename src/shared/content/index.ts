@@ -89,3 +89,21 @@ export function getRelatedPosts(locale: Locale, slug: string, limit = 3): Post[]
     .slice(0, limit)
     .map((entry) => entry.post);
 }
+
+/** Only visible, same-language projects with an actual shared technology. */
+export function getRelatedProjects(locale: Locale, slug: string, limit = 3): Project[] {
+  const projects = getProjects(locale);
+  const current = projects.find((project) => project.slug === slug);
+  if (!current) return [];
+  const stack = new Set(current.stack);
+  return projects
+    .filter((project) => project.slug !== slug)
+    .map((project) => ({
+      project,
+      overlap: project.stack.filter((tech) => stack.has(tech)).length,
+    }))
+    .filter(({ overlap }) => overlap > 0)
+    .sort((a, b) => b.overlap - a.overlap)
+    .slice(0, Math.max(0, limit))
+    .map(({ project }) => project);
+}

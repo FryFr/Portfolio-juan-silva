@@ -149,6 +149,17 @@
       "empty": "No projects published yet."
     },
     "detail": {
+      "publication": {
+        "summary": "In this case study",
+        "metrics": "Metrics",
+        "architecture": "Architecture",
+        "timeline": "Timeline",
+        "evidence": "Evidence",
+        "gallery": "Gallery",
+        "privacy": "Privacy note",
+        "related": "Related projects",
+        "source": "View source"
+      },
       "backToList": "← All projects",
       "prev": "Previous",
       "next": "Next",

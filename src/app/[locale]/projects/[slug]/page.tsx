@@ -4,7 +4,13 @@ import { notFound } from 'next/navigation';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { CaseStudyHeader } from '@/features/case-study/ui/case-study-header';
 import { CaseStudyNav } from '@/features/case-study/ui/case-study-nav';
-import { getAdjacentProjects, getProjectBySlug, getVisibleProjects } from '@/shared/content';
+import { CaseStudyRenderer } from '@/features/case-study/ui/case-study-renderer';
+import {
+  getAdjacentProjects,
+  getProjectBySlug,
+  getRelatedProjects,
+  getVisibleProjects,
+} from '@/shared/content';
 import type { Locale } from '@/shared/i18n/routing';
 import { MdxBody } from '@/shared/mdx/mdx-body';
 import { Container } from '@/shared/ui/container';
@@ -48,17 +54,16 @@ export default async function ProjectDetailPage({ params }: Props) {
           {t('backToList')}
         </Link>
 
-        <div className="mt-12">
-          <CaseStudyHeader project={project} />
-        </div>
-
-        <article className="mt-16 max-w-none font-sans text-body">
+        <CaseStudyRenderer
+          project={project}
+          locale={typedLocale}
+          labels={t.raw('publication')}
+          hero={<CaseStudyHeader project={project} />}
+          navigation={<CaseStudyNav locale={typedLocale} prev={prev} next={next} />}
+          relatedProjects={getRelatedProjects(typedLocale, slug)}
+        >
           <MdxBody code={project.body} />
-        </article>
-
-        <div className="mt-24">
-          <CaseStudyNav locale={typedLocale} prev={prev} next={next} />
-        </div>
+        </CaseStudyRenderer>
       </Container>
     </main>
   );
